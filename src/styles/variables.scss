@@ -1,0 +1,33 @@
+// Colors interface
+$bg: #131316;
+$modalBg: #1C1C21;
+$accent: #4C4CFF;
+$modalEdge: rgba($accent, 0.2);
+$input: #2F2F37;
+$success: #00CCCC;
+$error: #E52B1A;
+
+// Colors text
+$primary: #F2F2F3;
+$secondary: #8585AD;
+$disabled: #3A3A55;
+
+// Spacer
+$spacer: 4px;
+
+
+@mixin media-bp-up($breakpoint) {
+  @if $breakpoint == desktop {
+    @media screen and (min-width: 1200px) {
+      @content
+    }
+  }
+}
+
+@mixin media-bp-down($breakpoint) {
+  @if $breakpoint == desktop {
+    @media screen and (max-width: 1199px) {
+      @content
+    }
+  }
+}

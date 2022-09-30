@@ -1,0 +1,43 @@
+@use "../../styles/variables.scss" as *;
+
+$headerHeight: 90px;
+$mainTitleHeight: 60px;
+$mainTopSpacer: $spacer * 10;
+
+.app {
+  &__container {
+    @include media-bp-up(desktop) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: min-content min-content;
+      column-gap: 40px;
+    }
+  }
+
+  &__title {
+    @include media-bp-up(desktop) {
+      grid-area: 1 / 1 / span 1 / -1;
+    }
+  }
+
+  &__ingridients,
+  &__constructor {
+    @include media-bp-up(desktop) {
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - #{$headerHeight} - #{$mainTopSpacer} - #{$mainTitleHeight} - 10px);
+    }
+  }
+
+  &__ingridients {
+    @include media-bp-up(desktop) {
+      grid-area: 2 / 1 / span 1 / span 1;
+    }
+  }
+
+  &__constructor {
+    @include media-bp-up(desktop) {
+      grid-area: 2 / 2 / span 1 / span 1;
+    }
+  }
+}

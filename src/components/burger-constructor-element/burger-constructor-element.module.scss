@@ -1,0 +1,20 @@
+@use "../../styles/variables.scss" as *;
+
+.item {
+  $root: &;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  :global(.constructor-element) {
+    background-color: $modalBg;
+  }
+
+  &.locked {
+    #{$root}__lock {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}

@@ -42,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "hamburger-react": "^2.5.0",
     "sass": "^1.55.0"
   }
 }

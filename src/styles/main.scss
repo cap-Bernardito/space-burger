@@ -1,0 +1,30 @@
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+body {
+  background: $bg;
+  color: $primary;
+}
+
+.container {
+  max-width: 1240px + $spacer * 10;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: $spacer * 5;
+  padding-left: $spacer * 5;
+}
+
+// .custom-scroll - react-developer-burger-ui-components/src/ui/common.css
+.custom-scroll, .body {
+  scrollbar-width: thin;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 1px solid #2F2F37;
+    border-radius: 0;
+  }
+}
