@@ -23,7 +23,14 @@
   }
 }
 
+.tabs {
+  display: flex;
+}
+
 .list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   flex: 1 1 100px;
   overflow-y: auto;
   overflow-x: hidden;

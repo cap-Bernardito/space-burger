@@ -60,7 +60,7 @@ class BurgerIngridients extends React.Component {
 
     return (
       <div className={styles.container}>
-        <div style={{ display: 'flex' }} className="mb-10">
+        <div className={`${styles.tabs} mb-10`}>
           {ingridientTypes.map((tabName) => (
             <Tab
               key={tabName}
@@ -73,10 +73,7 @@ class BurgerIngridients extends React.Component {
           ))}
         </div>
 
-        <div
-          className={`${styles.list} custom-scroll`}
-          style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}
-        >
+        <div className={`${styles.list} custom-scroll`}>
           {this.state.error
             ? 'Что-то пошло не так...'
             : this.state.loading
