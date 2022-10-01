@@ -57,6 +57,17 @@ class BurgerIngridients extends React.Component {
 
   render() {
     const ingridientTypes = this.state.ingridients.map(([category]) => category);
+    let ingridientList;
+
+    if (this.state.error) {
+      ingridientList = 'Что-то пошло не так...';
+    } else if (this.state.loading) {
+      ingridientList = 'Загрузка...';
+    } else {
+      ingridientList = this.state.ingridients.map((category) => (
+        <BurgerIngridientsCategory key={category[0]} type={category[0]} list={category[1]} />
+      ));
+    }
 
     return (
       <div className={styles.container}>
@@ -73,19 +84,7 @@ class BurgerIngridients extends React.Component {
           ))}
         </div>
 
-        <div className={`${styles.list} custom-scroll`}>
-          {this.state.error
-            ? 'Что-то пошло не так...'
-            : this.state.loading
-            ? 'Загрузка...'
-            : this.state.ingridients.map((category) => (
-                <BurgerIngridientsCategory
-                  key={category[0]}
-                  type={category[0]}
-                  list={category[1]}
-                />
-              ))}
-        </div>
+        <div className={`${styles.list} custom-scroll`}>{ingridientList}</div>
       </div>
     );
   }

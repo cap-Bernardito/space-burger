@@ -48,25 +48,29 @@ class BurgerConstructor extends React.Component {
   }
 
   render() {
+    let ingridientList;
+
+    if (this.state.error) {
+      ingridientList = 'Что-то пошло не так...';
+    } else if (this.state.loading) {
+      ingridientList = 'Загрузка...';
+    } else {
+      ingridientList = this.state.ingridients.map((ingridient) => (
+        <BurgerConstructorElement key={ingridient._id} data={ingridient} />
+      ));
+    }
+
     return (
       <div className={styles.container}>
-        {!this.state.buns[0] ? null : (
+        {this.state.buns[0] && (
           <div className={`${styles.bun} custom-scroll`}>
             {<BurgerConstructorElement isLocked={true} type="top" data={this.state.buns[0]} />}
           </div>
         )}
 
-        <div className={`${styles.list} custom-scroll`}>
-          {this.state.error
-            ? 'Что-то пошло не так...'
-            : this.state.loading
-            ? 'Загрузка...'
-            : this.state.ingridients.map((ingridient) => (
-                <BurgerConstructorElement key={ingridient._id} data={ingridient} />
-              ))}
-        </div>
+        <div className={`${styles.list} custom-scroll`}>{ingridientList}</div>
 
-        {!this.state.buns[0] ? null : (
+        {this.state.buns[1] && (
           <div className={`${styles.bun} custom-scroll`}>
             {<BurgerConstructorElement isLocked={true} type="bottom" data={this.state.buns[1]} />}
           </div>

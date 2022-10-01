@@ -16,19 +16,22 @@ const Navbar = () => {
     <div className={`${styles.navbar} ${isOpen ? styles.navbar__open : ''}`}>
       <ul className={styles.navbar__list}>
         <li className={styles.navbar__item}>
-          <a href="/" className={`${buttonClass} ${styles.link_active}`}>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <a href="#" className={`${buttonClass} ${styles.link_active}`}>
             <BurgerIcon type="primary" />
             <span>Конструктор</span>
           </a>
         </li>
         <li className={styles.navbar__item}>
-          <a href="/" className={buttonClass}>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <a href="#" className={buttonClass}>
             <ListIcon type="secondary" />
             <span>Лента заказов</span>
           </a>
         </li>
         <li className={styles.navbar__item}>
-          <a href="/" className={buttonClass}>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <a href="#" className={buttonClass}>
             <ProfileIcon type="secondary" />
             <span>Личный кабинет</span>
           </a>

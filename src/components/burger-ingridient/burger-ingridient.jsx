@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import { ingridientPropTypes } from '../../utils/constants';
+import { INGRIDIENT_PROP_TYPES } from '../../utils/constants';
 
 import styles from './burger-ingridient.module.scss';
 
@@ -11,7 +11,7 @@ const BurgerIngridient = ({ data }) => {
 
   return (
     <div className={`${styles.box} pb-4`} onClick={() => setCount(count + 1)}>
-      {count === 0 ? null : <Counter count={count} size="default" />}
+      {count > 0 && <Counter count={count} size="default" />}
       <div className={`${styles.image} mb-1 pr-1 pl-1`}>
         <img
           src={image}
@@ -30,7 +30,7 @@ const BurgerIngridient = ({ data }) => {
 };
 
 BurgerIngridient.propTypes = {
-  data: PropTypes.shape(ingridientPropTypes).isRequired,
+  data: PropTypes.shape(INGRIDIENT_PROP_TYPES).isRequired,
 };
 
 export default BurgerIngridient;

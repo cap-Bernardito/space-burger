@@ -6,7 +6,7 @@ export const TYPES_OF_INGRIDIENTS = {
   main: 'Начинки',
 };
 
-export const ingridientPropTypes = {
+export const INGRIDIENT_PROP_TYPES = {
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,

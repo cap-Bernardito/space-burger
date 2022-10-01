@@ -1,9 +1,9 @@
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import { ingridientPropTypes } from '../../utils/constants';
+import { INGRIDIENT_PROP_TYPES } from '../../utils/constants';
 import styles from './burger-constructor-element.module.scss';
 
-const BurgerConstructorElement = ({ type, data, isLocked }) => {
+const BurgerConstructorElement = ({ type = '', data, isLocked = false }) => {
   return (
     <div className={`${styles.item} ${isLocked ? styles.locked : ''}`}>
       <div className={`${styles.item__lock} mr-2`}>
@@ -20,14 +20,9 @@ const BurgerConstructorElement = ({ type, data, isLocked }) => {
   );
 };
 
-BurgerConstructorElement.defaultProps = {
-  type: '',
-  isLocked: false,
-};
-
 BurgerConstructorElement.propTypes = {
   type: PropTypes.string,
-  data: PropTypes.shape(ingridientPropTypes).isRequired,
+  data: PropTypes.shape(INGRIDIENT_PROP_TYPES).isRequired,
   isLocked: PropTypes.bool,
 };
 
