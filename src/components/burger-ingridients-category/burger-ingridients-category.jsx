@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+import { ingridientPropTypes } from '../../utils/constants';
 import BurgerIngridient from '../burger-ingridient/burger-ingridient';
 import { TYPES_OF_INGRIDIENTS } from '../../utils/constants';
 import styles from './burger-ingridients-category.module.scss';
@@ -16,5 +18,10 @@ const BurgerIngridientsCategory = ({ type, list }) => (
     </div>
   </div>
 );
+
+BurgerIngridientsCategory.propTypes = {
+  type: PropTypes.oneOf(Object.keys(TYPES_OF_INGRIDIENTS)).isRequired,
+  list: PropTypes.arrayOf(PropTypes.shape(ingridientPropTypes)).isRequired,
+};
 
 export default BurgerIngridientsCategory;
