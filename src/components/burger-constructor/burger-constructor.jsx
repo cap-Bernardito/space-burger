@@ -1,78 +1,35 @@
 import React from 'react';
 import BurgerConstructorElement from '../burger-constructor-element/burger-constructor-element';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import ApiService from '../../services/api-service';
 import styles from './burger-constructor.module.scss';
 
-const apiService = new ApiService();
-
 class BurgerConstructor extends React.Component {
-  state = {
-    buns: [],
-    ingridients: [],
-    loading: false,
-    error: false,
-  };
-
-  componentDidMount() {
-    // Todo временные данные для верстки
-    this.getBurgerIngridients();
-  }
-
-  async getBurgerIngridients() {
-    this.setState({
-      ...this.state,
-      loading: true,
-    });
-
-    try {
-      const ingridients = await apiService.getBurgerIngridients();
-
-      // Todo временные данные для верстки
-      const buns = [];
-      buns.push(ingridients.pop());
-      buns.push(ingridients.pop());
-
-      this.setState({
-        ...this.state,
-        buns,
-        ingridients,
-        loading: false,
-      });
-    } catch (error) {
-      this.setState({
-        ...this.state,
-        error: true,
-      });
-    }
-  }
-
   render() {
-    let ingridientList;
-
-    if (this.state.error) {
-      ingridientList = 'Что-то пошло не так...';
-    } else if (this.state.loading) {
-      ingridientList = 'Загрузка...';
-    } else {
-      ingridientList = this.state.ingridients.map((ingridient) => (
-        <BurgerConstructorElement key={ingridient._id} data={ingridient} />
-      ));
-    }
+    // Todo сделать логику валидного набора ингридиентов в конструкторе, а пока для верстки отображаются все ингридиенты
+    const buns = this.props.data
+      .filter(([category]) => category === 'bun')
+      .reduce((acc, [, data]) => acc.concat(data), []);
+    const ingridients = this.props.data
+      .filter(([category]) => category !== 'bun')
+      .reduce((acc, [, data]) => acc.concat(data), []);
 
     return (
       <div className={styles.container}>
-        {this.state.buns[0] && (
+        {buns[0] && (
           <div className={`${styles.bun} custom-scroll`}>
-            {<BurgerConstructorElement isLocked={true} type="top" data={this.state.buns[0]} />}
+            {<BurgerConstructorElement isLocked={true} type="top" data={buns[0]} />}
           </div>
         )}
 
-        <div className={`${styles.list} custom-scroll`}>{ingridientList}</div>
+        <div className={`${styles.list} custom-scroll`}>
+          {ingridients.map((ingridient) => (
+            <BurgerConstructorElement key={ingridient._id} data={ingridient} />
+          ))}
+        </div>
 
-        {this.state.buns[1] && (
+        {buns[0] && (
           <div className={`${styles.bun} custom-scroll`}>
-            {<BurgerConstructorElement isLocked={true} type="bottom" data={this.state.buns[1]} />}
+            {<BurgerConstructorElement isLocked={true} type="bottom" data={buns[0]} />}
           </div>
         )}
 
