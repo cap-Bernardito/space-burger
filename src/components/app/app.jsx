@@ -24,9 +24,10 @@ const App = () => {
       const data = await apiService.getBurgerIngridientsByType();
 
       setIngridients(data);
-      setLoading(false);
     } catch (error) {
       setError(error);
+    } finally {
+      setLoading(false);
     }
   }
 
