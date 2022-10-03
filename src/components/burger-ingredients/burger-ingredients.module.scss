@@ -1,0 +1,42 @@
+@use "../../styles/variables.scss" as *;
+
+.container {
+  @include media-bp-up(desktop) {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  @include media-bp-down(desktop) {
+    display: table;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 40px;
+
+    :global(.tab) {
+      flex-grow: 1;
+      min-width: 100px !important;
+      padding-right: 0;
+      padding-left: 0;
+      text-align: center;
+    }
+  }
+}
+
+.tabs {
+  display: flex;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  flex: 1 1 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  @include media-bp-down(desktop) {
+    height: 100vh;
+  }
+}
+

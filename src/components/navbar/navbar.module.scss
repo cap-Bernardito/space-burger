@@ -1,0 +1,94 @@
+@use "../../styles/variables.scss" as *;
+
+.navbar {
+  $root: &;
+
+  position: relative;
+  height: 100%;
+
+  &__open {
+    @include media-bp-down(desktop) {
+      #{$root}__list {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: $spacer * 2;
+    transition: all 0.25s;
+
+    @include media-bp-up(desktop) {
+      display: flex;
+    }
+
+    @include media-bp-down(desktop) {
+      background: $bg;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 500;
+      padding: $spacer * 10;
+
+      transform: translateX(-100%);
+    }
+  }
+
+  &__item {
+    &:first-child {
+      @include media-bp-up(desktop) {
+        margin-left: -$spacer * 5;
+      }
+    }
+
+    &:last-child {
+      @include media-bp-up(desktop) {
+        margin-right: -$spacer * 5;
+        margin-left: auto;
+      }
+    }
+  }
+
+  &__hamburger {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 2000;
+
+    @include media-bp-up(desktop) {
+      opacity: 0;
+    }
+  }
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacer * 2;
+  padding: $spacer * 4 $spacer * 5;
+  transition: color 0.3s ease;
+  
+  svg {
+    fill: currentColor;
+  }
+
+  &, &:link, &:visited {
+    color: $secondary;
+    text-decoration: none;
+  }
+
+  &:hover, &:active {
+    color: $primary;
+  }
+
+  &_active {
+    color: $primary !important;
+  }
+}
