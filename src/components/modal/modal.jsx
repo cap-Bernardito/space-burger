@@ -14,6 +14,20 @@ const Modal = ({ title, children, onClose, show }) => {
   const overlayRef = useRef();
 
   useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
     if (show) {
       documentBody.classList.add(bodyClass);
 
