@@ -1,12 +1,26 @@
-import { data } from '../utils/data';
+import { data as fakeData } from '../utils/data';
 import { TYPES_OF_INGRIDIENTS } from '../utils/constants';
 
 class ApiService {
-  async getBurgerIngridients() {
-    return data;
+  _apiRequest = 'https://norma.nomoreparties.space/api/ingredients';
+  _isFakeData = process.env.REACT_APP_DATA_SOURCE === 'fake-data';
+
+  async getResource() {
+    if (this._isFakeData) {
+      return { data: fakeData };
+    }
+
+    const res = await fetch(this._apiRequest);
+
+    if (!res.ok) {
+      throw new Error(`Could not fetch ${this._apiRequest}` + `, received ${res.status}`);
+    }
+    return await res.json();
   }
 
   async getBurgerIngridientsByType() {
+    const { data } = await this.getResource();
+
     return this._transformIngridientsList(data);
   }
 
