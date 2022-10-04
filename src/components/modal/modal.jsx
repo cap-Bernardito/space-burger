@@ -10,7 +10,7 @@ const bodyClass = 'modal-opened';
 const modalRoot = document.getElementById('modals');
 const documentBody = document.querySelector('body');
 
-const Modal = ({ title, children, onClose, show }) => {
+const Modal = ({ title, children, onClose, show=false }) => {
   const overlayRef = useRef();
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Modal = ({ title, children, onClose, show }) => {
 Modal.propTypes = {
   // NOTE: Стилизация заголовка может быть разная, потому должна быть возможность передать стилизованный элемент
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  show: PropTypes.bool,
+  show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
