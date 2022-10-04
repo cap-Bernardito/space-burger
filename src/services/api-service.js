@@ -10,6 +10,10 @@ class ApiService {
     return this._transformIngridientsList(data);
   }
 
+  async getOrderInfo() {
+    return new Promise((resolve) => setTimeout(() => resolve(342324), 1000));
+  }
+
   _transformIngridientsList(data) {
     const initial = {};
 
