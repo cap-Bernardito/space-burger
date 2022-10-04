@@ -50,15 +50,15 @@ const BurgerIngridients = ({ data }) => {
 };
 
 BurgerIngridients.propTypes = {
-  data: PropTypes.arrayOf((_, index) => {
+  data: PropTypes.arrayOf((propValue, index) => {
     const dataPropsTypes = {
-      dataNameCategory: PropTypes.string.isRequired,
-      dataListCategory: PropTypes.arrayOf(PropTypes.shape(INGRIDIENT_PROP_TYPES)).isRequired,
+      dataCategoryName: PropTypes.string.isRequired,
+      dataCategoryList: PropTypes.arrayOf(PropTypes.shape(INGRIDIENT_PROP_TYPES)).isRequired,
     };
-    const [categoryName, categoryList] = _[index];
+    const [categoryName, categoryList] = propValue[index];
     const props = {
-      dataNameCategory: categoryName,
-      dataListCategory: categoryList,
+      dataCategoryName: categoryName,
+      dataCategoryList: categoryList,
     };
 
     PropTypes.checkPropTypes(dataPropsTypes, props, 'prop', 'BurgerIngridients');

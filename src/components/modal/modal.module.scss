@@ -35,6 +35,13 @@ $bottomFieldsSpacer: $spacer * 15;
   svg {
     width: 100%;
     height: 100%;
+    transition: transform 0.25s;
+  }
+
+  &:hover {
+    svg {
+      transform: scale(1.15);
+    }
   }
 }
 

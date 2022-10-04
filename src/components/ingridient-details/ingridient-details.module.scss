@@ -1,0 +1,21 @@
+@use "../../styles/variables.scss" as *;
+
+.root {
+  text-align: center;
+}
+
+.nutrients {
+  display: flex;
+  justify-content: center;
+  gap: $spacer * 5;
+}
+
+.nutrient {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title {
+    margin-bottom: $spacer * 2;
+  }
+}
