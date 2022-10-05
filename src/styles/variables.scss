@@ -26,8 +26,8 @@ $zModal: 2010;
   100%  { opacity: 1 }
 }
 
-@mixin modal-animation() {
-  animation: openModal 0.3s;
+@mixin modal-animation($time: 0.3s) {
+  animation: openModal $time;
   animation-fill-mode: both;
   animation-timing-function: ease-in-out;
 }

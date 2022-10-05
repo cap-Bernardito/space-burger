@@ -10,7 +10,7 @@ const bodyClass = 'modal-opened';
 const modalRoot = document.getElementById('modals');
 const documentBody = document.querySelector('body');
 
-const Modal = ({ title, children, onClose, show=false }) => {
+const Modal = ({ title, children, onClose }) => {
   const overlayRef = useRef();
 
   useEffect(() => {
@@ -28,12 +28,10 @@ const Modal = ({ title, children, onClose, show=false }) => {
   }, [onClose]);
 
   useEffect(() => {
-    if (show) {
-      documentBody.classList.add(bodyClass);
+    documentBody.classList.add(bodyClass);
 
-      return () => documentBody.classList.remove(bodyClass);
-    }
-  }, [show]);
+    return () => documentBody.classList.remove(bodyClass);
+  }, []);
 
   const handleClose = (event) => {
     if (event.target === overlayRef.current) {
@@ -41,30 +39,36 @@ const Modal = ({ title, children, onClose, show=false }) => {
     }
   };
 
-  return (
-    show &&
-    ReactDom.createPortal(
-      <ModalOverlay onClose={handleClose} ref={overlayRef}>
-        <div className={classNames(styles.modal, !title && styles.modal_withoutHeader)}>
-          <div className={classNames(styles.close)} onClick={onClose}>
-            <CloseIcon type="primary" />
+  return ReactDom.createPortal(
+    <>
+      <ModalOverlay />
+      <div className={classNames(styles.modal, 'custom-scroll')}>
+        <div className={classNames(styles.modal__inner)} ref={overlayRef} onClick={handleClose}>
+          <div
+            className={classNames(styles.modal__content, {
+              [styles.modal__content_withoutHeader]: !title,
+            })}
+          >
+            <div className={classNames(styles.close)} onClick={onClose}>
+              <CloseIcon type="primary" />
+            </div>
+            {title && (
+              <div className={classNames(styles.header, 'text text_type_main-large')}>{title}</div>
+            )}
+            <div className={classNames(styles.body, 'text text_type_main-default')}>{children}</div>
           </div>
-          {title && (
-            <div className={classNames(styles.header, 'text text_type_main-large')}>{title}</div>
-          )}
-          <div className={classNames(styles.body, 'text text_type_main-default')}>{children}</div>
         </div>
-      </ModalOverlay>,
-      modalRoot
-    )
+      </div>
+    </>,
+    modalRoot
   );
 };
 
 Modal.propTypes = {
   // NOTE: Стилизация заголовка может быть разная, потому должна быть возможность передать стилизованный элемент
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Modal;

@@ -40,9 +40,11 @@ const BurgerIngridient = ({ data }) => {
         </div>
         <div className={classNames(styles.title)}>{name}</div>
       </div>
-      <Modal show={modalIsOpen} onClose={closeModal} title="Детали ингридиента">
-        {<IngridientDetails data={data} />}
-      </Modal>
+      {modalIsOpen && (
+        <Modal onClose={closeModal} title="Детали ингридиента">
+          <IngridientDetails data={data} />
+        </Modal>
+      )}
     </>
   );
 };

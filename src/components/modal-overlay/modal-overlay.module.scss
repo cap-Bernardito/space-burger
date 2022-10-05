@@ -1,24 +1,12 @@
 @use "../../styles/variables.scss" as *;
 
 .root {
-  @include modal-animation();
+  @include modal-animation(0.15s);
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
   background: rgba($black, 0.6);
-  z-index: $zModal;
-
-  &__content {
-    $vSpaser: $spacer * 5;
-
-    min-height: calc(100% - #{$vSpaser * 2});
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: $vSpaser;
-  }
+  z-index: $zModalOverlay;
 }

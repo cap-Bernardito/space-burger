@@ -10,17 +10,39 @@ $bottomFieldsSpacer: $spacer * 15;
 }
 
 .modal {
-  position: relative;
-  width: 100%;
-  max-width: 720px;
-  padding: $topFieldsSpacer $inlineFieldsSpacer $bottomFieldsSpacer;
-  background: $modalBg;
-  border: 1px solid $modalEdge;
-  border-radius: $spacer * 10;
+  $vSpaser: $spacer * 5;
 
-  &_withoutHeader {
-    padding-top: $spacer * 30;
-    padding-bottom: $spacer * 30;
+  @include modal-animation();
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: $zModal;
+
+  &__inner {
+    min-height: calc(100% - #{$vSpaser * 2});
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: $vSpaser;
+  }
+
+  &__content {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    padding: $topFieldsSpacer $inlineFieldsSpacer $bottomFieldsSpacer;
+    background: $modalBg;
+    border: 1px solid $modalEdge;
+    border-radius: $spacer * 10;
+  
+    &_withoutHeader {
+      padding-top: $spacer * 30;
+      padding-bottom: $spacer * 30;
+    }
   }
 }
 

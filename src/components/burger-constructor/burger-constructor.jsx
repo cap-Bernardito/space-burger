@@ -85,9 +85,11 @@ const BurgerConstructor = ({ data }) => {
           </Button>
         </div>
       </div>
-      <Modal show={modalIsOpen} onClose={closeModal}>
-        {orderInfo && <OrderDetails number={orderInfo} />}
-      </Modal>
+      {modalIsOpen && orderInfo && (
+        <Modal onClose={closeModal}>
+          <OrderDetails number={orderInfo} />
+        </Modal>
+      )}
     </>
   );
 };
