@@ -19,6 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:fd": "cross-env REACT_APP_DATA_SOURCE=fake-data react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -42,6 +43,8 @@
     ]
   },
   "devDependencies": {
+    "classnames": "^2.3.2",
+    "cross-env": "^7.0.3",
     "hamburger-react": "^2.5.0",
     "sass": "^1.55.0"
   }

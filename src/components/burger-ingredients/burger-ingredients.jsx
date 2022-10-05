@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngridientsCategory from '../burger-ingridients-category/burger-ingridients-category';
 import { TYPES_OF_INGRIDIENTS, INGRIDIENT_PROP_TYPES } from '../../utils/constants';
@@ -25,8 +26,8 @@ const BurgerIngridients = ({ data }) => {
   const ingridientTypes = data.map(([category]) => category);
 
   return (
-    <div className={styles.container}>
-      <div className={`${styles.tabs} mb-10`}>
+    <div className={classNames(styles.container)}>
+      <div className={classNames(styles.tabs, 'mb-10')}>
         {ingridientTypes.map((tabName) => (
           <Tab
             key={tabName}
@@ -39,7 +40,7 @@ const BurgerIngridients = ({ data }) => {
         ))}
       </div>
 
-      <div className={`${styles.list} custom-scroll`}>
+      <div className={classNames(styles.list, 'custom-scroll')}>
         {data.map(([categoryName, categoryList]) => (
           <BurgerIngridientsCategory key={categoryName} type={categoryName} list={categoryList} />
         ))}
@@ -49,15 +50,15 @@ const BurgerIngridients = ({ data }) => {
 };
 
 BurgerIngridients.propTypes = {
-  data: PropTypes.arrayOf((_, index) => {
+  data: PropTypes.arrayOf((propValue, index) => {
     const dataPropsTypes = {
-      dataNameCategory: PropTypes.string.isRequired,
-      dataListCategory: PropTypes.arrayOf(PropTypes.shape(INGRIDIENT_PROP_TYPES)).isRequired,
+      dataCategoryName: PropTypes.string.isRequired,
+      dataCategoryList: PropTypes.arrayOf(PropTypes.shape(INGRIDIENT_PROP_TYPES)).isRequired,
     };
-    const [categoryName, categoryList] = _[index];
+    const [categoryName, categoryList] = propValue[index];
     const props = {
-      dataNameCategory: categoryName,
-      dataListCategory: categoryList,
+      dataCategoryName: categoryName,
+      dataCategoryList: categoryList,
     };
 
     PropTypes.checkPropTypes(dataPropsTypes, props, 'prop', 'BurgerIngridients');

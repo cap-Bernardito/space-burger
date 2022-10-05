@@ -64,6 +64,7 @@
 .order {
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
   align-items: center;
   gap: $spacer * 10;
   padding: $spacer * 10 0;
@@ -77,4 +78,10 @@
       height: 36px;
     }
   }
+}
+
+.error {
+  flex: 1 1 100%;
+  text-align: center;
+  color: $error;
 }

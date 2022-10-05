@@ -6,6 +6,7 @@ $modalEdge: rgba($accent, 0.2);
 $input: #2F2F37;
 $success: #00CCCC;
 $error: #E52B1A;
+$black: #000000;
 
 // Colors text
 $primary: #F2F2F3;
@@ -15,6 +16,21 @@ $disabled: #3A3A55;
 // Spacer
 $spacer: 4px;
 
+// z-index
+$zModalOverlay: 2000;
+$zModal: 2010;
+
+// Animations
+@keyframes openModal {
+  0%    { opacity: 0 }
+  100%  { opacity: 1 }
+}
+
+@mixin modal-animation($time: 0.3s) {
+  animation: openModal $time;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+}
 
 @mixin media-bp-up($breakpoint) {
   @if $breakpoint == desktop {

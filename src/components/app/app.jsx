@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import classNames from 'classnames';
 import ApiService from '../../services/api-service';
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -24,9 +25,10 @@ const App = () => {
       const data = await apiService.getBurgerIngridientsByType();
 
       setIngridients(data);
-      setLoading(false);
     } catch (error) {
       setError(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -44,15 +46,17 @@ const App = () => {
   }
 
   return (
-    <div className="text text_type_main-default">
+    <div className={classNames('text', 'text_type_main-default')}>
       <AppHeader />
       <main>
-        <section className={`${styles.app__container} container pt-10`}>
-          <h1 className={`${styles.app__title} text text_type_main-large mb-5`}>Соберите бургер</h1>
+        <section className={classNames(styles.app__container, 'container pt-10')}>
+          <h1 className={classNames(styles.app__title, 'text text_type_main-large mb-5')}>
+            Соберите бургер
+          </h1>
           {messageInfo || (
             <>
-              <div className={`${styles.app__ingridients}`}>{burgerIngridients}</div>
-              <div className={`${styles.app__constructor}`}>{burgerConstructor}</div>
+              <div className={classNames(styles.app__ingridients)}>{burgerIngridients}</div>
+              <div className={classNames(styles.app__constructor)}>{burgerConstructor}</div>
             </>
           )}
         </section>
