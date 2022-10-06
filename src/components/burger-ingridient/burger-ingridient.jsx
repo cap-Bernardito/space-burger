@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import classNames from 'classnames';
-import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
-import { useModal } from '../hooks';
-import Modal from '../modal/modal';
-import IngridientDetails from '../ingridient-details/ingridient-details';
-import { INGRIDIENT_PROP_TYPES } from '../../utils/constants';
+import { useState } from "react";
+import classNames from "classnames";
+import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
+import { useModal } from "../hooks";
+import Modal from "../modal/modal";
+import IngridientDetails from "../ingridient-details/ingridient-details";
+import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
 
-import styles from './burger-ingridient.module.scss';
+import styles from "./burger-ingridient.module.scss";
 
 const BurgerIngridient = ({ data }) => {
   const [count, setCount] = useState(0);
@@ -22,9 +22,9 @@ const BurgerIngridient = ({ data }) => {
 
   return (
     <>
-      <div className={classNames(styles.box, 'pb-4')} onClick={handleClick}>
+      <div className={classNames(styles.box, "pb-4")} onClick={handleClick}>
         {count > 0 && <Counter count={count} size="default" />}
-        <div className={classNames(styles.image, 'mb-1 pr-1 pl-1')}>
+        <div className={classNames(styles.image, "mb-1 pr-1 pl-1")}>
           <img
             src={image}
             alt={name}
@@ -34,7 +34,7 @@ const BurgerIngridient = ({ data }) => {
             height="120"
           />
         </div>
-        <div className={classNames(styles.price, 'mb-1 text text_type_digits-default')}>
+        <div className={classNames(styles.price, "mb-1 text text_type_digits-default")}>
           <span className={classNames(styles.price__num)}>{price}</span>
           <CurrencyIcon type="primary" />
         </div>

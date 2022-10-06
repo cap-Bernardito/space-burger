@@ -1,17 +1,17 @@
 // Colors interface
 $bg: #131316;
-$modalBg: #1C1C21;
-$accent: #4C4CFF;
+$modalBg: #1c1c21;
+$accent: #4c4cff;
 $modalEdge: rgba($accent, 0.2);
-$input: #2F2F37;
-$success: #00CCCC;
-$error: #E52B1A;
+$input: #2f2f37;
+$success: #00cccc;
+$error: #e52b1a;
 $black: #000000;
 
 // Colors text
-$primary: #F2F2F3;
-$secondary: #8585AD;
-$disabled: #3A3A55;
+$primary: #f2f2f3;
+$secondary: #8585ad;
+$disabled: #3a3a55;
 
 // Spacer
 $spacer: 4px;
@@ -22,8 +22,12 @@ $zModal: 2010;
 
 // Animations
 @keyframes openModal {
-  0%    { opacity: 0 }
-  100%  { opacity: 1 }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @mixin modal-animation($time: 0.3s) {
@@ -35,7 +39,7 @@ $zModal: 2010;
 @mixin media-bp-up($breakpoint) {
   @if $breakpoint == desktop {
     @media screen and (min-width: 1200px) {
-      @content
+      @content;
     }
   }
 }
@@ -43,7 +47,7 @@ $zModal: 2010;
 @mixin media-bp-down($breakpoint) {
   @if $breakpoint == desktop {
     @media screen and (max-width: 1199px) {
-      @content
+      @content;
     }
   }
 }
