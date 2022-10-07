@@ -2,7 +2,7 @@ import { useState } from "react";
 import classNames from "classnames";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { useModal } from "../hooks";
+import { useModal } from "../../hooks";
 import Modal from "../modal/modal";
 import IngridientDetails from "../ingridient-details/ingridient-details";
 import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";

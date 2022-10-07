@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import ApiService from "../../services/api-service";
 import { CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useModal } from "../hooks";
+import { useModal } from "../../hooks";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
