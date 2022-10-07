@@ -1,9 +1,9 @@
-import { data as fakeData } from '../utils/data';
-import { TYPES_OF_INGRIDIENTS } from '../utils/constants';
+import { data as fakeData } from "../utils/data";
+import { TYPES_OF_INGRIDIENTS } from "../utils/constants";
 
 class ApiService {
-  _baseApiUrl = 'https://norma.nomoreparties.space/api';
-  _isFakeData = process.env.REACT_APP_DATA_SOURCE === 'fake-data';
+  _baseApiUrl = "https://norma.nomoreparties.space/api";
+  _isFakeData = process.env.REACT_APP_DATA_SOURCE === "fake-data";
 
   async getResource(endpoint) {
     if (this._isFakeData) {
@@ -24,7 +24,7 @@ class ApiService {
   }
 
   async getBurgerIngridientsByType() {
-    const { data } = await this.getResource('/ingredients/');
+    const { data } = await this.getResource("/ingredients/");
 
     return this._transformIngridientsList(data);
   }
@@ -43,7 +43,7 @@ class ApiService {
     const result = data.reduce((acc, item) => {
       const { type } = item;
 
-      if (typeof acc[type] === 'undefined') {
+      if (typeof acc[type] === "undefined") {
         acc[type] = [];
       }
 

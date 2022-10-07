@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import ApiService from '../../services/api-service';
-import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useModal } from '../hooks';
-import BurgerConstructorElement from '../burger-constructor-element/burger-constructor-element';
-import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
-import { INGRIDIENT_PROP_TYPES } from '../../utils/constants';
-import styles from './burger-constructor.module.scss';
+import { useState } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import ApiService from "../../services/api-service";
+import { CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useModal } from "../hooks";
+import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
+import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
+import styles from "./burger-constructor.module.scss";
 
 const apiService = new ApiService();
 
@@ -20,10 +20,10 @@ const BurgerConstructor = ({ data }) => {
 
   // Todo: Cделать логику валидного набора ингридиентов в конструкторе. Пока для верстки отображаются все ингридиенты
   const buns = data
-    .filter(([categoryName]) => categoryName === 'bun')
+    .filter(([categoryName]) => categoryName === "bun")
     .reduce((acc, [, categoryList]) => acc.concat(categoryList), []);
   const ingridients = data
-    .filter(([categoryName]) => categoryName !== 'bun')
+    .filter(([categoryName]) => categoryName !== "bun")
     .reduce((acc, [, categoryList]) => acc.concat(categoryList), []);
 
   const checkout = async () => {
@@ -47,41 +47,31 @@ const BurgerConstructor = ({ data }) => {
     <>
       <div className={classNames(styles.container)}>
         {buns[0] && (
-          <div className={classNames(styles.bun, 'custom-scroll')}>
+          <div className={classNames(styles.bun, "custom-scroll")}>
             {<BurgerConstructorElement isLocked={true} type="top" data={buns[0]} />}
           </div>
         )}
 
-        <div className={classNames(styles.list, 'custom-scroll')}>
+        <div className={classNames(styles.list, "custom-scroll")}>
           {ingridients.map((ingridient) => (
             <BurgerConstructorElement key={ingridient._id} data={ingridient} />
           ))}
         </div>
 
         {buns[0] && (
-          <div className={classNames(styles.bun, 'custom-scroll')}>
+          <div className={classNames(styles.bun, "custom-scroll")}>
             {<BurgerConstructorElement isLocked={true} type="bottom" data={buns[0]} />}
           </div>
         )}
 
         <div className={classNames(styles.order)}>
-          {error && (
-            <div
-              className={styles.error}
-            >{`Возникла ошибка при получении данных заказа: ${error}`}</div>
-          )}
-          <div className={classNames(styles.order__sum, 'text text_type_digits-medium')}>
+          {error && <div className={styles.error}>{`Возникла ошибка при получении данных заказа: ${error}`}</div>}
+          <div className={classNames(styles.order__sum, "text text_type_digits-medium")}>
             610&nbsp;
             <CurrencyIcon type="primary" />
           </div>
-          <Button
-            type="primary"
-            size="large"
-            htmlType="button"
-            onClick={checkout}
-            disabled={loading}
-          >
-            {loading ? 'Загрузка ...' : 'Оформить заказ'}
+          <Button type="primary" size="large" htmlType="button" onClick={checkout} disabled={loading}>
+            {loading ? "Загрузка ..." : "Оформить заказ"}
           </Button>
         </div>
       </div>
@@ -106,7 +96,7 @@ BurgerConstructor.propTypes = {
       dataCategoryList: categoryList,
     };
 
-    PropTypes.checkPropTypes(dataPropsTypes, props, 'prop', 'BurgerConstructor');
+    PropTypes.checkPropTypes(dataPropsTypes, props, "prop", "BurgerConstructor");
   }).isRequired,
 };
 

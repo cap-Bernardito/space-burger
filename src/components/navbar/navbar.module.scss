@@ -74,17 +74,20 @@
   gap: $spacer * 2;
   padding: $spacer * 4 $spacer * 5;
   transition: color 0.3s ease;
-  
+
   svg {
     fill: currentColor;
   }
 
-  &, &:link, &:visited {
+  &,
+  &:link,
+  &:visited {
     color: $secondary;
     text-decoration: none;
   }
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     color: $primary;
   }
 

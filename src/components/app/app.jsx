@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import classNames from 'classnames';
-import ApiService from '../../services/api-service';
-import AppHeader from '../app-header/app-header';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import BurgerIngridients from '../burger-ingredients/burger-ingredients';
+import { useState, useEffect } from "react";
+import classNames from "classnames";
+import ApiService from "../../services/api-service";
+import AppHeader from "../app-header/app-header";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
+import BurgerIngridients from "../burger-ingredients/burger-ingredients";
 
-import styles from './app.module.scss';
+import styles from "./app.module.scss";
 
 const apiService = new ApiService();
 
@@ -39,20 +39,18 @@ const App = () => {
   if (error) {
     messageInfo = `Ошибка при запросе данных: ${error.message}`;
   } else if (loading) {
-    messageInfo = 'Загрузка...';
+    messageInfo = "Загрузка...";
   } else {
     burgerIngridients = <BurgerIngridients data={ingridients} />;
     burgerConstructor = <BurgerConstructor data={ingridients} />;
   }
 
   return (
-    <div className={classNames('text', 'text_type_main-default')}>
+    <div className={classNames("text", "text_type_main-default")}>
       <AppHeader />
       <main>
-        <section className={classNames(styles.app__container, 'container pt-10')}>
-          <h1 className={classNames(styles.app__title, 'text text_type_main-large mb-5')}>
-            Соберите бургер
-          </h1>
+        <section className={classNames(styles.app__container, "container pt-10")}>
+          <h1 className={classNames(styles.app__title, "text text_type_main-large mb-5")}>Соберите бургер</h1>
           {messageInfo || (
             <>
               <div className={classNames(styles.app__ingridients)}>{burgerIngridients}</div>

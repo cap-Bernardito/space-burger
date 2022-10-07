@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export const TYPES_OF_INGRIDIENTS = {
-  bun: 'Булки',
-  sauce: 'Соусы',
-  main: 'Начинки',
+  bun: "Булки",
+  sauce: "Соусы",
+  main: "Начинки",
 };
 
 export const INGRIDIENT_PROP_TYPES = {
