@@ -1,9 +1,8 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import ApiService from "../../services/api-service";
 import { CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useModal } from "../../hooks";
+import { useModal, useFetch } from "../../hooks";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
@@ -14,9 +13,7 @@ const apiService = new ApiService();
 
 const BurgerConstructor = ({ data }) => {
   const { modalIsOpen, closeModal, showModal } = useModal();
-  const [orderInfo, setOrderInfo] = useState();
-  const [error, setError] = useState();
-  const [loading, setLoading] = useState();
+  const [{ data: orderInfo, isLoading, isError }, setFetchFns] = useFetch();
 
   // Todo: Cделать логику валидного набора ингридиентов в конструкторе. Пока для верстки отображаются все ингридиенты
   const buns = data
@@ -26,21 +23,11 @@ const BurgerConstructor = ({ data }) => {
     .filter(([categoryName]) => categoryName !== "bun")
     .reduce((acc, [, categoryList]) => acc.concat(categoryList), []);
 
-  const checkout = async () => {
-    setLoading(true);
-    setError(false);
-    setOrderInfo(false);
-
-    try {
-      const fetchedData = await apiService.getOrderInfo();
-
-      setOrderInfo(fetchedData);
-      showModal();
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
+  const checkout = () => {
+    setFetchFns({
+      getDataFn: apiService.getOrderInfo,
+      doneFn: showModal,
+    });
   };
 
   return (
@@ -65,13 +52,13 @@ const BurgerConstructor = ({ data }) => {
         )}
 
         <div className={classNames(styles.order)}>
-          {error && <div className={styles.error}>{`Возникла ошибка при получении данных заказа: ${error}`}</div>}
+          {isError && <div className={styles.error}>{`Возникла ошибка при получении данных заказа: ${isError}`}</div>}
           <div className={classNames(styles.order__sum, "text text_type_digits-medium")}>
             610&nbsp;
             <CurrencyIcon type="primary" />
           </div>
-          <Button type="primary" size="large" htmlType="button" onClick={checkout} disabled={loading}>
-            {loading ? "Загрузка ..." : "Оформить заказ"}
+          <Button type="primary" size="large" htmlType="button" onClick={checkout} disabled={isLoading}>
+            {isLoading ? "Загрузка ..." : "Оформить заказ"}
           </Button>
         </div>
       </div>

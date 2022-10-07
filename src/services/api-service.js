@@ -30,7 +30,7 @@ class ApiService {
   }
 
   async getOrderInfo() {
-    return new Promise((resolve) => setTimeout(() => resolve(342324), 1000));
+    return new Promise((resolve) => setTimeout(() => resolve({ data: 342324 }), 1000));
   }
 
   _transformIngridientsList(data) {
