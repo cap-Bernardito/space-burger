@@ -1,34 +1,30 @@
-import PropTypes from "prop-types";
+import { useContext } from "react";
 import classNames from "classnames";
 import ApiService from "../../services/api-service";
+import { BurgerConstructorContext } from "../../services/burgerConstructorContext";
 import { CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal, useFetch } from "../../hooks";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
 import styles from "./burger-constructor.module.scss";
 
 const apiService = new ApiService();
 
-const BurgerConstructor = ({ data }) => {
+const BurgerConstructor = () => {
   const { modalIsOpen, closeModal, showModal } = useModal();
-  const [{ data: orderInfo, isLoading, isError }, setFetchFns] = useFetch();
-
-  // Todo: Cделать логику валидного набора ингридиентов в конструкторе. Пока для верстки отображаются все ингридиенты
-  const buns = data
-    .filter(([categoryName]) => categoryName === "bun")
-    .reduce((acc, [, categoryList]) => acc.concat(categoryList), []);
-  const ingridients = data
-    .filter(([categoryName]) => categoryName !== "bun")
-    .reduce((acc, [, categoryList]) => acc.concat(categoryList), []);
+  const [{ data: fetchedResult, isLoading, isError }, setFetchFns] = useFetch([]);
+  const { burgerConstructorState } = useContext(BurgerConstructorContext);
 
   const checkout = () => {
     setFetchFns({
-      getDataFn: apiService.getOrderInfo,
+      getDataFn: () => apiService.getOrderInfo.call(apiService),
       doneFn: showModal,
     });
   };
+
+  const { buns, ingridients, total } = burgerConstructorState;
+  const { data: orderInfo } = fetchedResult;
 
   return (
     <>
@@ -45,16 +41,16 @@ const BurgerConstructor = ({ data }) => {
           ))}
         </div>
 
-        {buns[0] && (
+        {buns[1] && (
           <div className={classNames(styles.bun, "custom-scroll")}>
-            {<BurgerConstructorElement isLocked={true} type="bottom" data={buns[0]} />}
+            {<BurgerConstructorElement isLocked={true} type="bottom" data={buns[1]} />}
           </div>
         )}
 
         <div className={classNames(styles.order)}>
           {isError && <div className={styles.error}>{`Возникла ошибка при получении данных заказа: ${isError}`}</div>}
           <div className={classNames(styles.order__sum, "text text_type_digits-medium")}>
-            610&nbsp;
+            {total}&nbsp;
             <CurrencyIcon type="primary" />
           </div>
           <Button type="primary" size="large" htmlType="button" onClick={checkout} disabled={isLoading}>
@@ -69,22 +65,6 @@ const BurgerConstructor = ({ data }) => {
       )}
     </>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf((propValue, index) => {
-    const dataPropsTypes = {
-      dataCategoryName: PropTypes.string.isRequired,
-      dataCategoryList: PropTypes.arrayOf(PropTypes.shape(INGRIDIENT_PROP_TYPES)).isRequired,
-    };
-    const [categoryName, categoryList] = propValue[index];
-    const props = {
-      dataCategoryName: categoryName,
-      dataCategoryList: categoryList,
-    };
-
-    PropTypes.checkPropTypes(dataPropsTypes, props, "prop", "BurgerConstructor");
-  }).isRequired,
 };
 
 export default BurgerConstructor;

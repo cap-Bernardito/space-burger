@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const useFetch = () => {
-  const [data, setData] = useState();
+const useFetch = (initialData) => {
+  const [data, setData] = useState(initialData);
   const [fetchFns, setFetchFns] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -20,9 +20,9 @@ const useFetch = () => {
       try {
         const result = await getDataFn();
 
-        setData(result.data);
+        setData(result);
 
-        doneFn && doneFn(result.data);
+        doneFn && doneFn(result);
       } catch (error) {
         setIsError(error);
       }

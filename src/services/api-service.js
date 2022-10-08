@@ -5,7 +5,7 @@ class ApiService {
   _baseApiUrl = "https://norma.nomoreparties.space/api";
   _isFakeData = process.env.REACT_APP_DATA_SOURCE === "fake-data";
 
-  async getResource(endpoint) {
+  async getResource(endpoint, requestInit = {}) {
     if (this._isFakeData) {
       return { data: fakeData };
     }
@@ -15,7 +15,7 @@ class ApiService {
     }
 
     const request = `${this._baseApiUrl}${endpoint}`;
-    const res = await fetch(request);
+    const res = await fetch(request, requestInit);
 
     if (!res.ok) {
       throw new Error(`Could not fetch ${request}, received ${res.status}`);
