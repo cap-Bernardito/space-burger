@@ -13,18 +13,19 @@ const apiService = new ApiService();
 
 const BurgerConstructor = () => {
   const { modalIsOpen, closeModal, showModal } = useModal();
-  const [{ data: fetchedResult, isLoading, isError }, setFetchFns] = useFetch([]);
+  const [{ data: orderNumber, isLoading, isError }, setFetchFns] = useFetch([]);
   const { burgerConstructorState } = useContext(BurgerConstructorContext);
 
   const checkout = () => {
+    const extractedIds = [burgerConstructorState.buns[0], ...burgerConstructorState.ingridients].map(({ _id }) => _id);
+
     setFetchFns({
-      getDataFn: () => apiService.getOrderInfo.call(apiService),
+      getDataFn: () => apiService.createOrder.call(apiService, extractedIds),
       doneFn: showModal,
     });
   };
 
   const { buns, ingridients, total } = burgerConstructorState;
-  const { data: orderInfo } = fetchedResult;
 
   return (
     <>
@@ -58,9 +59,9 @@ const BurgerConstructor = () => {
           </Button>
         </div>
       </div>
-      {modalIsOpen && orderInfo && (
+      {modalIsOpen && orderNumber && (
         <Modal onClose={closeModal}>
-          <OrderDetails number={orderInfo} />
+          <OrderDetails number={orderNumber} />
         </Modal>
       )}
     </>

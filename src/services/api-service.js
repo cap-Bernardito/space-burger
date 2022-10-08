@@ -6,10 +6,6 @@ class ApiService {
   _isFakeData = process.env.REACT_APP_DATA_SOURCE === "fake-data";
 
   async getResource(endpoint, requestInit = {}) {
-    if (this._isFakeData) {
-      return { data: fakeData };
-    }
-
     if (!endpoint) {
       throw new Error('Endpoint in "ApiService.getResource" function is not valid');
     }
@@ -24,13 +20,48 @@ class ApiService {
   }
 
   async getBurgerIngridientsByType() {
+    if (this._isFakeData) {
+      return this._transformIngridientsList(fakeData);
+    }
+
     const { data } = await this.getResource("/ingredients/");
 
     return this._transformIngridientsList(data);
   }
 
-  async getOrderInfo() {
-    return new Promise((resolve) => setTimeout(() => resolve({ data: 342324 }), 1000));
+  async createOrder(ingridientIds) {
+    let data;
+
+    if (this._isFakeData) {
+      data = await new Promise((resolve) =>
+        setTimeout(
+          () =>
+            resolve({
+              name: "Краторный метеоритный бургер",
+              order: {
+                number: 6257,
+              },
+              success: true,
+            }),
+          1000
+        )
+      );
+    } else {
+      const requestBody = {
+        ingredients: ingridientIds,
+      };
+
+      data = this.getResource("/orders/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+    }
+
+    return this._transformOrderInfo(data);
   }
 
   _transformIngridientsList(data) {
@@ -53,6 +84,10 @@ class ApiService {
     }, initial);
 
     return Object.entries(result);
+  }
+
+  _transformOrderInfo(data) {
+    return data?.order?.number;
   }
 }
 

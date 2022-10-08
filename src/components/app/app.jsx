@@ -29,7 +29,7 @@ const App = () => {
   }, [setFetchFnsMemoized]);
 
   useEffect(() => {
-    if (!data || data.length === 0) {
+    if (data.length === 0) {
       return;
     }
 
@@ -56,15 +56,13 @@ const App = () => {
             "Загрузка..."
           ) : (
             <>
-              <div className={classNames(styles.app__ingridients)}>
-                {Boolean(data) && <BurgerIngridients data={data} />}
-              </div>
+              <div className={classNames(styles.app__ingridients)}>{<BurgerIngridients data={data} />}</div>
               <div className={classNames(styles.app__constructor)}>
-                {Boolean(data) && (
+                {
                   <BurgerConstructorContext.Provider value={{ burgerConstructorState, burgerConstructorDispatcher }}>
                     <BurgerConstructor />
                   </BurgerConstructorContext.Provider>
-                )}
+                }
               </div>
             </>
           )}
