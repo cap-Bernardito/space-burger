@@ -20,7 +20,7 @@ const BurgerConstructor = () => {
     const extractedIds = [burgerConstructorState.buns[0], ...burgerConstructorState.ingridients].map(({ _id }) => _id);
 
     setFetchFns({
-      getDataFn: () => apiService.createOrder.call(apiService, extractedIds),
+      getDataFn: () => apiService.createOrder(extractedIds),
       doneFn: showModal,
     });
   };
