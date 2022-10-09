@@ -51,7 +51,7 @@ class ApiService {
         ingredients: ingridientIds,
       };
 
-      data = this.getResource("/orders/", {
+      data = await this.getResource("/orders/", {
         method: "POST",
         headers: {
           Accept: "application/json",
