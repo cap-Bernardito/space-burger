@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useCallback } from "react";
 import classNames from "classnames";
-import ApiService from "../../services/api-service";
+import apiService from "../../services/api-service";
 import { BurgerConstructorContext } from "../../services/burgerConstructorContext";
 import { setBun, setIngridients } from "../../services/actions";
 import burgerConstructorReducer, {
@@ -12,8 +12,6 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngridients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.scss";
 
-const apiService = new ApiService();
-
 const App = () => {
   const [{ data, isLoading, isError }, setFetchFns] = useFetch([]);
   const [burgerConstructorState, burgerConstructorDispatcher] = useReducer(
@@ -24,7 +22,7 @@ const App = () => {
 
   useEffect(() => {
     setFetchFnsMemoized({
-      getDataFn: apiService.getBurgerIngridientsByType.bind(apiService),
+      getDataFn: apiService.getBurgerIngridientsByType,
     });
   }, [setFetchFnsMemoized]);
 

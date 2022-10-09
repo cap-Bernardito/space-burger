@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import classNames from "classnames";
-import ApiService from "../../services/api-service";
+import apiService from "../../services/api-service";
 import { BurgerConstructorContext } from "../../services/burgerConstructorContext";
 import { CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal, useFetch } from "../../hooks";
@@ -8,8 +8,6 @@ import BurgerConstructorElement from "../burger-constructor-element/burger-const
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.scss";
-
-const apiService = new ApiService();
 
 const BurgerConstructor = () => {
   const { modalIsOpen, closeModal, showModal } = useModal();
@@ -20,7 +18,7 @@ const BurgerConstructor = () => {
     const extractedIds = [burgerConstructorState.buns[0], ...burgerConstructorState.ingridients].map(({ _id }) => _id);
 
     setFetchFns({
-      getDataFn: () => apiService.createOrder(extractedIds),
+      getDataFn: async () => apiService.createOrder(extractedIds),
       doneFn: showModal,
     });
   };

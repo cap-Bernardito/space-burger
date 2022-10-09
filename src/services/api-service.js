@@ -5,7 +5,7 @@ class ApiService {
   _baseApiUrl = "https://norma.nomoreparties.space/api";
   _isFakeData = process.env.REACT_APP_DATA_SOURCE === "fake-data";
 
-  async getResource(endpoint, requestInit = {}) {
+  getResource = async (endpoint, requestInit = {}) => {
     if (!endpoint) {
       throw new Error('Endpoint in "ApiService.getResource" function is not valid');
     }
@@ -17,9 +17,9 @@ class ApiService {
       throw new Error(`Could not fetch ${request}, received ${res.status}`);
     }
     return await res.json();
-  }
+  };
 
-  async getBurgerIngridientsByType() {
+  getBurgerIngridientsByType = async () => {
     if (this._isFakeData) {
       return this._transformIngridientsList(fakeData);
     }
@@ -27,9 +27,9 @@ class ApiService {
     const { data } = await this.getResource("/ingredients/");
 
     return this._transformIngridientsList(data);
-  }
+  };
 
-  async createOrder(ingridientIds) {
+  createOrder = async (ingridientIds) => {
     let data;
 
     if (this._isFakeData) {
@@ -62,7 +62,7 @@ class ApiService {
     }
 
     return this._transformOrderInfo(data);
-  }
+  };
 
   _transformIngridientsList(data) {
     const initial = {};
@@ -91,4 +91,6 @@ class ApiService {
   }
 }
 
-export default ApiService;
+const apiService = new ApiService();
+
+export default apiService;
