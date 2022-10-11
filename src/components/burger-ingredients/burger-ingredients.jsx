@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -13,15 +13,44 @@ const BurgerIngridients = ({ data }) => {
     return activeType;
   });
 
-  useEffect(() => {
-    setCurrentTab();
-  }, []);
+  const tabsRef = useRef();
 
-  function setCurrentTab(tabName) {
-    if (typeof tabName !== "undefined") {
+  const categoryDOMElements = useMemo(() => ({}), []);
+
+  useEffect(() => {
+    Object.keys(TYPES_OF_INGRIDIENTS).forEach((type) => {
+      categoryDOMElements[type] = document.getElementById(type);
+    });
+  }, [categoryDOMElements]);
+
+  const setCurrentTab = useCallback(
+    (tabName) => {
       setActiveTab(tabName);
-    }
-  }
+
+      categoryDOMElements[tabName] && categoryDOMElements[tabName].scrollIntoView({ behavior: "smooth" });
+    },
+    [categoryDOMElements]
+  );
+
+  const handleScroll = () => {
+    const cssFlexGap = 40;
+    const tabsBottomPosition = tabsRef.current.getBoundingClientRect().bottom;
+
+    let delta = Number.MAX_VALUE;
+    let result = "";
+
+    Object.keys(TYPES_OF_INGRIDIENTS).forEach((type) => {
+      const categoryBottomPosition = categoryDOMElements[type].getBoundingClientRect().bottom;
+      const newDelta = categoryBottomPosition - tabsBottomPosition - cssFlexGap;
+
+      if (0 < newDelta && newDelta < delta) {
+        result = type;
+        delta = categoryBottomPosition;
+      }
+    });
+
+    setActiveTab(result);
+  };
 
   const ingridientTypes = data.map(([category]) => category);
 
@@ -34,15 +63,21 @@ const BurgerIngridients = ({ data }) => {
   const burgerIngridientsCategory = useMemo(
     () =>
       data.map(([categoryName, categoryList]) => (
-        <BurgerIngridientsCategory key={categoryName} type={categoryName} list={categoryList} />
+        <div key={categoryName} id={categoryName}>
+          <BurgerIngridientsCategory type={categoryName} list={categoryList} />
+        </div>
       )),
     [data]
   );
 
   return (
     <div className={classNames(styles.container)}>
-      <div className={classNames(styles.tabs, "mb-10")}>{tabs}</div>
-      <div className={classNames(styles.list, "custom-scroll")}>{burgerIngridientsCategory}</div>
+      <div className={classNames(styles.tabs, "mb-10")} ref={tabsRef}>
+        {tabs}
+      </div>
+      <div className={classNames(styles.list, "custom-scroll")} onScroll={handleScroll}>
+        {burgerIngridientsCategory}
+      </div>
     </div>
   );
 };

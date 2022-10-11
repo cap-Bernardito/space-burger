@@ -6,7 +6,7 @@ import { TYPES_OF_INGRIDIENTS } from "../../utils/constants";
 import styles from "./burger-ingridients-category.module.scss";
 
 const BurgerIngridientsCategory = ({ type, list }) => (
-  <div>
+  <>
     <h2 className={classNames("text text_type_main-medium mb-6")}>{TYPES_OF_INGRIDIENTS[type]}</h2>
     <div className={classNames(styles.list, "pl-1 pr-1")}>
       {list.map((ingridient) => {
@@ -17,7 +17,7 @@ const BurgerIngridientsCategory = ({ type, list }) => (
         );
       })}
     </div>
-  </div>
+  </>
 );
 
 BurgerIngridientsCategory.propTypes = {
