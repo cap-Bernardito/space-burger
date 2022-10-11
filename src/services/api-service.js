@@ -5,33 +5,64 @@ class ApiService {
   _baseApiUrl = "https://norma.nomoreparties.space/api";
   _isFakeData = process.env.REACT_APP_DATA_SOURCE === "fake-data";
 
-  async getResource(endpoint) {
-    if (this._isFakeData) {
-      return { data: fakeData };
-    }
-
+  getResource = async (endpoint, requestInit = {}) => {
     if (!endpoint) {
       throw new Error('Endpoint in "ApiService.getResource" function is not valid');
     }
 
     const request = `${this._baseApiUrl}${endpoint}`;
-    const res = await fetch(request);
+    const res = await fetch(request, requestInit);
 
     if (!res.ok) {
       throw new Error(`Could not fetch ${request}, received ${res.status}`);
     }
     return await res.json();
-  }
+  };
 
-  async getBurgerIngridientsByType() {
+  getBurgerIngridientsByType = async () => {
+    if (this._isFakeData) {
+      return this._transformIngridientsList(fakeData);
+    }
+
     const { data } = await this.getResource("/ingredients/");
 
     return this._transformIngridientsList(data);
-  }
+  };
 
-  async getOrderInfo() {
-    return new Promise((resolve) => setTimeout(() => resolve(342324), 1000));
-  }
+  createOrder = async (ingridientIds) => {
+    let data;
+
+    if (this._isFakeData) {
+      data = await new Promise((resolve) =>
+        setTimeout(
+          () =>
+            resolve({
+              name: "Краторный метеоритный бургер",
+              order: {
+                number: 6257,
+              },
+              success: true,
+            }),
+          1000
+        )
+      );
+    } else {
+      const requestBody = {
+        ingredients: ingridientIds,
+      };
+
+      data = await this.getResource("/orders/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+    }
+
+    return this._transformOrderInfo(data);
+  };
 
   _transformIngridientsList(data) {
     const initial = {};
@@ -54,6 +85,12 @@ class ApiService {
 
     return Object.entries(result);
   }
+
+  _transformOrderInfo(data) {
+    return data?.order?.number;
+  }
 }
 
-export default ApiService;
+const apiService = new ApiService();
+
+export default apiService;
