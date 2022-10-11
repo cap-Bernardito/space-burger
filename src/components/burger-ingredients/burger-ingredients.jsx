@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -25,21 +25,24 @@ const BurgerIngridients = ({ data }) => {
 
   const ingridientTypes = data.map(([category]) => category);
 
+  const tabs = ingridientTypes.map((tabName) => (
+    <Tab key={tabName} value={tabName} active={activeTabName === tabName} onClick={setCurrentTab}>
+      {TYPES_OF_INGRIDIENTS[tabName]}
+    </Tab>
+  ));
+
+  const burgerIngridientsCategory = useMemo(
+    () =>
+      data.map(([categoryName, categoryList]) => (
+        <BurgerIngridientsCategory key={categoryName} type={categoryName} list={categoryList} />
+      )),
+    [data]
+  );
+
   return (
     <div className={classNames(styles.container)}>
-      <div className={classNames(styles.tabs, "mb-10")}>
-        {ingridientTypes.map((tabName) => (
-          <Tab key={tabName} value={tabName} active={activeTabName === tabName} onClick={setCurrentTab}>
-            {TYPES_OF_INGRIDIENTS[tabName]}
-          </Tab>
-        ))}
-      </div>
-
-      <div className={classNames(styles.list, "custom-scroll")}>
-        {data.map(([categoryName, categoryList]) => (
-          <BurgerIngridientsCategory key={categoryName} type={categoryName} list={categoryList} />
-        ))}
-      </div>
+      <div className={classNames(styles.tabs, "mb-10")}>{tabs}</div>
+      <div className={classNames(styles.list, "custom-scroll")}>{burgerIngridientsCategory}</div>
     </div>
   );
 };
