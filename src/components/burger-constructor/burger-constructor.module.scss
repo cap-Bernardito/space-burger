@@ -40,11 +40,42 @@
   padding-left: $spacer * 4;
   overflow-y: auto;
   overflow-x: hidden;
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $input;
+    border: 5px dashed $input;
+  }
 }
 
 .bun {
+  $bun: &;
+
   padding-right: $spacer * 2;
   padding-left: $spacer * 4;
+
+  &:not(#{$bun}__empty) + .list {
+    overflow-y: scroll;
+  }
+
+  &__empty {
+    height: 80px;
+    border: 5px dashed $input;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $input;
+
+    &#{$bun}__top {
+      border-radius: var(--top-constructor-item-border-radius);
+    }
+
+    &#{$bun}__bottom {
+      border-radius: var(--bottom-constructor-item-border-radius);
+    }
+  }
 
   &:global(.custom-scroll) {
     @include media-bp-up(desktop) {

@@ -25,6 +25,7 @@ $mainTopSpacer: $spacer * 10;
     @include media-bp-up(desktop) {
       display: flex;
       flex-direction: column;
+      height: calc(100vh - #{$headerHeight} - #{$mainTopSpacer} - #{$mainTitleHeight} - 10px);
       max-height: calc(100vh - #{$headerHeight} - #{$mainTopSpacer} - #{$mainTitleHeight} - 10px);
     }
   }

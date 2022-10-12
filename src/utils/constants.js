@@ -6,6 +6,10 @@ export const TYPES_OF_INGRIDIENTS = {
   main: "Начинки",
 };
 
+export const ADD_BUN_EMPTY_TEXT = "Добавьте булку";
+
+export const ADD_INGRIDIENTS_EMPTY_TEXT = "Добавьте ингридиенты";
+
 export const INGRIDIENT_PROP_TYPES = {
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
