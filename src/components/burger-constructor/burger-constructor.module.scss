@@ -38,15 +38,42 @@
   gap: 10px;
   padding-right: $spacer * 2;
   padding-left: $spacer * 4;
+  min-height: 80px;
   overflow-y: auto;
   overflow-x: hidden;
+}
 
-  &__empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: $input;
-    border: 5px dashed $input;
+.drop {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    border: 5px dashed transparent;
+    background: transparent;
+    transition: 0.25s all;
+  }
+
+  &.onHover {
+    &::after {
+      border-color: rgba($success, 0.3) !important;
+      background-color: rgba($success, 0.05) !important;
+    }
+  }
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $input;
+
+  &::after {
+    border-color: $input;
   }
 }
 
@@ -56,25 +83,22 @@
   padding-right: $spacer * 2;
   padding-left: $spacer * 4;
 
-  &:not(#{$bun}__empty) + .list {
+  &:not(#{$bun}.empty) + .list {
     overflow-y: scroll;
   }
 
-  &__empty {
-    height: 80px;
-    border: 5px dashed $input;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: $input;
-
-    &#{$bun}__top {
+  &.drop {
+    &#{$bun}.top::after {
       border-radius: var(--top-constructor-item-border-radius);
     }
 
-    &#{$bun}__bottom {
+    &#{$bun}.bottom::after {
       border-radius: var(--bottom-constructor-item-border-radius);
     }
+  }
+
+  &.empty {
+    height: 80px;
   }
 
   &:global(.custom-scroll) {

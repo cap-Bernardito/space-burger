@@ -1,3 +1,3 @@
-export const setBun = (payload) => ({ type: "SET_BUN", payload });
+export const addBun = (payload) => ({ type: "ADD_BUN", payload });
 
-export const setIngridients = (payload) => ({ type: "SET_INGRIDIENTS", payload });
+export const addIngridient = (payload) => ({ type: "ADD_INGRIDIENT", payload });

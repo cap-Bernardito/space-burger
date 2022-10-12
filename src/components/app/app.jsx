@@ -1,8 +1,10 @@
-import { useEffect, useReducer, useCallback } from "react";
+import { useEffect, useReducer, useCallback, useMemo } from "react";
 import classNames from "classnames";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import apiService from "../../services/api-service";
 import { BurgerConstructorContext } from "../../services/burgerConstructorContext";
-import { setBun, setIngridients } from "../../services/actions";
+import { addBun, addIngridient } from "../../services/actions";
 import burgerConstructorReducer, {
   initialState as burgerConstructorReducerInitialState,
 } from "../../services/burgerConstructorReducer";
@@ -14,7 +16,7 @@ import styles from "./app.module.scss";
 
 const App = () => {
   const [{ data, isLoading, isError }, setFetchFns] = useFetch([]);
-  const [burgerConstructorState, burgerConstructorDispatcher] = useReducer(
+  const [burgerConstructorState, burgerConstructorDispatch] = useReducer(
     burgerConstructorReducer,
     burgerConstructorReducerInitialState
   );
@@ -26,22 +28,29 @@ const App = () => {
     });
   }, [setFetchFnsMemoized]);
 
-  useEffect(() => {
-    if (data.length === 0) {
-      return;
-    }
+  const buns = useMemo(
+    () =>
+      data
+        .filter(([categoryName]) => categoryName === "bun")
+        .reduce((acc, [, categoryList]) => acc.concat(categoryList), []),
+    [data]
+  );
 
-    const [bun] = data
-      .filter(([categoryName]) => categoryName === "bun")
-      .reduce((acc, [, categoryList]) => acc.concat(categoryList), []);
+  const ingridients = useMemo(
+    () =>
+      data
+        .filter(([categoryName]) => categoryName !== "bun")
+        .reduce((acc, [, categoryList]) => acc.concat(categoryList), []),
+    [data]
+  );
 
-    const ingridients = data
-      .filter(([categoryName]) => categoryName !== "bun")
-      .reduce((acc, [, categoryList]) => acc.concat(categoryList), []);
+  const handleDrop = (item) => {
+    const [draggedIngridient] = ingridients.filter((element) => element._id === item._id);
+    const [draggedBun] = buns.filter((element) => element._id === item._id);
 
-    burgerConstructorDispatcher(setBun(bun));
-    burgerConstructorDispatcher(setIngridients(ingridients));
-  }, [data]);
+    draggedIngridient && burgerConstructorDispatch(addIngridient(draggedIngridient));
+    draggedBun && burgerConstructorDispatch(addBun(draggedBun));
+  };
 
   return (
     <div className={classNames("text", "text_type_main-default")}>
@@ -54,14 +63,18 @@ const App = () => {
             "Загрузка..."
           ) : (
             <>
-              <div className={classNames(styles.app__ingridients)}>{<BurgerIngridients data={data} />}</div>
-              <div className={classNames(styles.app__constructor)}>
-                {
-                  <BurgerConstructorContext.Provider value={{ burgerConstructorState, burgerConstructorDispatcher }}>
-                    <BurgerConstructor />
-                  </BurgerConstructorContext.Provider>
-                }
-              </div>
+              <DndProvider backend={HTML5Backend}>
+                <div className={classNames(styles.app__ingridients)}>{<BurgerIngridients data={data} />}</div>
+                <div className={classNames(styles.app__constructor)}>
+                  {
+                    <BurgerConstructorContext.Provider
+                      value={{ burgerConstructorState, burgerConstructorDispatcher: burgerConstructorDispatch }}
+                    >
+                      <BurgerConstructor onDropHandler={handleDrop} />
+                    </BurgerConstructorContext.Provider>
+                  }
+                </div>
+              </DndProvider>
             </>
           )}
         </section>

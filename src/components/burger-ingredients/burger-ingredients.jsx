@@ -25,7 +25,8 @@ const BurgerIngridients = ({ data }) => {
 
   const setCurrentTab = useCallback(
     (tabName) => {
-      setActiveTab(tabName);
+      // TODO: Удалить setActiveTab(tabName), т.к. после рефакторинга больше не нужна
+      // setActiveTab(tabName);
 
       categoryDOMElements[tabName] && categoryDOMElements[tabName].scrollIntoView({ behavior: "smooth" });
     },

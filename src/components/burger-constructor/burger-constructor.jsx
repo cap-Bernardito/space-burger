@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useDrop } from "react-dnd";
 import classNames from "classnames";
 import apiService from "../../services/api-service";
 import { BurgerConstructorContext } from "../../services/burgerConstructorContext";
@@ -8,12 +9,26 @@ import { useModal, useFetch } from "../../hooks";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import css from "./burger-constructor.module.scss";
+import styles from "./burger-constructor.module.scss";
 
-const BurgerConstructor = () => {
+const BurgerConstructor = ({ onDropHandler }) => {
   const { modalIsOpen, closeModal, showModal } = useModal();
   const [{ data: orderNumber, isLoading, isError }, setFetchFns] = useFetch([]);
   const { burgerConstructorState } = useContext(BurgerConstructorContext);
+
+  const initialDropState = {
+    accept: "bun",
+    drop(itemId) {
+      onDropHandler(itemId);
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  };
+  const [{ isHover: isTopBunHover }, dropTopBunTarget] = useDrop({ ...initialDropState });
+  const [{ isHover: isBottomBunHover }, dropBottomBunTarget] = useDrop({ ...initialDropState });
+  const [{ isHover: isIngridientHover }, dropIngridientTarget] = useDrop({ ...initialDropState, accept: "ingridient" });
+  const isBunHover = isBottomBunHover || isTopBunHover;
 
   const checkout = () => {
     const extractedIds = [burgerConstructorState.buns[0], ...burgerConstructorState.ingridients].map(({ _id }) => _id);
@@ -40,33 +55,59 @@ const BurgerConstructor = () => {
 
   const ingridientsList =
     ingridients.length > 0 ? (
-      ingridients.map((ingridient) => <BurgerConstructorElement key={ingridient._id} data={ingridient} />)
+      ingridients.map((ingridient) => <BurgerConstructorElement key={ingridient.key} data={ingridient} />)
     ) : (
       <span className="text text_type_main-medium">{ADD_INGRIDIENTS_EMPTY_TEXT}</span>
     );
 
   const errorMessage = isError && (
-    <div className={css.error}>{`Возникла ошибка при получении данных заказа: ${isError}`}</div>
+    <div className={styles.error}>{`Возникла ошибка при получении данных заказа: ${isError}`}</div>
   );
 
   return (
     <>
-      <div className={classNames(css.container)}>
-        <div className={classNames(css.bun, css.bun__top, { [css.bun__empty]: buns.length === 0 }, "custom-scroll")}>
+      <div className={classNames(styles.container)}>
+        <div
+          className={classNames(
+            styles.bun,
+            styles.top,
+            styles.drop,
+            { [styles.empty]: buns.length === 0, [styles.onHover]: isBunHover },
+            "custom-scroll"
+          )}
+          ref={dropTopBunTarget}
+        >
           {topBun}
         </div>
 
-        <div className={classNames(css.list, { [css.list__empty]: ingridients.length === 0 }, "custom-scroll")}>
+        <div
+          className={classNames(
+            styles.list,
+            styles.drop,
+            { [styles.empty]: ingridients.length === 0, [styles.onHover]: isIngridientHover },
+            "custom-scroll"
+          )}
+          ref={dropIngridientTarget}
+        >
           {ingridientsList}
         </div>
 
-        <div className={classNames(css.bun, css.bun__bottom, { [css.bun__empty]: buns.length === 0 }, "custom-scroll")}>
+        <div
+          className={classNames(
+            styles.bun,
+            styles.bottom,
+            styles.drop,
+            { [styles.empty]: buns.length === 0, [styles.onHover]: isBunHover },
+            "custom-scroll"
+          )}
+          ref={dropBottomBunTarget}
+        >
           {bottomBun}
         </div>
 
-        <div className={classNames(css.order)}>
+        <div className={classNames(styles.order)}>
           {errorMessage}
-          <div className={classNames(css.order__sum, "text text_type_digits-medium")}>
+          <div className={classNames(styles.order__sum, "text text_type_digits-medium")}>
             {total}&nbsp;
             <CurrencyIcon type="primary" />
           </div>
