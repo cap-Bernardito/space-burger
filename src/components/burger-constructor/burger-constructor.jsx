@@ -1,8 +1,7 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import classNames from "classnames";
 import apiService from "../../services/api-service";
-import { BurgerConstructorContext } from "../../services/burgerConstructorContext";
 import { ADD_BUN_EMPTY_TEXT, ADD_INGRIDIENTS_EMPTY_TEXT } from "../../utils/constants";
 import { CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal, useFetch } from "../../hooks";
@@ -14,7 +13,8 @@ import styles from "./burger-constructor.module.scss";
 const BurgerConstructor = ({ onDropHandler }) => {
   const { modalIsOpen, closeModal, showModal } = useModal();
   const [{ data: orderNumber, isLoading, isError }, setFetchFns] = useFetch([]);
-  const { burgerConstructorState } = useContext(BurgerConstructorContext);
+  const { buns, ingredients, total } = useSelector((state) => state.burgerConstructor);
+  const [topBun, bottomBun] = buns;
 
   const initialDropState = {
     accept: "bun",
@@ -27,11 +27,11 @@ const BurgerConstructor = ({ onDropHandler }) => {
   };
   const [{ isHover: isTopBunHover }, dropTopBunTarget] = useDrop({ ...initialDropState });
   const [{ isHover: isBottomBunHover }, dropBottomBunTarget] = useDrop({ ...initialDropState });
-  const [{ isHover: isIngridientHover }, dropIngridientTarget] = useDrop({ ...initialDropState, accept: "ingridient" });
+  const [{ isHover: isIngredientHover }, dropIngredientTarget] = useDrop({ ...initialDropState, accept: "ingridient" });
   const isBunHover = isBottomBunHover || isTopBunHover;
 
   const checkout = () => {
-    const extractedIds = [burgerConstructorState.buns[0], ...burgerConstructorState.ingridients].map(({ _id }) => _id);
+    const extractedIds = [topBun, ...ingredients, bottomBun].map(({ _id }) => _id);
 
     setFetchFns({
       getDataFn: async () => apiService.createOrder(extractedIds),
@@ -39,23 +39,21 @@ const BurgerConstructor = ({ onDropHandler }) => {
     });
   };
 
-  const { buns, ingridients, total } = burgerConstructorState;
-
-  const topBun = buns[0] ? (
-    <BurgerConstructorElement isLocked={true} type="top" data={buns[0]} />
+  const topBunElement = topBun ? (
+    <BurgerConstructorElement isLocked={true} type="top" data={topBun} />
   ) : (
     <span className="text text_type_main-medium">{ADD_BUN_EMPTY_TEXT}</span>
   );
 
-  const bottomBun = buns[1] ? (
-    <BurgerConstructorElement isLocked={true} type="bottom" data={buns[1]} />
+  const bottomBunElement = bottomBun ? (
+    <BurgerConstructorElement isLocked={true} type="bottom" data={bottomBun} />
   ) : (
     <span className="text text_type_main-medium">{ADD_BUN_EMPTY_TEXT}</span>
   );
 
-  const ingridientsList =
-    ingridients.length > 0 ? (
-      ingridients.map((ingridient) => <BurgerConstructorElement key={ingridient.key} data={ingridient} />)
+  const ingredientsListElement =
+    ingredients.length > 0 ? (
+      ingredients.map((ingridient) => <BurgerConstructorElement key={ingridient.key} data={ingridient} />)
     ) : (
       <span className="text text_type_main-medium">{ADD_INGRIDIENTS_EMPTY_TEXT}</span>
     );
@@ -77,19 +75,19 @@ const BurgerConstructor = ({ onDropHandler }) => {
           )}
           ref={dropTopBunTarget}
         >
-          {topBun}
+          {topBunElement}
         </div>
 
         <div
           className={classNames(
             styles.list,
             styles.drop,
-            { [styles.empty]: ingridients.length === 0, [styles.onHover]: isIngridientHover },
+            { [styles.empty]: ingredients.length === 0, [styles.onHover]: isIngredientHover },
             "custom-scroll"
           )}
-          ref={dropIngridientTarget}
+          ref={dropIngredientTarget}
         >
-          {ingridientsList}
+          {ingredientsListElement}
         </div>
 
         <div
@@ -102,7 +100,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
           )}
           ref={dropBottomBunTarget}
         >
-          {bottomBun}
+          {bottomBunElement}
         </div>
 
         <div className={classNames(styles.order)}>
