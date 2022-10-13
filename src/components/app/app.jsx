@@ -28,21 +28,8 @@ const App = () => {
     });
   }, [setFetchFnsMemoized]);
 
-  const buns = useMemo(
-    () =>
-      data
-        .filter(([categoryName]) => categoryName === "bun")
-        .reduce((acc, [, categoryList]) => acc.concat(categoryList), []),
-    [data]
-  );
-
-  const ingridients = useMemo(
-    () =>
-      data
-        .filter(([categoryName]) => categoryName !== "bun")
-        .reduce((acc, [, categoryList]) => acc.concat(categoryList), []),
-    [data]
-  );
+  const buns = useMemo(() => data.filter((item) => item.type === "bun"), [data]);
+  const ingridients = useMemo(() => data.filter((item) => item.type !== "bun"), [data]);
 
   const handleDrop = (item) => {
     const [draggedIngridient] = ingridients.filter((element) => element._id === item._id);

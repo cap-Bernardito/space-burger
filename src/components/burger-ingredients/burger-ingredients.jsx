@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngridientsCategory from "../burger-ingridients-category/burger-ingridients-category";
 import { TYPES_OF_INGRIDIENTS, INGRIDIENT_PROP_TYPES } from "../../utils/constants";
+import { transformIngridientsList } from "../../utils/utils";
 import styles from "./burger-ingredients.module.scss";
 
 const BurgerIngridients = ({ data }) => {
@@ -14,6 +15,8 @@ const BurgerIngridients = ({ data }) => {
   });
 
   const tabsRef = useRef();
+
+  const transformedData = useMemo(() => transformIngridientsList(data), [data]);
 
   const categoryDOMElements = useMemo(() => ({}), []);
 
@@ -53,7 +56,7 @@ const BurgerIngridients = ({ data }) => {
     setActiveTab(result);
   };
 
-  const ingridientTypes = data.map(([category]) => category);
+  const ingridientTypes = transformedData.map(([category]) => category);
 
   const tabs = ingridientTypes.map((tabName) => (
     <Tab key={tabName} value={tabName} active={activeTabName === tabName} onClick={setCurrentTab}>
@@ -63,12 +66,12 @@ const BurgerIngridients = ({ data }) => {
 
   const burgerIngridientsCategory = useMemo(
     () =>
-      data.map(([categoryName, categoryList]) => (
+      transformedData.map(([categoryName, categoryList]) => (
         <div key={categoryName} id={categoryName}>
           <BurgerIngridientsCategory type={categoryName} list={categoryList} />
         </div>
       )),
-    [data]
+    [transformedData]
   );
 
   return (
@@ -84,19 +87,7 @@ const BurgerIngridients = ({ data }) => {
 };
 
 BurgerIngridients.propTypes = {
-  data: PropTypes.arrayOf((propValue, index) => {
-    const dataPropsTypes = {
-      dataCategoryName: PropTypes.string.isRequired,
-      dataCategoryList: PropTypes.arrayOf(PropTypes.shape(INGRIDIENT_PROP_TYPES)).isRequired,
-    };
-    const [categoryName, categoryList] = propValue[index];
-    const props = {
-      dataCategoryName: categoryName,
-      dataCategoryList: categoryList,
-    };
-
-    PropTypes.checkPropTypes(dataPropsTypes, props, "prop", "BurgerIngridients");
-  }).isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape(INGRIDIENT_PROP_TYPES)).isRequired,
 };
 
 export default BurgerIngridients;

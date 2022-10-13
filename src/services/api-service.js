@@ -1,5 +1,4 @@
 import { data as fakeData } from "../utils/data";
-import { TYPES_OF_INGRIDIENTS } from "../utils/constants";
 
 class ApiService {
   _baseApiUrl = "https://norma.nomoreparties.space/api";
@@ -21,12 +20,12 @@ class ApiService {
 
   getBurgerIngridientsByType = async () => {
     if (this._isFakeData) {
-      return this._transformIngridientsList(fakeData);
+      return fakeData;
     }
 
     const { data } = await this.getResource("/ingredients/");
 
-    return this._transformIngridientsList(data);
+    return data;
   };
 
   createOrder = async (ingridientIds) => {
@@ -63,28 +62,6 @@ class ApiService {
 
     return this._transformOrderInfo(data);
   };
-
-  _transformIngridientsList(data) {
-    const initial = {};
-
-    for (const type of Object.keys(TYPES_OF_INGRIDIENTS)) {
-      initial[type] = [];
-    }
-
-    const result = data.reduce((acc, item) => {
-      const { type } = item;
-
-      if (typeof acc[type] === "undefined") {
-        acc[type] = [];
-      }
-
-      acc[type].push(item);
-
-      return acc;
-    }, initial);
-
-    return Object.entries(result);
-  }
 
   _transformOrderInfo(data) {
     return data?.order?.number;
