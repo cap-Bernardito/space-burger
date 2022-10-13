@@ -18,9 +18,13 @@ class ApiService {
     return await res.json();
   };
 
-  getBurgerIngridientsByType = async () => {
+  getBurgerIngredients = async () => {
     if (this._isFakeData) {
-      return fakeData;
+      return new Promise((resolve) =>
+        setTimeout(() => {
+          resolve(fakeData);
+        }, 1000)
+      );
     }
 
     const { data } = await this.getResource("/ingredients/");

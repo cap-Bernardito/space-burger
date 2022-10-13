@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngridientsCategory from "../burger-ingridients-category/burger-ingridients-category";
 import { TYPES_OF_INGRIDIENTS, INGRIDIENT_PROP_TYPES } from "../../utils/constants";
-import { transformIngridientsList } from "../../utils/utils";
+import { splitIngredientsByTypes } from "../../utils/utils";
 import styles from "./burger-ingredients.module.scss";
 
 const BurgerIngridients = ({ data }) => {
@@ -14,9 +14,7 @@ const BurgerIngridients = ({ data }) => {
     return activeType;
   });
 
-  const tabsRef = useRef();
-
-  const transformedData = useMemo(() => transformIngridientsList(data), [data]);
+  const dataByCategory = useMemo(() => splitIngredientsByTypes(data), [data]);
 
   const categoryDOMElements = useMemo(() => ({}), []);
 
@@ -32,6 +30,8 @@ const BurgerIngridients = ({ data }) => {
     },
     [categoryDOMElements]
   );
+
+  const tabsRef = useRef();
 
   const handleScroll = () => {
     const cssFlexGap = 40;
@@ -53,7 +53,7 @@ const BurgerIngridients = ({ data }) => {
     setActiveTab(result);
   };
 
-  const ingridientTypes = transformedData.map(([category]) => category);
+  const ingridientTypes = dataByCategory.map(([category]) => category);
 
   const tabs = ingridientTypes.map((tabName) => (
     <Tab key={tabName} value={tabName} active={activeTabName === tabName} onClick={setCurrentTab}>
@@ -63,12 +63,12 @@ const BurgerIngridients = ({ data }) => {
 
   const burgerIngridientsCategory = useMemo(
     () =>
-      transformedData.map(([categoryName, categoryList]) => (
+      dataByCategory.map(([categoryName, categoryList]) => (
         <div key={categoryName} id={categoryName}>
           <BurgerIngridientsCategory type={categoryName} list={categoryList} />
         </div>
       )),
-    [transformedData]
+    [dataByCategory]
   );
 
   return (

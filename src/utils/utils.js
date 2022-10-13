@@ -1,6 +1,6 @@
 import { TYPES_OF_INGRIDIENTS } from "./constants";
 
-export const transformIngridientsList = (data) => {
+export const splitIngredientsByTypes = (data) => {
   const initial = {};
 
   for (const type of Object.keys(TYPES_OF_INGRIDIENTS)) {
