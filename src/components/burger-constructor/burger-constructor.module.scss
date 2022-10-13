@@ -62,6 +62,7 @@
     &::after {
       border-color: rgba($success, 0.3) !important;
       background-color: rgba($success, 0.05) !important;
+      z-index: 2;
     }
   }
 }

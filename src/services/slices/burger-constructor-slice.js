@@ -22,6 +22,10 @@ const burgerConstructorSlice = createSlice({
       state.ingredients.push({ ...action.payload, key: uuidv4() });
       state.total = calculate(state);
     },
+    removeIngredient(state, action) {
+      state.ingredients = state.ingredients.filter((item) => item.key !== action.payload.key);
+      state.total = calculate(state);
+    },
   },
 });
 
@@ -29,5 +33,5 @@ function calculate(state) {
   return [...state.buns, ...state.ingredients].reduce((acc, { price }) => (acc += price), 0);
 }
 
-export const { addBun, addIngredient } = burgerConstructorSlice.actions;
+export const { addBun, addIngredient, removeIngredient } = burgerConstructorSlice.actions;
 export default burgerConstructorSlice.reducer;

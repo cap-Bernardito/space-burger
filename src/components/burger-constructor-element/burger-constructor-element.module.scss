@@ -3,18 +3,42 @@
 .item {
   $root: &;
 
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1;
 
   :global(.constructor-element) {
     background-color: $modalBg;
+  }
+
+  :global(.constructor-element__action svg) {
+    transform: scale(1);
+    transition: transform 0.25s;
+
+    path {
+      transition: fill 0.25s;
+    }
+
+    &:hover {
+      transform: scale(1.2);
+
+      path {
+        fill: $error !important;
+      }
+    }
   }
 
   &.locked {
     #{$root}__lock {
       opacity: 0;
       pointer-events: none;
+    }
+
+    :global(.constructor-element__action) {
+      pointer-events: none;
+      cursor: default;
     }
   }
 }
