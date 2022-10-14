@@ -11,7 +11,7 @@ import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.scss";
 
 const BurgerConstructor = ({ onDropHandler }) => {
-  const { modalIsOpen, closeModal, showModal } = useModal();
+  const [{ modalIsOpen, closeModal, openModal }] = useModal();
   const [{ data: orderNumber, isLoading, isError }, setFetchFns] = useFetch([]);
   const { buns, ingredients, total } = useSelector((state) => state.burgerConstructor);
   const [topBun, bottomBun] = buns;
@@ -35,7 +35,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
 
     setFetchFns({
       getDataFn: async () => apiService.createOrder(extractedIds),
-      doneFn: showModal,
+      doneFn: openModal,
     });
   };
 

@@ -6,15 +6,16 @@ import PropTypes from "prop-types";
 import { useModal } from "../../hooks";
 import Modal from "../modal/modal";
 import IngridientDetails from "../ingridient-details/ingridient-details";
-import { addIngredient } from "../../services/slices/burger-ingredient-detail-slice";
+import { addIngredient, removeIngredient } from "../../services/slices/burger-ingredient-detail-slice";
 import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
 
 import styles from "./burger-ingridient.module.scss";
+import { useEffect } from "react";
 
 const BurgerIngridient = ({ data }) => {
   const dispatch = useDispatch();
   const { ingredient } = useSelector((state) => state.ingredientDetail);
-  const { modalIsOpen, closeModal, showModal } = useModal();
+  const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
   const { name, price, image, image_large, _id, type, count } = data;
 
   const [{ isDrag }, dragRef] = useDrag({
@@ -25,9 +26,15 @@ const BurgerIngridient = ({ data }) => {
     }),
   });
 
+  useEffect(() => {
+    setActionsFns({
+      closeCallback: () => dispatch(removeIngredient()),
+    });
+  }, [dispatch, setActionsFns]);
+
   const handleClick = () => {
     dispatch(addIngredient(data));
-    showModal();
+    openModal();
   };
 
   return (
