@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import classNames from "classnames";
 import apiService from "../../services/api-service";
@@ -8,12 +8,16 @@ import { useModal, useFetch } from "../../hooks";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import { addDetails, removeDetails } from "../../services/slices/order-details-slice";
 import styles from "./burger-constructor.module.scss";
+import { useEffect } from "react";
 
 const BurgerConstructor = ({ onDropHandler }) => {
-  const [{ modalIsOpen, closeModal, openModal }] = useModal();
-  const [{ data: orderNumber, isLoading, isError }, setFetchFns] = useFetch([]);
+  const dispatch = useDispatch();
+  const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
+  const [{ isLoading, isError }, setFetchFns] = useFetch([]);
   const { buns, ingredients, total } = useSelector((state) => state.burgerConstructor);
+  const { number: orderNumber } = useSelector((state) => state.orderDetails);
   const [topBun, bottomBun] = buns;
 
   const initialDropState = {
@@ -30,12 +34,21 @@ const BurgerConstructor = ({ onDropHandler }) => {
   const [{ isHover: isIngredientHover }, dropIngredientTarget] = useDrop({ ...initialDropState, accept: "ingridient" });
   const isBunHover = isBottomBunHover || isTopBunHover;
 
+  useEffect(() => {
+    setActionsFns({
+      closeCallback: () => dispatch(removeDetails()),
+    });
+  }, [dispatch, setActionsFns]);
+
   const checkout = () => {
     const extractedIds = [topBun, ...ingredients, bottomBun].map(({ _id }) => _id);
 
     setFetchFns({
       getDataFn: async () => apiService.createOrder(extractedIds),
-      doneFn: openModal,
+      doneFn: (info) => {
+        dispatch(addDetails(info));
+        openModal();
+      },
     });
   };
 
