@@ -22,14 +22,14 @@ class ApiService {
     if (this._isFakeData) {
       return new Promise((resolve) =>
         setTimeout(() => {
-          resolve(fakeData);
+          resolve(this._transformData(fakeData));
         }, 1000)
       );
     }
 
     const { data } = await this.getResource("/ingredients/");
 
-    return data;
+    return this._transformData(data);
   };
 
   createOrder = async (ingridientIds) => {
@@ -66,6 +66,10 @@ class ApiService {
 
     return this._transformOrderInfo(data);
   };
+
+  _transformData(data) {
+    return data.map((item) => ({ ...item, count: 0 }));
+  }
 
   _transformOrderInfo(data) {
     return data?.order?.number;

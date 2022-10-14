@@ -21,6 +21,25 @@ const burgerIngridientsSlice = createSlice({
     error(state, action) {
       (state.loading = false), (state.error = action.payload);
     },
+    increaseIngredientCount(state, action) {
+      state.data = state.data.map((item) =>
+        item._id === action.payload._id ? { ...item, count: item.count + 1 } : item
+      );
+    },
+    decreaseIngredientCount(state, action) {
+      state.data = state.data.map((item) =>
+        item._id === action.payload._id ? { ...item, count: Math.max(item.count - 1, 0) } : item
+      );
+    },
+    increaseBunCount(state, action) {
+      state.data = state.data.map((item) => {
+        if (item.type !== "bun") {
+          return item;
+        }
+
+        return item._id === action.payload._id ? { ...item, count: 2 } : { ...item, count: 0 };
+      });
+    },
   },
 });
 
@@ -35,5 +54,6 @@ export const getBurgerIngredients = () => async (dispatch) => {
   }
 };
 
-export const { request, success, error } = burgerIngridientsSlice.actions;
+export const { request, success, error, increaseIngredientCount, decreaseIngredientCount, increaseBunCount } =
+  burgerIngridientsSlice.actions;
 export default burgerIngridientsSlice.reducer;

@@ -8,7 +8,7 @@ import styles from "./burger-ingridients-category.module.scss";
 const BurgerIngridientsCategory = ({ type, list }) => (
   <>
     <h2 className={classNames("text text_type_main-medium mb-6")}>{TYPES_OF_INGRIDIENTS[type]}</h2>
-    <div className={classNames(styles.list, "pl-1 pr-1")}>
+    <div className={classNames(styles.list, "pr-3")}>
       {list.map((ingridient) => {
         return (
           <div className={classNames("mb-2")} key={ingridient._id}>

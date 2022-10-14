@@ -5,6 +5,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { getBurgerIngredients } from "../../services/slices/burger-ingredients-slice";
 import { addBun, addIngredient } from "../../services/slices/burger-constructor-slice";
+import { increaseIngredientCount, increaseBunCount } from "../../services/slices/burger-ingredients-slice";
 import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngridients from "../burger-ingredients/burger-ingredients";
@@ -25,8 +26,15 @@ const App = () => {
     const [draggedIngridient] = ingridients.filter((element) => element._id === item._id);
     const [draggedBun] = buns.filter((element) => element._id === item._id);
 
-    draggedIngridient && dispatch(addIngredient(draggedIngridient));
-    draggedBun && dispatch(addBun(draggedBun));
+    if (draggedIngridient) {
+      dispatch(addIngredient(draggedIngridient));
+      dispatch(increaseIngredientCount(draggedIngridient));
+    }
+
+    if (draggedBun) {
+      dispatch(addBun(draggedBun));
+      dispatch(increaseBunCount(draggedBun));
+    }
   };
 
   return (

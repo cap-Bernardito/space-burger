@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useDrag } from "react-dnd";
 import classNames from "classnames";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -11,9 +10,8 @@ import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
 import styles from "./burger-ingridient.module.scss";
 
 const BurgerIngridient = ({ data }) => {
-  const [count, setCount] = useState(0);
   const { modalIsOpen, closeModal, showModal } = useModal();
-  const { name, price, image, image_large, _id, type } = data;
+  const { name, price, image, image_large, _id, type, count } = data;
 
   const [{ isDrag }, dragRef] = useDrag({
     type: type === "bun" ? "bun" : "ingridient",
@@ -24,8 +22,6 @@ const BurgerIngridient = ({ data }) => {
   });
 
   const handleClick = () => {
-    // TODO: заменить счетчик при реализации DnD
-    setCount((current) => current + 1);
     showModal();
   };
 

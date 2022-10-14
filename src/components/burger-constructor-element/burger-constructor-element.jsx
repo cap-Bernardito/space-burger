@@ -3,6 +3,7 @@ import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burg
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { removeIngredient } from "../../services/slices/burger-constructor-slice";
+import { decreaseIngredientCount } from "../../services/slices/burger-ingredients-slice";
 import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
 import styles from "./burger-constructor-element.module.scss";
 
@@ -11,6 +12,7 @@ const BurgerConstructorElement = ({ type = "", data, isLocked = false }) => {
 
   const handleClose = (removedItem) => {
     dispatch(removeIngredient(removedItem));
+    dispatch(decreaseIngredientCount(removedItem));
   };
 
   return (
