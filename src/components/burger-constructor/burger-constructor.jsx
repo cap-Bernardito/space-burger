@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import classNames from "classnames";
 import apiService from "../../services/api-service";
-import { ADD_BUN_EMPTY_TEXT, ADD_INGRIDIENTS_EMPTY_TEXT } from "../../utils/constants";
+import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT } from "../../utils/constants";
 import { CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal, useFetch } from "../../hooks";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
@@ -31,7 +31,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
   };
   const [{ isHover: isTopBunHover }, dropTopBunTarget] = useDrop({ ...initialDropState });
   const [{ isHover: isBottomBunHover }, dropBottomBunTarget] = useDrop({ ...initialDropState });
-  const [{ isHover: isIngredientHover }, dropIngredientTarget] = useDrop({ ...initialDropState, accept: "ingridient" });
+  const [{ isHover: isIngredientHover }, dropIngredientTarget] = useDrop({ ...initialDropState, accept: "ingredient" });
   const isBunHover = isBottomBunHover || isTopBunHover;
 
   useEffect(() => {
@@ -66,9 +66,9 @@ const BurgerConstructor = ({ onDropHandler }) => {
 
   const ingredientsListElement =
     ingredients.length > 0 ? (
-      ingredients.map((ingridient) => <BurgerConstructorElement key={ingridient.key} data={ingridient} />)
+      ingredients.map((ingredient) => <BurgerConstructorElement key={ingredient.key} data={ingredient} />)
     ) : (
-      <span className="text text_type_main-medium">{ADD_INGRIDIENTS_EMPTY_TEXT}</span>
+      <span className="text text_type_main-medium">{ADD_INGREDIENTS_EMPTY_TEXT}</span>
     );
 
   const errorMessage = isError && (

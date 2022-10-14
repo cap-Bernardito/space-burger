@@ -4,8 +4,8 @@ const initialState = {
   ingredient: null,
 };
 
-const burgerIngredientDetail = createSlice({
-  name: "INGREDIENT_DETAIL",
+const burgerIngredientDetails = createSlice({
+  name: "BURGER_INGREDIENT_DETAILS",
   initialState,
   reducers: {
     addIngredient(state, action) {
@@ -17,5 +17,5 @@ const burgerIngredientDetail = createSlice({
   },
 });
 
-export const { addIngredient, removeIngredient } = burgerIngredientDetail.actions;
-export default burgerIngredientDetail.reducer;
+export const { addIngredient, removeIngredient } = burgerIngredientDetails.actions;
+export default burgerIngredientDetails.reducer;

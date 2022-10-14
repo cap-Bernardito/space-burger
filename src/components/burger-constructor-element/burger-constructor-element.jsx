@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { removeIngredient } from "../../services/slices/burger-constructor-slice";
 import { decreaseIngredientCount } from "../../services/slices/burger-ingredients-slice";
-import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
+import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
 import styles from "./burger-constructor-element.module.scss";
 
 const BurgerConstructorElement = ({ type = "", data, isLocked = false }) => {
@@ -34,7 +34,7 @@ const BurgerConstructorElement = ({ type = "", data, isLocked = false }) => {
 
 BurgerConstructorElement.propTypes = {
   type: PropTypes.string,
-  data: PropTypes.shape(INGRIDIENT_PROP_TYPES).isRequired,
+  data: PropTypes.shape(INGREDIENT_PROP_TYPES).isRequired,
   isLocked: PropTypes.bool,
 };
 

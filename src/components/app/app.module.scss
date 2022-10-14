@@ -20,7 +20,7 @@ $mainTopSpacer: $spacer * 10;
     }
   }
 
-  &__ingridients,
+  &__ingredients,
   &__constructor {
     @include media-bp-up(desktop) {
       display: flex;
@@ -30,7 +30,7 @@ $mainTopSpacer: $spacer * 10;
     }
   }
 
-  &__ingridients {
+  &__ingredients {
     @include media-bp-up(desktop) {
       grid-area: 2 / 1 / span 1 / span 1;
     }

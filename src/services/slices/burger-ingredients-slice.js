@@ -7,7 +7,7 @@ const initialState = {
   error: false,
 };
 
-const burgerIngridientsSlice = createSlice({
+const burgerIngredientsSlice = createSlice({
   name: "BURGER_INGREDIENTS",
   initialState,
   reducers: {
@@ -55,5 +55,5 @@ export const getBurgerIngredients = () => async (dispatch) => {
 };
 
 export const { request, success, error, increaseIngredientCount, decreaseIngredientCount, increaseBunCount } =
-  burgerIngridientsSlice.actions;
-export default burgerIngridientsSlice.reducer;
+  burgerIngredientsSlice.actions;
+export default burgerIngredientsSlice.reducer;

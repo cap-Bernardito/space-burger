@@ -1,9 +1,9 @@
-import { TYPES_OF_INGRIDIENTS } from "./constants";
+import { TYPES_OF_INGREDIENTS } from "./constants";
 
 export const splitIngredientsByTypes = (data) => {
   const initial = {};
 
-  for (const type of Object.keys(TYPES_OF_INGRIDIENTS)) {
+  for (const type of Object.keys(TYPES_OF_INGREDIENTS)) {
     initial[type] = [];
   }
 

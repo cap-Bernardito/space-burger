@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
-import styles from "./ingridient-details.module.scss";
+import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
+import styles from "./ingredient-details.module.scss";
 
-const IngridientDetails = ({ data }) => {
+const IngredientDetails = ({ data }) => {
   const { name, image, image_mobile, image_large, calories, proteins, fat, carbohydrates } = data;
   const nutrients = [
     {
@@ -48,8 +48,8 @@ const IngridientDetails = ({ data }) => {
   );
 };
 
-IngridientDetails.propTypes = {
-  data: PropTypes.shape(INGRIDIENT_PROP_TYPES).isRequired,
+IngredientDetails.propTypes = {
+  data: PropTypes.shape(INGREDIENT_PROP_TYPES).isRequired,
 };
 
-export default IngridientDetails;
+export default IngredientDetails;

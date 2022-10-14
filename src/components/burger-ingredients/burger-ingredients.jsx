@@ -2,14 +2,14 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerIngridientsCategory from "../burger-ingridients-category/burger-ingridients-category";
-import { TYPES_OF_INGRIDIENTS, INGRIDIENT_PROP_TYPES } from "../../utils/constants";
+import BurgerIngredientsCategory from "../burger-ingredients-category/burger-ingredients-category";
+import { TYPES_OF_INGREDIENTS, INGREDIENT_PROP_TYPES } from "../../utils/constants";
 import { splitIngredientsByTypes } from "../../utils/utils";
 import styles from "./burger-ingredients.module.scss";
 
-const BurgerIngridients = ({ data }) => {
+const BurgerIngredients = ({ data }) => {
   const [activeTabName, setActiveTab] = useState(() => {
-    const [activeType] = Object.keys(TYPES_OF_INGRIDIENTS);
+    const [activeType] = Object.keys(TYPES_OF_INGREDIENTS);
 
     return activeType;
   });
@@ -19,7 +19,7 @@ const BurgerIngridients = ({ data }) => {
   const categoryDOMElements = useMemo(() => ({}), []);
 
   useEffect(() => {
-    Object.keys(TYPES_OF_INGRIDIENTS).forEach((type) => {
+    Object.keys(TYPES_OF_INGREDIENTS).forEach((type) => {
       categoryDOMElements[type] = document.getElementById(type);
     });
   }, [categoryDOMElements]);
@@ -40,7 +40,7 @@ const BurgerIngridients = ({ data }) => {
     let delta = Number.MAX_VALUE;
     let result = "";
 
-    Object.keys(TYPES_OF_INGRIDIENTS).forEach((type) => {
+    Object.keys(TYPES_OF_INGREDIENTS).forEach((type) => {
       const categoryBottomPosition = categoryDOMElements[type].getBoundingClientRect().bottom;
       const newDelta = categoryBottomPosition - tabsBottomPosition - cssFlexGap;
 
@@ -53,19 +53,19 @@ const BurgerIngridients = ({ data }) => {
     setActiveTab(result);
   };
 
-  const ingridientTypes = dataByCategory.map(([category]) => category);
+  const ingredientTypes = dataByCategory.map(([category]) => category);
 
-  const tabs = ingridientTypes.map((tabName) => (
+  const tabs = ingredientTypes.map((tabName) => (
     <Tab key={tabName} value={tabName} active={activeTabName === tabName} onClick={setCurrentTab}>
-      {TYPES_OF_INGRIDIENTS[tabName]}
+      {TYPES_OF_INGREDIENTS[tabName]}
     </Tab>
   ));
 
-  const burgerIngridientsCategory = useMemo(
+  const burgerIngredientsCategory = useMemo(
     () =>
       dataByCategory.map(([categoryName, categoryList]) => (
         <div key={categoryName} id={categoryName}>
-          <BurgerIngridientsCategory type={categoryName} list={categoryList} />
+          <BurgerIngredientsCategory type={categoryName} list={categoryList} />
         </div>
       )),
     [dataByCategory]
@@ -77,14 +77,14 @@ const BurgerIngridients = ({ data }) => {
         {tabs}
       </div>
       <div className={classNames(styles.list, "custom-scroll")} onScroll={handleScroll}>
-        {burgerIngridientsCategory}
+        {burgerIngredientsCategory}
       </div>
     </div>
   );
 };
 
-BurgerIngridients.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape(INGRIDIENT_PROP_TYPES)).isRequired,
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape(INGREDIENT_PROP_TYPES)).isRequired,
 };
 
-export default BurgerIngridients;
+export default BurgerIngredients;

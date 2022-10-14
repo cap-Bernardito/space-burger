@@ -8,27 +8,27 @@ import { addBun, addIngredient } from "../../services/slices/burger-constructor-
 import { increaseIngredientCount, increaseBunCount } from "../../services/slices/burger-ingredients-slice";
 import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import BurgerIngridients from "../burger-ingredients/burger-ingredients";
+import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.scss";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { data, loading: isLoading, error: isError } = useSelector((state) => state.burgerIngridients);
+  const { data, loading: isLoading, error: isError } = useSelector((state) => state.burgerIngredients);
 
   useEffect(() => {
     dispatch(getBurgerIngredients());
   }, [dispatch]);
 
   const buns = useMemo(() => data.filter((item) => item.type === "bun"), [data]);
-  const ingridients = useMemo(() => data.filter((item) => item.type !== "bun"), [data]);
+  const ingredients = useMemo(() => data.filter((item) => item.type !== "bun"), [data]);
 
   const handleDrop = (item) => {
-    const [draggedIngridient] = ingridients.filter((element) => element._id === item._id);
+    const [draggedIngredient] = ingredients.filter((element) => element._id === item._id);
     const [draggedBun] = buns.filter((element) => element._id === item._id);
 
-    if (draggedIngridient) {
-      dispatch(addIngredient(draggedIngridient));
-      dispatch(increaseIngredientCount(draggedIngridient));
+    if (draggedIngredient) {
+      dispatch(addIngredient(draggedIngredient));
+      dispatch(increaseIngredientCount(draggedIngredient));
     }
 
     if (draggedBun) {
@@ -48,7 +48,7 @@ const App = () => {
             ? "Загрузка..."
             : !isError && (
                 <DndProvider backend={HTML5Backend}>
-                  <div className={classNames(styles.app__ingridients)}>{<BurgerIngridients data={data} />}</div>
+                  <div className={classNames(styles.app__ingredients)}>{<BurgerIngredients data={data} />}</div>
                   <div className={classNames(styles.app__constructor)}>
                     <BurgerConstructor onDropHandler={handleDrop} />
                   </div>

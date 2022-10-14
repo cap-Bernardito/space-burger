@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
 import classNames from "classnames";
@@ -5,21 +6,19 @@ import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-c
 import PropTypes from "prop-types";
 import { useModal } from "../../hooks";
 import Modal from "../modal/modal";
-import IngridientDetails from "../ingridient-details/ingridient-details";
-import { addIngredient, removeIngredient } from "../../services/slices/burger-ingredient-detail-slice";
-import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import { addIngredient, removeIngredient } from "../../services/slices/burger-ingredient-details-slice";
+import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
+import styles from "./burger-ingredient.module.scss";
 
-import styles from "./burger-ingridient.module.scss";
-import { useEffect } from "react";
-
-const BurgerIngridient = ({ data }) => {
+const BurgerIngredient = ({ data }) => {
   const dispatch = useDispatch();
-  const { ingredient } = useSelector((state) => state.ingredientDetail);
+  const { ingredient } = useSelector((state) => state.ingredientDetails);
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
   const { name, price, image, image_large, _id, type, count } = data;
 
   const [{ isDrag }, dragRef] = useDrag({
-    type: type === "bun" ? "bun" : "ingridient",
+    type: type === "bun" ? "bun" : "ingredient",
     item: { _id },
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),
@@ -59,15 +58,15 @@ const BurgerIngridient = ({ data }) => {
       </div>
       {modalIsOpen && (
         <Modal onClose={closeModal} title="Детали ингридиента">
-          <IngridientDetails data={ingredient} />
+          <IngredientDetails data={ingredient} />
         </Modal>
       )}
     </>
   );
 };
 
-BurgerIngridient.propTypes = {
-  data: PropTypes.shape(INGRIDIENT_PROP_TYPES).isRequired,
+BurgerIngredient.propTypes = {
+  data: PropTypes.shape(INGREDIENT_PROP_TYPES).isRequired,
 };
 
-export default BurgerIngridient;
+export default BurgerIngredient;

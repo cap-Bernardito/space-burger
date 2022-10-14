@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export const TYPES_OF_INGRIDIENTS = {
+export const TYPES_OF_INGREDIENTS = {
   bun: "Булки",
   sauce: "Соусы",
   main: "Начинки",
@@ -8,9 +8,9 @@ export const TYPES_OF_INGRIDIENTS = {
 
 export const ADD_BUN_EMPTY_TEXT = "Добавьте булку";
 
-export const ADD_INGRIDIENTS_EMPTY_TEXT = "Добавьте ингридиенты";
+export const ADD_INGREDIENTS_EMPTY_TEXT = "Добавьте ингридиенты";
 
-export const INGRIDIENT_PROP_TYPES = {
+export const INGREDIENT_PROP_TYPES = {
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,

@@ -32,7 +32,7 @@ class ApiService {
     return this._transformData(data);
   };
 
-  createOrder = async (ingridientIds) => {
+  createOrder = async (ingredientIds) => {
     let data;
 
     if (this._isFakeData) {
@@ -51,7 +51,7 @@ class ApiService {
       );
     } else {
       const requestBody = {
-        ingredients: ingridientIds,
+        ingredients: ingredientIds,
       };
 
       data = await this.getResource("/orders/", {
