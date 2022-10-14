@@ -1,3 +1,4 @@
+import { useSelector, useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
 import classNames from "classnames";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -5,11 +6,14 @@ import PropTypes from "prop-types";
 import { useModal } from "../../hooks";
 import Modal from "../modal/modal";
 import IngridientDetails from "../ingridient-details/ingridient-details";
+import { addIngredient } from "../../services/slices/burger-ingredient-detail-slice";
 import { INGRIDIENT_PROP_TYPES } from "../../utils/constants";
 
 import styles from "./burger-ingridient.module.scss";
 
 const BurgerIngridient = ({ data }) => {
+  const dispatch = useDispatch();
+  const { ingredient } = useSelector((state) => state.ingredientDetail);
   const { modalIsOpen, closeModal, showModal } = useModal();
   const { name, price, image, image_large, _id, type, count } = data;
 
@@ -22,6 +26,7 @@ const BurgerIngridient = ({ data }) => {
   });
 
   const handleClick = () => {
+    dispatch(addIngredient(data));
     showModal();
   };
 
@@ -47,7 +52,7 @@ const BurgerIngridient = ({ data }) => {
       </div>
       {modalIsOpen && (
         <Modal onClose={closeModal} title="Детали ингридиента">
-          <IngridientDetails data={data} />
+          <IngridientDetails data={ingredient} />
         </Modal>
       )}
     </>
