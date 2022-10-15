@@ -1,8 +1,9 @@
-import PropTypes from "prop-types";
+import BurgerIngredient from "../burger-ingredient/burger-ingredient";
 import classNames from "classnames";
 import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
-import BurgerIngredient from "../burger-ingredient/burger-ingredient";
+import PropTypes from "prop-types";
 import { TYPES_OF_INGREDIENTS } from "../../utils/constants";
+// eslint-disable-next-line sort-imports
 import styles from "./burger-ingredients-category.module.scss";
 
 const BurgerIngredientsCategory = ({ type, list }) => (

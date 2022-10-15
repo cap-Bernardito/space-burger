@@ -1,13 +1,14 @@
-import { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { useDrag, useDrop } from "react-dnd";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+import { useDrag, useDrop } from "react-dnd";
 import classNames from "classnames";
-import { removeIngredient } from "../../services/slices/burger-constructor-slice";
 import { decreaseIngredientCount } from "../../services/slices/burger-ingredients-slice";
-import { moveIngredient } from "../../services/slices/burger-constructor-slice";
 import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
+import { moveIngredient } from "../../services/slices/burger-constructor-slice";
+import PropTypes from "prop-types";
+import { removeIngredient } from "../../services/slices/burger-constructor-slice";
+import { useDispatch } from "react-redux";
+import { useRef } from "react";
+// eslint-disable-next-line sort-imports
 import styles from "./burger-constructor-element.module.scss";
 
 const BurgerConstructorElement = ({ type = "", data, isLocked = false, index = 0 }) => {

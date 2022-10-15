@@ -1,12 +1,13 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import classNames from "classnames";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { getBurgerIngredients } from "../../services/slices/burger-ingredients-slice";
 import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import classNames from "classnames";
+import { DndProvider } from "react-dnd";
+import { getBurgerIngredients } from "../../services/slices/burger-ingredients-slice";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useEffect } from "react";
+// eslint-disable-next-line sort-imports
 import styles from "./app.module.scss";
 
 const App = () => {

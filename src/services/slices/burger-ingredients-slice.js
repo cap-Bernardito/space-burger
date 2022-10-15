@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../api-service";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   data: [],

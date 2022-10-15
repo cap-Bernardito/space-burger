@@ -1,10 +1,11 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { INGREDIENT_PROP_TYPES, TYPES_OF_INGREDIENTS } from "../../utils/constants";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import BurgerIngredientsCategory from "../burger-ingredients-category/burger-ingredients-category";
-import { TYPES_OF_INGREDIENTS, INGREDIENT_PROP_TYPES } from "../../utils/constants";
+import classNames from "classnames";
+import PropTypes from "prop-types";
 import { splitIngredientsByTypes } from "../../utils/utils";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+// eslint-disable-next-line sort-imports
 import styles from "./burger-ingredients.module.scss";
 
 const BurgerIngredients = ({ data }) => {
