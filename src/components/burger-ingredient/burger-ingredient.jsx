@@ -1,13 +1,18 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useDrag } from "react-dnd";
+import { useDrag, DragPreviewImage } from "react-dnd";
 import classNames from "classnames";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { useModal } from "../../hooks";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { addIngredient, removeIngredient } from "../../services/slices/burger-ingredient-details-slice";
+import {
+  addIngredient as addIngredientDetails,
+  removeIngredient as removeIngredientDetails,
+} from "../../services/slices/burger-ingredient-details-slice";
+import { addBun, addIngredient } from "../../services/slices/burger-constructor-slice";
+import { increaseIngredientCount, increaseBunCount } from "../../services/slices/burger-ingredients-slice";
 import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
 import styles from "./burger-ingredient.module.scss";
 
@@ -17,27 +22,41 @@ const BurgerIngredient = ({ data }) => {
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
   const { name, price, image, image_large, _id, type, count } = data;
 
-  const [{ isDrag }, dragRef] = useDrag({
+  const [{ isDrag }, dragRef, preview] = useDrag({
     type: type === "bun" ? "bun" : "ingredient",
-    item: { _id },
+    item: { _id, type },
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),
     }),
+    end: (item, monitor) => {
+      if (!monitor.didDrop()) {
+        return;
+      }
+
+      if (item.type === "bun") {
+        dispatch(addBun(data));
+        dispatch(increaseBunCount(data));
+      } else {
+        dispatch(addIngredient(data));
+        dispatch(increaseIngredientCount(data));
+      }
+    },
   });
 
   useEffect(() => {
     setActionsFns({
-      closeCallback: () => dispatch(removeIngredient()),
+      closeCallback: () => dispatch(removeIngredientDetails()),
     });
   }, [dispatch, setActionsFns]);
 
   const handleClick = () => {
-    dispatch(addIngredient(data));
+    dispatch(addIngredientDetails(data));
     openModal();
   };
 
   return (
     <>
+      <DragPreviewImage connect={preview} src={image} />
       <div className={classNames(styles.box, { [styles.onDrag]: isDrag }, "pb-4")} onClick={handleClick} ref={dragRef}>
         {count > 0 && <Counter count={count} size="default" />}
         <div className={classNames(styles.image, "mb-1 pr-1 pl-1")}>

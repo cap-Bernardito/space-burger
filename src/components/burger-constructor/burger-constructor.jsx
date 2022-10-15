@@ -12,7 +12,7 @@ import { addDetails, removeDetails } from "../../services/slices/order-details-s
 import styles from "./burger-constructor.module.scss";
 import { useEffect } from "react";
 
-const BurgerConstructor = ({ onDropHandler }) => {
+const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
   const [{ isLoading, isError }, setFetchFns] = useFetch([]);
@@ -22,17 +22,21 @@ const BurgerConstructor = ({ onDropHandler }) => {
 
   const initialDropState = {
     accept: "bun",
-    drop(itemId) {
-      onDropHandler(itemId);
-    },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
+      canDrop: monitor.canDrop(),
     }),
   };
-  const [{ isHover: isTopBunHover }, dropTopBunTarget] = useDrop({ ...initialDropState });
-  const [{ isHover: isBottomBunHover }, dropBottomBunTarget] = useDrop({ ...initialDropState });
-  const [{ isHover: isIngredientHover }, dropIngredientTarget] = useDrop({ ...initialDropState, accept: "ingredient" });
+  const [{ isHover: isTopBunHover, canDrop: isTopBunCanDrop }, dropTopBunTarget] = useDrop({ ...initialDropState });
+  const [{ isHover: isBottomBunHover, canDrop: isBottomBunCanDrop }, dropBottomBunTarget] = useDrop({
+    ...initialDropState,
+  });
+  const [{ isHover: isIngredientHover, canDrop: isIngredientCanDrop }, dropIngredientTarget] = useDrop({
+    ...initialDropState,
+    accept: "ingredient",
+  });
   const isBunHover = isBottomBunHover || isTopBunHover;
+  const isBunCanDrop = isTopBunCanDrop || isBottomBunCanDrop;
 
   useEffect(() => {
     setActionsFns({
@@ -83,7 +87,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
             styles.bun,
             styles.top,
             styles.drop,
-            { [styles.empty]: buns.length === 0, [styles.onHover]: isBunHover },
+            { [styles.empty]: buns.length === 0, [styles.onHover]: isBunHover, [styles.canDrop]: isBunCanDrop },
             "custom-scroll"
           )}
           ref={dropTopBunTarget}
@@ -95,7 +99,11 @@ const BurgerConstructor = ({ onDropHandler }) => {
           className={classNames(
             styles.list,
             styles.drop,
-            { [styles.empty]: ingredients.length === 0, [styles.onHover]: isIngredientHover },
+            {
+              [styles.empty]: ingredients.length === 0,
+              [styles.onHover]: isIngredientHover,
+              [styles.canDrop]: isIngredientCanDrop,
+            },
             "custom-scroll"
           )}
           ref={dropIngredientTarget}
@@ -108,7 +116,7 @@ const BurgerConstructor = ({ onDropHandler }) => {
             styles.bun,
             styles.bottom,
             styles.drop,
-            { [styles.empty]: buns.length === 0, [styles.onHover]: isBunHover },
+            { [styles.empty]: buns.length === 0, [styles.onHover]: isBunHover, [styles.canDrop]: isBunCanDrop },
             "custom-scroll"
           )}
           ref={dropBottomBunTarget}

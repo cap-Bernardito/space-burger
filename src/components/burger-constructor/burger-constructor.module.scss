@@ -58,10 +58,18 @@
     transition: 0.25s all;
   }
 
-  &.onHover {
+  &.canDrop {
     &::after {
       border-color: rgba($success, 0.3) !important;
       background-color: rgba($success, 0.05) !important;
+      z-index: 2;
+    }
+  }
+
+  &.onHover {
+    &::after {
+      border-color: rgba($success, 0.8) !important;
+      background-color: rgba($success, 0.1) !important;
       z-index: 2;
     }
   }

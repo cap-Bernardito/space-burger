@@ -1,11 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { getBurgerIngredients } from "../../services/slices/burger-ingredients-slice";
-import { addBun, addIngredient } from "../../services/slices/burger-constructor-slice";
-import { increaseIngredientCount, increaseBunCount } from "../../services/slices/burger-ingredients-slice";
 import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
@@ -18,24 +16,6 @@ const App = () => {
   useEffect(() => {
     dispatch(getBurgerIngredients());
   }, [dispatch]);
-
-  const buns = useMemo(() => data.filter((item) => item.type === "bun"), [data]);
-  const ingredients = useMemo(() => data.filter((item) => item.type !== "bun"), [data]);
-
-  const handleDrop = (item) => {
-    const [draggedIngredient] = ingredients.filter((element) => element._id === item._id);
-    const [draggedBun] = buns.filter((element) => element._id === item._id);
-
-    if (draggedIngredient) {
-      dispatch(addIngredient(draggedIngredient));
-      dispatch(increaseIngredientCount(draggedIngredient));
-    }
-
-    if (draggedBun) {
-      dispatch(addBun(draggedBun));
-      dispatch(increaseBunCount(draggedBun));
-    }
-  };
 
   return (
     <div className={classNames("text", "text_type_main-default")}>
@@ -50,7 +30,7 @@ const App = () => {
                 <DndProvider backend={HTML5Backend}>
                   <div className={classNames(styles.app__ingredients)}>{<BurgerIngredients data={data} />}</div>
                   <div className={classNames(styles.app__constructor)}>
-                    <BurgerConstructor onDropHandler={handleDrop} />
+                    <BurgerConstructor />
                   </div>
                 </DndProvider>
               )}
