@@ -9,6 +9,10 @@
   align-items: center;
   z-index: 1;
 
+  &:not(.locked) {
+    cursor: move;
+  }
+
   :global(.constructor-element) {
     background-color: $modalBg;
   }
@@ -27,6 +31,16 @@
       path {
         fill: $error !important;
       }
+    }
+  }
+
+  &.dragging {
+    opacity: 0;
+  }
+
+  &.hover {
+    :global(.constructor-element) {
+      box-shadow: 0 1px 12px -2px rgba($primary, 0.3);
     }
   }
 

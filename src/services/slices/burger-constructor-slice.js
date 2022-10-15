@@ -26,6 +26,17 @@ const burgerConstructorSlice = createSlice({
       state.ingredients = state.ingredients.filter((item) => item.key !== action.payload.key);
       state.total = calculate(state);
     },
+    moveIngredient(state, action) {
+      const { dragIndex, hoverIndex } = action.payload;
+      const cloneIngredients = [...state.ingredients];
+
+      [cloneIngredients[dragIndex], cloneIngredients[hoverIndex]] = [
+        cloneIngredients[hoverIndex],
+        cloneIngredients[dragIndex],
+      ];
+
+      state.ingredients = cloneIngredients;
+    },
   },
 });
 
@@ -33,5 +44,5 @@ function calculate(state) {
   return [...state.buns, ...state.ingredients].reduce((acc, { price }) => (acc += price), 0);
 }
 
-export const { addBun, addIngredient, removeIngredient } = burgerConstructorSlice.actions;
+export const { addBun, addIngredient, removeIngredient, moveIngredient } = burgerConstructorSlice.actions;
 export default burgerConstructorSlice.reducer;

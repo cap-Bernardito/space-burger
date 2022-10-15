@@ -70,7 +70,9 @@ const BurgerConstructor = () => {
 
   const ingredientsListElement =
     ingredients.length > 0 ? (
-      ingredients.map((ingredient) => <BurgerConstructorElement key={ingredient.key} data={ingredient} />)
+      ingredients.map((ingredient, index) => (
+        <BurgerConstructorElement key={ingredient.key} data={ingredient} index={index} />
+      ))
     ) : (
       <span className="text text_type_main-medium">{ADD_INGREDIENTS_EMPTY_TEXT}</span>
     );
