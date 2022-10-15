@@ -1,23 +1,21 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import classNames from "classnames";
-import apiService from "../../services/api-service";
 import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT } from "../../utils/constants";
 import { CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useModal, useFetch } from "../../hooks";
+import { useModal } from "../../hooks";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { addDetails, removeDetails } from "../../services/slices/order-details-slice";
+import { createOrder, removeOrderDetails } from "../../services/slices/order-details-slice";
 import styles from "./burger-constructor.module.scss";
 import { useEffect } from "react";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
-  const [{ isLoading, isError }, setFetchFns] = useFetch([]);
   const { buns, ingredients, total } = useSelector((state) => state.burgerConstructor);
-  const { number: orderNumber } = useSelector((state) => state.orderDetails);
+  const { number: orderNumber, loading: isLoading, error: isError } = useSelector((state) => state.orderDetails);
   const [topBun, bottomBun] = buns;
 
   const initialDropState = {
@@ -40,20 +38,22 @@ const BurgerConstructor = () => {
 
   useEffect(() => {
     setActionsFns({
-      closeCallback: () => dispatch(removeDetails()),
+      closeCallback: () => dispatch(removeOrderDetails()),
     });
   }, [dispatch, setActionsFns]);
 
-  const checkout = () => {
+  useEffect(() => {
+    if (orderNumber) {
+      openModal();
+    }
+  }, [orderNumber, openModal]);
+
+  const checkout = (e) => {
+    e.preventDefault();
+
     const extractedIds = [topBun, ...ingredients, bottomBun].map(({ _id }) => _id);
 
-    setFetchFns({
-      getDataFn: async () => apiService.createOrder(extractedIds),
-      doneFn: (info) => {
-        dispatch(addDetails(info));
-        openModal();
-      },
-    });
+    dispatch(createOrder(extractedIds));
   };
 
   const topBunElement = topBun ? (
