@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Spin as Hamburger } from "hamburger-react";
-import classNames from "classnames";
 import { BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-
+import classNames from "classnames";
+import { Spin as Hamburger } from "hamburger-react";
+import { useState } from "react";
+// eslint-disable-next-line sort-imports
 import styles from "./navbar.module.scss";
 
 const Navbar = () => {

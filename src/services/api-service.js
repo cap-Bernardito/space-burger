@@ -1,5 +1,4 @@
 import { data as fakeData } from "../utils/data";
-import { TYPES_OF_INGRIDIENTS } from "../utils/constants";
 
 class ApiService {
   _baseApiUrl = "https://norma.nomoreparties.space/api";
@@ -19,17 +18,21 @@ class ApiService {
     return await res.json();
   };
 
-  getBurgerIngridientsByType = async () => {
+  getBurgerIngredients = async () => {
     if (this._isFakeData) {
-      return this._transformIngridientsList(fakeData);
+      return new Promise((resolve) =>
+        setTimeout(() => {
+          resolve(this._transformData(fakeData));
+        }, 1000)
+      );
     }
 
     const { data } = await this.getResource("/ingredients/");
 
-    return this._transformIngridientsList(data);
+    return this._transformData(data);
   };
 
-  createOrder = async (ingridientIds) => {
+  createOrder = async (ingredientIds) => {
     let data;
 
     if (this._isFakeData) {
@@ -48,7 +51,7 @@ class ApiService {
       );
     } else {
       const requestBody = {
-        ingredients: ingridientIds,
+        ingredients: ingredientIds,
       };
 
       data = await this.getResource("/orders/", {
@@ -64,26 +67,8 @@ class ApiService {
     return this._transformOrderInfo(data);
   };
 
-  _transformIngridientsList(data) {
-    const initial = {};
-
-    for (const type of Object.keys(TYPES_OF_INGRIDIENTS)) {
-      initial[type] = [];
-    }
-
-    const result = data.reduce((acc, item) => {
-      const { type } = item;
-
-      if (typeof acc[type] === "undefined") {
-        acc[type] = [];
-      }
-
-      acc[type].push(item);
-
-      return acc;
-    }, initial);
-
-    return Object.entries(result);
+  _transformData(data) {
+    return data.map((item) => ({ ...item, count: 0 }));
   }
 
   _transformOrderInfo(data) {

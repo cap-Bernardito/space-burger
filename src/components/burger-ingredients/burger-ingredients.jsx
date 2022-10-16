@@ -1,63 +1,91 @@
-import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import { INGREDIENT_PROP_TYPES, TYPES_OF_INGREDIENTS } from "../../utils/constants";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import BurgerIngredientsCategory from "../burger-ingredients-category/burger-ingredients-category";
 import classNames from "classnames";
+import PropTypes from "prop-types";
+import { splitIngredientsByTypes } from "../../utils/utils";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerIngridientsCategory from "../burger-ingridients-category/burger-ingridients-category";
-import { TYPES_OF_INGRIDIENTS, INGRIDIENT_PROP_TYPES } from "../../utils/constants";
+// eslint-disable-next-line sort-imports
 import styles from "./burger-ingredients.module.scss";
 
-const BurgerIngridients = ({ data }) => {
+const BurgerIngredients = ({ data }) => {
   const [activeTabName, setActiveTab] = useState(() => {
-    const [activeType] = Object.keys(TYPES_OF_INGRIDIENTS);
+    const [activeType] = Object.keys(TYPES_OF_INGREDIENTS);
 
     return activeType;
   });
 
+  const dataByCategory = useMemo(() => splitIngredientsByTypes(data), [data]);
+
+  const categoryDOMElements = useMemo(() => ({}), []);
+
   useEffect(() => {
-    setCurrentTab();
-  }, []);
+    Object.keys(TYPES_OF_INGREDIENTS).forEach((type) => {
+      categoryDOMElements[type] = document.getElementById(type);
+    });
+  }, [categoryDOMElements]);
 
-  function setCurrentTab(tabName) {
-    if (typeof tabName !== "undefined") {
-      setActiveTab(tabName);
-    }
-  }
+  const setCurrentTab = useCallback(
+    (tabName) => {
+      categoryDOMElements[tabName] && categoryDOMElements[tabName].scrollIntoView({ behavior: "smooth" });
+    },
+    [categoryDOMElements]
+  );
 
-  const ingridientTypes = data.map(([category]) => category);
+  const tabsRef = useRef();
+
+  const handleScroll = () => {
+    const cssFlexGap = 40;
+    const tabsBottomPosition = tabsRef.current.getBoundingClientRect().bottom;
+
+    let delta = Number.MAX_VALUE;
+    let result = "";
+
+    Object.keys(TYPES_OF_INGREDIENTS).forEach((type) => {
+      const categoryBottomPosition = categoryDOMElements[type].getBoundingClientRect().bottom;
+      const newDelta = categoryBottomPosition - tabsBottomPosition - cssFlexGap;
+
+      if (0 < newDelta && newDelta < delta) {
+        result = type;
+        delta = categoryBottomPosition;
+      }
+    });
+
+    setActiveTab(result);
+  };
+
+  const ingredientTypes = dataByCategory.map(([category]) => category);
+
+  const tabs = ingredientTypes.map((tabName) => (
+    <Tab key={tabName} value={tabName} active={activeTabName === tabName} onClick={setCurrentTab}>
+      {TYPES_OF_INGREDIENTS[tabName]}
+    </Tab>
+  ));
+
+  const burgerIngredientsCategory = useMemo(
+    () =>
+      dataByCategory.map(([categoryName, categoryList]) => (
+        <div key={categoryName} id={categoryName}>
+          <BurgerIngredientsCategory type={categoryName} list={categoryList} />
+        </div>
+      )),
+    [dataByCategory]
+  );
 
   return (
     <div className={classNames(styles.container)}>
-      <div className={classNames(styles.tabs, "mb-10")}>
-        {ingridientTypes.map((tabName) => (
-          <Tab key={tabName} value={tabName} active={activeTabName === tabName} onClick={setCurrentTab}>
-            {TYPES_OF_INGRIDIENTS[tabName]}
-          </Tab>
-        ))}
+      <div className={classNames(styles.tabs, "mb-10")} ref={tabsRef}>
+        {tabs}
       </div>
-
-      <div className={classNames(styles.list, "custom-scroll")}>
-        {data.map(([categoryName, categoryList]) => (
-          <BurgerIngridientsCategory key={categoryName} type={categoryName} list={categoryList} />
-        ))}
+      <div className={classNames(styles.list, "custom-scroll")} onScroll={handleScroll}>
+        {burgerIngredientsCategory}
       </div>
     </div>
   );
 };
 
-BurgerIngridients.propTypes = {
-  data: PropTypes.arrayOf((propValue, index) => {
-    const dataPropsTypes = {
-      dataCategoryName: PropTypes.string.isRequired,
-      dataCategoryList: PropTypes.arrayOf(PropTypes.shape(INGRIDIENT_PROP_TYPES)).isRequired,
-    };
-    const [categoryName, categoryList] = propValue[index];
-    const props = {
-      dataCategoryName: categoryName,
-      dataCategoryList: categoryList,
-    };
-
-    PropTypes.checkPropTypes(dataPropsTypes, props, "prop", "BurgerIngridients");
-  }).isRequired,
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape(INGREDIENT_PROP_TYPES)).isRequired,
 };
 
-export default BurgerIngridients;
+export default BurgerIngredients;

@@ -1,58 +1,145 @@
-import { useContext } from "react";
-import classNames from "classnames";
-import apiService from "../../services/api-service";
-import { BurgerConstructorContext } from "../../services/burgerConstructorContext";
-import { CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useModal, useFetch } from "../../hooks";
+import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT } from "../../utils/constants";
+import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { createOrder, removeOrderDetails } from "../../services/slices/order-details-slice";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
+import classNames from "classnames";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import { useDrop } from "react-dnd";
+import { useEffect } from "react";
+import { useModal } from "../../hooks";
+// eslint-disable-next-line sort-imports
 import styles from "./burger-constructor.module.scss";
 
 const BurgerConstructor = () => {
-  const { modalIsOpen, closeModal, showModal } = useModal();
-  const [{ data: orderNumber, isLoading, isError }, setFetchFns] = useFetch([]);
-  const { burgerConstructorState } = useContext(BurgerConstructorContext);
+  const dispatch = useDispatch();
+  const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
+  const { buns, ingredients, total } = useSelector((state) => state.burgerConstructor);
+  const { number: orderNumber, loading: isLoading, error: isError } = useSelector((state) => state.orderDetails);
+  const [topBun, bottomBun] = buns;
 
-  const checkout = () => {
-    const extractedIds = [burgerConstructorState.buns[0], ...burgerConstructorState.ingridients].map(({ _id }) => _id);
+  const initialDropState = {
+    accept: "bun",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  };
+  const [{ isHover: isTopBunHover, canDrop: isTopBunCanDrop }, dropTopBunTarget] = useDrop({ ...initialDropState });
+  const [{ isHover: isBottomBunHover, canDrop: isBottomBunCanDrop }, dropBottomBunTarget] = useDrop({
+    ...initialDropState,
+  });
+  const [{ isHover: isIngredientHover, canDrop: isIngredientCanDrop }, dropIngredientTarget] = useDrop({
+    ...initialDropState,
+    accept: "ingredient",
+  });
+  const isBunHover = isBottomBunHover || isTopBunHover;
+  const isBunCanDrop = isTopBunCanDrop || isBottomBunCanDrop;
 
-    setFetchFns({
-      getDataFn: async () => apiService.createOrder(extractedIds),
-      doneFn: showModal,
+  useEffect(() => {
+    setActionsFns({
+      closeCallback: () => dispatch(removeOrderDetails()),
     });
+  }, [dispatch, setActionsFns]);
+
+  useEffect(() => {
+    if (orderNumber) {
+      openModal();
+    }
+  }, [orderNumber, openModal]);
+
+  const checkout = (e) => {
+    e.preventDefault();
+
+    const extractedIds = [topBun, ...ingredients, bottomBun].map(({ _id }) => _id);
+
+    dispatch(createOrder(extractedIds));
   };
 
-  const { buns, ingridients, total } = burgerConstructorState;
+  const topBunElement = topBun ? (
+    <BurgerConstructorElement isLocked={true} type="top" data={topBun} />
+  ) : (
+    <span className="text text_type_main-medium">{ADD_BUN_EMPTY_TEXT}</span>
+  );
+
+  const bottomBunElement = bottomBun ? (
+    <BurgerConstructorElement isLocked={true} type="bottom" data={bottomBun} />
+  ) : (
+    <span className="text text_type_main-medium">{ADD_BUN_EMPTY_TEXT}</span>
+  );
+
+  const ingredientsListElement =
+    ingredients.length > 0 ? (
+      ingredients.map((ingredient, index) => (
+        <BurgerConstructorElement key={ingredient.key} data={ingredient} index={index} />
+      ))
+    ) : (
+      <span className="text text_type_main-medium">{ADD_INGREDIENTS_EMPTY_TEXT}</span>
+    );
+
+  const errorMessage = isError && (
+    <div className={styles.error}>{`Возникла ошибка при получении данных заказа: ${isError}`}</div>
+  );
 
   return (
     <>
       <div className={classNames(styles.container)}>
-        {buns[0] && (
-          <div className={classNames(styles.bun, "custom-scroll")}>
-            {<BurgerConstructorElement isLocked={true} type="top" data={buns[0]} />}
-          </div>
-        )}
-
-        <div className={classNames(styles.list, "custom-scroll")}>
-          {ingridients.map((ingridient) => (
-            <BurgerConstructorElement key={ingridient._id} data={ingridient} />
-          ))}
+        <div
+          className={classNames(
+            styles.bun,
+            styles.top,
+            styles.drop,
+            { [styles.empty]: buns.length === 0, [styles.onHover]: isBunHover, [styles.canDrop]: isBunCanDrop },
+            "custom-scroll"
+          )}
+          ref={dropTopBunTarget}
+        >
+          {topBunElement}
         </div>
 
-        {buns[1] && (
-          <div className={classNames(styles.bun, "custom-scroll")}>
-            {<BurgerConstructorElement isLocked={true} type="bottom" data={buns[1]} />}
-          </div>
-        )}
+        <div
+          className={classNames(
+            styles.list,
+            styles.drop,
+            {
+              [styles.empty]: ingredients.length === 0,
+              [styles.onHover]: isIngredientHover,
+              [styles.canDrop]: isIngredientCanDrop,
+            },
+            "custom-scroll"
+          )}
+          ref={dropIngredientTarget}
+        >
+          {ingredientsListElement}
+        </div>
+
+        <div
+          className={classNames(
+            styles.bun,
+            styles.bottom,
+            styles.drop,
+            { [styles.empty]: buns.length === 0, [styles.onHover]: isBunHover, [styles.canDrop]: isBunCanDrop },
+            "custom-scroll"
+          )}
+          ref={dropBottomBunTarget}
+        >
+          {bottomBunElement}
+        </div>
 
         <div className={classNames(styles.order)}>
-          {isError && <div className={styles.error}>{`Возникла ошибка при получении данных заказа: ${isError}`}</div>}
+          {errorMessage}
           <div className={classNames(styles.order__sum, "text text_type_digits-medium")}>
             {total}&nbsp;
             <CurrencyIcon type="primary" />
           </div>
-          <Button type="primary" size="large" htmlType="button" onClick={checkout} disabled={isLoading}>
+          <Button
+            type="primary"
+            size="large"
+            htmlType="button"
+            onClick={checkout}
+            disabled={isLoading || buns.length === 0}
+          >
             {isLoading ? "Загрузка ..." : "Оформить заказ"}
           </Button>
         </div>

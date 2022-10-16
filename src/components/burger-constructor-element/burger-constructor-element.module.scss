@@ -3,18 +3,56 @@
 .item {
   $root: &;
 
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1;
+
+  &:not(.locked) {
+    cursor: move;
+  }
 
   :global(.constructor-element) {
     background-color: $modalBg;
+  }
+
+  :global(.constructor-element__action svg) {
+    transform: scale(1);
+    transition: transform 0.25s;
+
+    path {
+      transition: fill 0.25s;
+    }
+
+    &:hover {
+      transform: scale(1.2);
+
+      path {
+        fill: $error !important;
+      }
+    }
+  }
+
+  &.dragging {
+    opacity: 0;
+  }
+
+  &.hover {
+    :global(.constructor-element) {
+      box-shadow: 0 1px 12px -2px rgba($primary, 0.3);
+    }
   }
 
   &.locked {
     #{$root}__lock {
       opacity: 0;
       pointer-events: none;
+    }
+
+    :global(.constructor-element__action) {
+      pointer-events: none;
+      cursor: default;
     }
   }
 }

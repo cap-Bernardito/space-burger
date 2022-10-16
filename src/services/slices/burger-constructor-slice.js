@@ -1,0 +1,48 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
+
+const initialState = {
+  buns: [],
+  ingredients: [],
+  total: 0,
+};
+
+const burgerConstructorSlice = createSlice({
+  name: "BURGER_CONSTRUCTOR",
+  initialState,
+  reducers: {
+    addBun(state, action) {
+      state.buns = [
+        { ...action.payload, name: `${action.payload.name} (верх)` },
+        { ...action.payload, name: `${action.payload.name} (низ)` },
+      ];
+      state.total = calculate(state);
+    },
+    addIngredient(state, action) {
+      state.ingredients.push({ ...action.payload, key: uuidv4() });
+      state.total = calculate(state);
+    },
+    removeIngredient(state, action) {
+      state.ingredients = state.ingredients.filter((item) => item.key !== action.payload.key);
+      state.total = calculate(state);
+    },
+    moveIngredient(state, action) {
+      const { dragIndex, hoverIndex } = action.payload;
+      const cloneIngredients = [...state.ingredients];
+
+      [cloneIngredients[dragIndex], cloneIngredients[hoverIndex]] = [
+        cloneIngredients[hoverIndex],
+        cloneIngredients[dragIndex],
+      ];
+
+      state.ingredients = cloneIngredients;
+    },
+  },
+});
+
+function calculate(state) {
+  return [...state.buns, ...state.ingredients].reduce((acc, { price }) => (acc += price), 0);
+}
+
+export const { addBun, addIngredient, removeIngredient, moveIngredient } = burgerConstructorSlice.actions;
+export default burgerConstructorSlice.reducer;
