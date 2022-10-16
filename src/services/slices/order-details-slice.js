@@ -19,7 +19,9 @@ const orderDetails = createSlice({
       state.number = action.payload;
     },
     error(state, action) {
-      (state.loading = false), (state.error = action.payload);
+      state.loading = false;
+      state.error = action.payload;
+      state.number = null;
     },
     removeOrderDetails(state) {
       state.number = null;
