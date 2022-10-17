@@ -38,7 +38,13 @@ $zModal: 2010;
 
 @mixin media-bp-up($breakpoint) {
   @if $breakpoint == desktop {
-    @media screen and (min-width: 1200px) {
+    @media screen and (min-width: 1138px) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == tablet {
+    @media screen and (min-width: 560px) {
       @content;
     }
   }
@@ -46,7 +52,13 @@ $zModal: 2010;
 
 @mixin media-bp-down($breakpoint) {
   @if $breakpoint == desktop {
-    @media screen and (max-width: 1199px) {
+    @media screen and (max-width: 1137px) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == tablet {
+    @media screen and (max-width: 559px) {
       @content;
     }
   }

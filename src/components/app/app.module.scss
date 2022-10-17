@@ -18,10 +18,19 @@ $mainTopSpacer: $spacer * 10;
     @include media-bp-up(desktop) {
       grid-area: 1 / 1 / span 1 / -1;
     }
+
+    @include media-bp-down(desktop) {
+      max-width: 600px;
+      margin-inline: auto;
+    }
   }
 
   &__ingredients,
   &__constructor {
+    width: 100%;
+    max-width: 600px;
+    margin-inline: auto;
+
     @include media-bp-up(desktop) {
       display: flex;
       flex-direction: column;
@@ -34,9 +43,15 @@ $mainTopSpacer: $spacer * 10;
     @include media-bp-up(desktop) {
       grid-area: 2 / 1 / span 1 / span 1;
     }
+
+    @include media-bp-down(desktop) {
+      margin-bottom: $spacer * 15;
+    }
   }
 
   &__constructor {
+    width: 100%;
+
     @include media-bp-up(desktop) {
       grid-area: 2 / 2 / span 1 / span 1;
     }
