@@ -11,10 +11,32 @@
 
   &:not(.locked) {
     cursor: move;
+
+    svg {
+      @include media-bp-down(tablet) {
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
 
   :global(.constructor-element) {
     background-color: $modalBg;
+
+    @include media-bp-down(desktop) {
+      padding: $spacer * 3 $spacer * 3 $spacer * 3 0;
+      background: transparent;
+      border-bottom: 1px solid $secondary;
+      border-radius: 0;
+    }
+  }
+
+  :global(.constructor-element__image) {
+    @include media-bp-down(tablet) {
+      width: 52px;
+      height: auto;
+      margin-right: $spacer;
+    }
   }
 
   :global(.constructor-element__action svg) {

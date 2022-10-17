@@ -1,6 +1,14 @@
 @use "../../styles/variables.scss" as *;
 
 .container {
+  :global(.tab) {
+    flex-grow: 1;
+    min-width: 100px !important;
+    padding-right: 0;
+    padding-left: 0;
+    text-align: center;
+  }
+
   @include media-bp-up(desktop) {
     display: flex;
     flex-direction: column;
@@ -8,18 +16,9 @@
   }
 
   @include media-bp-down(desktop) {
-    display: table;
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 40px;
-
-    :global(.tab) {
-      flex-grow: 1;
-      min-width: 100px !important;
-      padding-right: 0;
-      padding-left: 0;
-      text-align: center;
-    }
   }
 }
 

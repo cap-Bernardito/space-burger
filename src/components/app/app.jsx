@@ -23,7 +23,9 @@ const App = () => {
       <AppHeader />
       <main>
         <section className={classNames(styles.app__container, "container pt-10")}>
-          <h1 className={classNames(styles.app__title, "text text_type_main-large mb-5")}>Соберите бургер</h1>
+          <div className={classNames(styles.app__title)}>
+            <h1 className={classNames("text text_type_main-large mb-5")}>Соберите бургер</h1>
+          </div>
           {isError && `Ошибка при запросе данных: ${isError}`}
           {isLoading
             ? "Загрузка..."
@@ -31,6 +33,9 @@ const App = () => {
                 <DndProvider backend={HTML5Backend}>
                   <div className={classNames(styles.app__ingredients)}>{<BurgerIngredients data={data} />}</div>
                   <div className={classNames(styles.app__constructor)}>
+                    <h2 className={classNames(styles.app__title, "text text_type_main-large mb-5 d-desktop-none")}>
+                      Заказ
+                    </h2>
                     <BurgerConstructor />
                   </div>
                 </DndProvider>
