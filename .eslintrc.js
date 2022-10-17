@@ -15,7 +15,7 @@ module.exports = {
   plugins: ["react-hooks", "@typescript-eslint"],
   rules: {
     "sort-imports": [
-      "error",
+      "warn",
       {
         ignoreCase: true,
         ignoreDeclarationSort: false,
