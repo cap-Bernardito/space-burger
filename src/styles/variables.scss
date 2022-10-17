@@ -63,3 +63,9 @@ $zModal: 2010;
     }
   }
 }
+
+@mixin no-touch() {
+  @media (hover: hover) {
+    @content;
+  }
+}

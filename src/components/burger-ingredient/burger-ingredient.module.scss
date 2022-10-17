@@ -29,6 +29,18 @@
   text-align: center;
 }
 
+.cart_button {
+  display: block;
+  margin: $spacer * 6 auto;
+  color: $accent;
+  text-align: center;
+  text-decoration: none;
+
+  @include no-touch() {
+    display: none;
+  }
+}
+
 .onDrag {
   opacity: 0.1;
 }

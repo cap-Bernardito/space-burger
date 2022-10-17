@@ -23,6 +23,16 @@ const BurgerIngredient = ({ data }) => {
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
   const { name, price, image, image_large, _id, type, count } = data;
 
+  const addIngridientToConstructor = (type, ingridientData) => {
+    if (type === "bun") {
+      dispatch(addBun(ingridientData));
+      dispatch(increaseBunCount(ingridientData));
+    } else {
+      dispatch(addIngredient(ingridientData));
+      dispatch(increaseIngredientCount(ingridientData));
+    }
+  };
+
   const [{ isDrag }, dragRef, preview] = useDrag({
     type: type === "bun" ? "bun" : "ingredient",
     item: { _id, type },
@@ -34,13 +44,7 @@ const BurgerIngredient = ({ data }) => {
         return;
       }
 
-      if (item.type === "bun") {
-        dispatch(addBun(data));
-        dispatch(increaseBunCount(data));
-      } else {
-        dispatch(addIngredient(data));
-        dispatch(increaseIngredientCount(data));
-      }
+      addIngridientToConstructor(item.type, data);
     },
   });
 
@@ -53,6 +57,13 @@ const BurgerIngredient = ({ data }) => {
   const handleClick = () => {
     dispatch(addIngredientDetails(data));
     openModal();
+  };
+
+  const handleOrder = (e, item) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    addIngridientToConstructor(item.type, data);
   };
 
   return (
@@ -75,6 +86,14 @@ const BurgerIngredient = ({ data }) => {
           <CurrencyIcon type="primary" />
         </div>
         <div className={classNames(styles.title)}>{name}</div>
+        <a
+          href="#"
+          alt="Добавить в корзину"
+          className={classNames(styles.cart_button)}
+          onClick={(event) => handleOrder(event, data)}
+        >
+          Добавить
+        </a>
       </div>
       {modalIsOpen && (
         <Modal onClose={closeModal} title="Детали ингридиента">
