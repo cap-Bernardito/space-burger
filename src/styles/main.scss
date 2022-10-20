@@ -9,6 +9,7 @@ body {
   color: $primary;
 }
 
+// Layout
 .container {
   max-width: 1240px + $spacer * 10;
   margin-right: auto;
@@ -22,6 +23,61 @@ body {
   }
 }
 
+.form-wrapper {
+  margin: 180px auto 80px;
+
+  @include media-bp-up(tablet) {
+    display: table;
+  }
+
+  @include media-bp-down(desktop) {
+    margin-top: 100px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 6;
+  }
+}
+// End Layout
+
+// Helpers
+.d-desktop-none {
+  @include media-bp-up(desktop) {
+    display: none;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+// End Helpers
+
+// Common
+a {
+  &,
+  &:link,
+  &:visited {
+    color: $accent;
+    text-decoration: none;
+    transition: color 0.25s;
+  }
+
+  &:hover,
+  &:active {
+    color: $primary;
+  }
+}
+
+.input_size_default,
+.input__container {
+  @include media-bp-down(tablet) {
+    width: 100%;
+  }
+}
+// End Common
+
 // .custom-scroll - react-developer-burger-ui-components/src/ui/common.css
 .custom-scroll,
 .body {
@@ -34,11 +90,5 @@ body {
   &::-webkit-scrollbar-thumb {
     border: 1px solid #2f2f37;
     border-radius: 0;
-  }
-}
-
-.d-desktop-none {
-  @include media-bp-up(desktop) {
-    display: none;
   }
 }

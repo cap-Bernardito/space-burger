@@ -1,11 +1,20 @@
+import { Home, Register } from "../../pages/";
 import AppHeader from "../app-header/app-header";
-import { Home } from "../../pages/";
 
 const App = () => {
+  const currentPage = "register";
+  let page = <Home />;
+
+  switch (currentPage) {
+    case "register":
+      page = <Register />;
+      break;
+  }
+
   return (
     <div className="text text_type_main-default">
       <AppHeader />
-      <Home />
+      {page}
     </div>
   );
 };
