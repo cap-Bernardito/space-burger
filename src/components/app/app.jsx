@@ -1,20 +1,16 @@
-import { Home, Register } from "../../pages/";
+import { Home, NotFound, Register } from "../../pages/";
+import { Route, Routes } from "react-router-dom";
 import AppHeader from "../app-header/app-header";
 
 const App = () => {
-  const currentPage = "register";
-  let page = <Home />;
-
-  switch (currentPage) {
-    case "register":
-      page = <Register />;
-      break;
-  }
-
   return (
     <div className="text text_type_main-default">
       <AppHeader />
-      {page}
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 };
