@@ -19,10 +19,39 @@ const BurgerIngredients = ({ data }) => {
 
   const categoryDOMElements = useMemo(() => ({}), []);
 
+  const scrollableRef = useRef();
+
   useEffect(() => {
-    Object.keys(TYPES_OF_INGREDIENTS).forEach((type) => {
-      categoryDOMElements[type] = document.getElementById(type);
+    const root = scrollableRef.current;
+    const rootHeight = root.getBoundingClientRect().bottom - root.getBoundingClientRect().top;
+    const cssFlexGap = 40;
+
+    const observerCallback = function (entries) {
+      const [result] = entries.map((entry) => (entry.isIntersecting ? entry.target : null)).filter(Boolean);
+
+      if (result) {
+        setActiveTab(result.getAttribute("id"));
+      }
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      root: root,
+      rootMargin: `0px 0px -${rootHeight - cssFlexGap}px 0px`,
+      threshold: 0,
     });
+
+    Object.keys(TYPES_OF_INGREDIENTS).forEach((type) => {
+      const element = document.getElementById(type);
+      categoryDOMElements[type] = element;
+
+      observer.observe(element);
+    });
+
+    return () => {
+      Object.values(categoryDOMElements).forEach((el) => {
+        observer.unobserve(el);
+      });
+    };
   }, [categoryDOMElements]);
 
   const setCurrentTab = useCallback(
@@ -31,28 +60,6 @@ const BurgerIngredients = ({ data }) => {
     },
     [categoryDOMElements]
   );
-
-  const tabsRef = useRef();
-
-  const handleScroll = () => {
-    const cssFlexGap = 40;
-    const tabsBottomPosition = tabsRef.current.getBoundingClientRect().bottom;
-
-    let delta = Number.MAX_VALUE;
-    let result = "";
-
-    Object.keys(TYPES_OF_INGREDIENTS).forEach((type) => {
-      const categoryBottomPosition = categoryDOMElements[type].getBoundingClientRect().bottom;
-      const newDelta = categoryBottomPosition - tabsBottomPosition - cssFlexGap;
-
-      if (0 < newDelta && newDelta < delta) {
-        result = type;
-        delta = categoryBottomPosition;
-      }
-    });
-
-    setActiveTab(result);
-  };
 
   const ingredientTypes = dataByCategory.map(([category]) => category);
 
@@ -74,10 +81,8 @@ const BurgerIngredients = ({ data }) => {
 
   return (
     <div className={classNames(styles.container)}>
-      <div className={classNames(styles.tabs, "mb-10")} ref={tabsRef}>
-        {tabs}
-      </div>
-      <div className={classNames(styles.list, "custom-scroll")} onScroll={handleScroll}>
+      <div className={classNames(styles.tabs, "mb-10")}>{tabs}</div>
+      <div className={classNames(styles.list, "custom-scroll")} ref={scrollableRef}>
         {burgerIngredientsCategory}
       </div>
     </div>
