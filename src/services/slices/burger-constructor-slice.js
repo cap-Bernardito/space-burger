@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = {
   buns: [],
@@ -18,9 +17,14 @@ const burgerConstructorSlice = createSlice({
       ];
       state.total = calculate(state);
     },
-    addIngredient(state, action) {
-      state.ingredients.push({ ...action.payload, key: uuidv4() });
-      state.total = calculate(state);
+    addIngredient: {
+      reducer: (state, action) => {
+        state.ingredients.push(action.payload);
+        state.total = calculate(state);
+      },
+      prepare: (data) => {
+        return { payload: { ...data, key: nanoid() } };
+      },
     },
     removeIngredient(state, action) {
       state.ingredients = state.ingredients.filter((item) => item.key !== action.payload.key);
