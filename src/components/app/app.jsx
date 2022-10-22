@@ -1,4 +1,4 @@
-import { ForgotPassword, Home, Login, NotFound, Register } from "../../pages/";
+import { ForgotPassword, Home, Login, NotFound, Register, ResetPassword } from "../../pages/";
 import { Route, Routes } from "react-router-dom";
 import AppHeader from "../app-header/app-header";
 
@@ -10,6 +10,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
