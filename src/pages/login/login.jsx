@@ -2,7 +2,7 @@ import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-component
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Register = () => {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const inputPasswordRef = useRef(null);
 
@@ -17,8 +17,7 @@ const Register = () => {
       <div className="container">
         <div className="form-wrapper text-center">
           <form className="form">
-            <h1 className="text text_type_main-medium">Регистрация</h1>
-            <Input type={"text"} placeholder={"Имя"} value="" name={"name"} />
+            <h1 className="text text_type_main-medium">Вход</h1>
             <Input type={"email"} placeholder={"E-mail"} value="" name={"email"} />
             <Input
               type={showPassword ? "text" : "password"}
@@ -31,11 +30,15 @@ const Register = () => {
             />
             <div className="mb-15">
               <Button type="primary" size="medium" htmlType="submit">
-                Зарегистрироваться
+                Войти
               </Button>
             </div>
             <div>
-              Уже зарегистрированы? <Link to="/login">Войти</Link>
+              <div className="mb-4">
+                {/* eslint-disable-next-line no-irregular-whitespace */}
+                Вы — новый пользователь? <Link to="/register">Зарегистрироваться</Link>
+              </div>
+              Забыли пароль? <Link to="/forgot-password">Восстановить пароль</Link>
             </div>
           </form>
         </div>
@@ -44,4 +47,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
