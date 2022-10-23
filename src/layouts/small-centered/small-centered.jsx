@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 import styles from "./small-centered.module.scss";
 
 const SmallCentered = () => {
-  console.log(styles);
   return (
     <main>
       <div className="container">
