@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
+import { SmallCentered } from "../../layouts/";
 import { ForgotPassword, Home, Login, NotFound, Register, ResetPassword } from "../../pages/";
 
 import AppHeader from "../app-header/app-header";
@@ -9,12 +10,18 @@ const App = () => {
     <div className="text text_type_main-default">
       <AppHeader />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route element={<SmallCentered />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Route>
+
         <Route path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />} />
+
+        <Route element={<SmallCentered />}>
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </div>
   );

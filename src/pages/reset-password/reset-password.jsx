@@ -14,33 +14,27 @@ const ResetPassword = () => {
   // TODO: повесить на инпуты onChange, приделать к состоянию.
 
   return (
-    <main>
-      <div className="container">
-        <div className="form-wrapper text-center">
-          <form className="form">
-            <h1 className="text text_type_main-medium">Сброс пароля</h1>
-            <Input
-              type={showPassword ? "text" : "password"}
-              placeholder={"Введите новый пароль"}
-              icon={showPassword ? "HideIcon" : "ShowIcon"}
-              value=""
-              name={"password"}
-              ref={inputPasswordRef}
-              onIconClick={toggleVisibility}
-            />
-            <Input type={"text"} placeholder={"Введите код из письма"} value="" name={"code"} />
-            <div className="mb-15">
-              <Button type="primary" size="medium" htmlType="submit">
-                Сохранить
-              </Button>
-            </div>
-            <div>
-              Вспомнили пароль? <Link to="/login">Войти</Link>
-            </div>
-          </form>
-        </div>
+    <form className="flex-v-g6">
+      <h1 className="text text_type_main-medium">Сброс пароля</h1>
+      <Input
+        type={showPassword ? "text" : "password"}
+        placeholder={"Введите новый пароль"}
+        icon={showPassword ? "HideIcon" : "ShowIcon"}
+        value=""
+        name={"password"}
+        ref={inputPasswordRef}
+        onIconClick={toggleVisibility}
+      />
+      <Input type={"text"} placeholder={"Введите код из письма"} value="" name={"code"} />
+      <div className="mb-15">
+        <Button type="primary" size="medium" htmlType="submit">
+          Сохранить
+        </Button>
       </div>
-    </main>
+      <div>
+        Вспомнили пароль? <Link to="/login">Войти</Link>
+      </div>
+    </form>
   );
 };
 

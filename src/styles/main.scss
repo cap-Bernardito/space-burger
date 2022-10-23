@@ -22,24 +22,6 @@ body {
     padding-left: $spacer * 2;
   }
 }
-
-.form-wrapper {
-  margin: 180px auto 80px;
-
-  @include media-bp-up(tablet) {
-    display: table;
-  }
-
-  @include media-bp-down(desktop) {
-    margin-top: 100px;
-  }
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: $spacer * 6;
-  }
-}
 // End Layout
 
 // Helpers
