@@ -1,5 +1,7 @@
-import { ForgotPassword, Home, Login, NotFound, Register, ResetPassword } from "../../pages/";
 import { Route, Routes } from "react-router-dom";
+
+import { ForgotPassword, Home, Login, NotFound, Register, ResetPassword } from "../../pages/";
+
 import AppHeader from "../app-header/app-header";
 
 const App = () => {

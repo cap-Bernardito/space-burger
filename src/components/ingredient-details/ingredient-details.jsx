@@ -1,7 +1,8 @@
 import classNames from "classnames";
-import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
 import PropTypes from "prop-types";
-// eslint-disable-next-line sort-imports
+
+import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
+
 import styles from "./ingredient-details.module.scss";
 
 const IngredientDetails = ({ data }) => {

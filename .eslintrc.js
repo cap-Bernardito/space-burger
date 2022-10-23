@@ -12,18 +12,24 @@ module.exports = {
     "plugin:react/jsx-runtime",
     "prettier",
   ],
-  plugins: ["react-hooks", "@typescript-eslint"],
+  plugins: ["react-hooks", "@typescript-eslint", "simple-import-sort"],
   rules: {
-    "sort-imports": [
+    "simple-import-sort/imports": [
       "warn",
       {
-        ignoreCase: true,
-        ignoreDeclarationSort: false,
-        ignoreMemberSort: false,
-        memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
-        allowSeparatedGroups: false,
+        groups: [
+          ["^@?\\w"],
+          ["^react"],
+          ["^.+(services|hooks|utils)(/.*|$)"],
+          ["^.+pages(/.*|$)"],
+          ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+          ["^styles(/.*|$)"],
+          ["^.+\\.s?css$"],
+        ],
       },
     ],
+    "simple-import-sort/exports": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-useless-escape": "off",

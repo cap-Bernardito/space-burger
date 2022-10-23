@@ -1,15 +1,18 @@
-import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT } from "../../utils/constants";
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { createOrder, removeOrderDetails } from "../../services/slices/order-details-slice";
-import { useDispatch, useSelector } from "react-redux";
-import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import classNames from "classnames";
+
+import { useEffect } from "react";
+import { useDrop } from "react-dnd";
+import { useDispatch, useSelector } from "react-redux";
+
+import { useModal } from "../../hooks";
+import { createOrder, removeOrderDetails } from "../../services/slices/order-details-slice";
+import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT } from "../../utils/constants";
+
+import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { useDrop } from "react-dnd";
-import { useEffect } from "react";
-import { useModal } from "../../hooks";
-// eslint-disable-next-line sort-imports
+
 import styles from "./burger-constructor.module.scss";
 
 const BurgerConstructor = () => {

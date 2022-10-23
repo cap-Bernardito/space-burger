@@ -1,12 +1,15 @@
+import classNames from "classnames";
+
+import { useEffect } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from "react-redux";
+
+import { getBurgerIngredients } from "../../services/slices/burger-ingredients-slice";
+
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
-import classNames from "classnames";
-import { DndProvider } from "react-dnd";
-import { getBurgerIngredients } from "../../services/slices/burger-ingredients-slice";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { useEffect } from "react";
-// eslint-disable-next-line sort-imports
+
 import styles from "./home.module.scss";
 
 const Home = () => {

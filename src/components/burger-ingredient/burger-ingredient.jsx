@@ -1,20 +1,23 @@
+import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import classNames from "classnames";
+import PropTypes from "prop-types";
+
+import { useEffect } from "react";
+import { DragPreviewImage, useDrag } from "react-dnd";
+import { useDispatch, useSelector } from "react-redux";
+
+import { useModal } from "../../hooks";
 import { addBun, addIngredient } from "../../services/slices/burger-constructor-slice";
 import {
   addIngredient as addIngredientDetails,
   removeIngredient as removeIngredientDetails,
 } from "../../services/slices/burger-ingredient-details-slice";
-import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DragPreviewImage, useDrag } from "react-dnd";
 import { increaseBunCount, increaseIngredientCount } from "../../services/slices/burger-ingredients-slice";
-import { useDispatch, useSelector } from "react-redux";
-import classNames from "classnames";
 import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
+
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
-import PropTypes from "prop-types";
-import { useEffect } from "react";
-import { useModal } from "../../hooks";
-// eslint-disable-next-line sort-imports
+
 import styles from "./burger-ingredient.module.scss";
 
 const BurgerIngredient = ({ data }) => {
