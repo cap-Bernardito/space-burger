@@ -5,17 +5,26 @@ import { Spin as Hamburger } from "hamburger-react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
+import { useScreenTest } from "../../hooks";
+
+import AsideMenu from "../../components/aside-menu/aside-menu";
+
 import styles from "./navbar.module.scss";
 
 const Navbar = () => {
   const [isOpen, setOpen] = useState(false);
+  const isSmallScreen = useScreenTest();
 
   const buttonClass = styles.link;
   const activeClass = ({ isActive }) => (isActive ? classNames(buttonClass, styles.link_active) : buttonClass);
 
+  const onClick = () => {
+    setOpen((prevState) => !prevState);
+  };
+
   return (
     <div className={classNames(styles.navbar, isOpen && styles.navbar__open)}>
-      <ul className={classNames(styles.navbar__list)}>
+      <ul className={classNames(styles.navbar__list)} onClick={onClick}>
         <li className={classNames(styles.navbar__item)}>
           <NavLink to="/" end className={activeClass}>
             <BurgerIcon type="primary" />
@@ -33,6 +42,8 @@ const Navbar = () => {
             <ProfileIcon type="secondary" />
             <span>Личный кабинет</span>
           </NavLink>
+
+          {isSmallScreen && <AsideMenu />}
         </li>
       </ul>
       <div className={classNames(styles.navbar__hamburger)}>

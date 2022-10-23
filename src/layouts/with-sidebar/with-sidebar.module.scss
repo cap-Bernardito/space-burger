@@ -1,0 +1,51 @@
+@use "../../styles/variables.scss" as *;
+
+.layout {
+  margin-top: 120px;
+  margin-bottom: 60px;
+  display: grid;
+  grid-template-columns: 2fr 3fr 2fr;
+  grid-column-gap: 60px;
+
+  @include media-bp-down(desktop) {
+    grid-template-columns: 1fr 2fr;
+    grid-column-gap: 20px;
+
+    :global(.input_size_default),
+    :global(.input__container) {
+      width: 400px;
+    }
+  }
+
+  @include media-bp-down(tablet) {
+    margin-top: 60px;
+    grid-template-columns: 0 1fr;
+    grid-column-gap: 0;
+
+    :global(.input_size_default),
+    :global(.input__container) {
+      width: 100%;
+    }
+  }
+}
+
+.sidebar {
+  grid-column: 1 / span 1;
+
+  ul {
+    li {
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    a {
+      padding: $spacer * 4 $spacer;
+    }
+  }
+}
+
+.main {
+  grid-column: 2 / span 1;
+  text-align: center;
+}

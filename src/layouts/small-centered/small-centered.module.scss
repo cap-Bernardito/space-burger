@@ -10,11 +10,16 @@
   @include media-bp-down(desktop) {
     margin-top: 100px;
   }
+}
 
-  :global(.flex-v-g6) {
-    display: flex;
-    flex-direction: column;
-    gap: $spacer * 6;
-    text-align: center;
+:global(.flex-v-g6) {
+  display: inline-flex;
+  flex-direction: column;
+  gap: $spacer * 6;
+  text-align: center;
+  align-items: center;
+
+  @include media-bp-down(tablet) {
+    width: 100%;
   }
 }

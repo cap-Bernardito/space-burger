@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
-import { SmallCentered } from "../../layouts/";
-import { ForgotPassword, Home, Ingredient, Login, NotFound, Register, ResetPassword } from "../../pages/";
+import { SmallCentered, WithSidebar } from "../../layouts/";
+import { ForgotPassword, Home, Ingredient, Login, NotFound, Profile, Register, ResetPassword } from "../../pages/";
 
 import AppHeader from "../app-header/app-header";
 
@@ -16,6 +16,10 @@ const App = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/ingredients/:id" element={<Ingredient />} />
+        </Route>
+
+        <Route element={<WithSidebar />}>
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
         <Route path="/" element={<Home />} />

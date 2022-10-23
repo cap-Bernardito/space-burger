@@ -1,0 +1,29 @@
+@use "../../styles/variables.scss" as *;
+
+.root {
+  margin: 0 0 $spacer * 22;
+  padding: 0;
+  list-style: none;
+
+  a {
+    display: block;
+    padding: $spacer * 2 $spacer;
+
+    &,
+    &:link,
+    &:visited {
+      color: $secondary;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+
+    &:hover,
+    &:active {
+      color: $primary;
+    }
+
+    &:global(.active) {
+      color: $primary !important;
+    }
+  }
+}
