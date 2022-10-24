@@ -6,6 +6,8 @@
 
 body {
   --toastify-color-error: #{$error};
+  --toastify-color-success: #{$success};
+
   background: $bg;
   color: $primary;
 }

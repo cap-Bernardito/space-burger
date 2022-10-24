@@ -157,7 +157,7 @@ class ApiService {
   resetUser = async (email) => {
     return this.request(this._endpoint.user.reset, {
       method: "POST",
-      body: JSON.stringify({ email }),
+      body: JSON.stringify(email),
     });
   };
 

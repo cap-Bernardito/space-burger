@@ -29,11 +29,13 @@ export const notify = (message, options = {}, type = "error") => {
     return;
   }
 
+  const toastType = typeof options === "string" ? options : type;
+
   const defaultOptions = {
     position: "top-center",
     autoClose: 3000,
     theme: "colored",
   };
 
-  toast[type](message, { ...defaultOptions, ...options });
+  toast[toastType](message, { ...defaultOptions, ...options });
 };

@@ -6,6 +6,7 @@ import burgerIngredientsReducer from "../slices/burger-ingredients-slice";
 import orderDetailsReducer from "../slices/order-details-slice";
 import userLoginReducer from "../slices/user-login-slice";
 import userRegisterReducer from "../slices/user-register-slice";
+import userResetReducer from "../slices/user-reset-slice";
 
 export const rootReducer = combineReducers({
   burgerIngredients: burgerIngredientsReducer,
@@ -14,4 +15,5 @@ export const rootReducer = combineReducers({
   orderDetails: orderDetailsReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userReset: userResetReducer,
 });
