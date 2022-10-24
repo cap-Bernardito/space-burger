@@ -5,6 +5,7 @@
 }
 
 body {
+  --toastify-color-error: #{$error};
   background: $bg;
   color: $primary;
 }
