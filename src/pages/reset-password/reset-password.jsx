@@ -1,33 +1,71 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { useRef, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const ResetPassword = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const inputPasswordRef = useRef(null);
+import { useObserveForm, useToggler } from "../../hooks";
+import { error as errorAction, success as successAction, update } from "../../services/slices/user-update-slice";
+import { notify } from "../../utils/utils";
 
-  const toggleVisibility = () => {
-    setShowPassword((prevState) => !prevState);
+const ResetPassword = () => {
+  const dispatch = useDispatch();
+  const { loading, response, error } = useSelector((state) => state.userUpdate);
+  const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
+  const [formState, handleFormFields] = useObserveForm({
+    password: "",
+    token: "",
+  });
+
+  useEffect(() => {
+    if (error) {
+      notify(error, {
+        onClose: () => dispatch(errorAction(false)),
+      });
+    }
+  }, [dispatch, error]);
+
+  useEffect(() => {
+    if (response) {
+      notify(
+        response.message,
+        {
+          onClose: () => dispatch(successAction({ loading: false, response: null })),
+        },
+        "success"
+      );
+    }
+  }, [dispatch, response]);
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+
+    dispatch(update(formState));
   };
 
-  // TODO: повесить на инпуты onChange, приделать к состоянию.
-
   return (
-    <form className="flex-v-g6">
+    <form className="flex-v-g6" onSubmit={handleSubmitForm}>
       <h1 className="text text_type_main-medium">Сброс пароля</h1>
       <Input
-        type={showPassword ? "text" : "password"}
+        type={isPasswordVisible ? "text" : "password"}
         placeholder={"Введите новый пароль"}
-        icon={showPassword ? "HideIcon" : "ShowIcon"}
-        value=""
+        icon={isPasswordVisible ? "HideIcon" : "ShowIcon"}
         name={"password"}
-        ref={inputPasswordRef}
-        onIconClick={toggleVisibility}
+        onIconClick={togglePasswordVisible}
+        value={formState.password}
+        onChange={handleFormFields}
+        required
       />
-      <Input type={"text"} placeholder={"Введите код из письма"} value="" name={"code"} />
+      <Input
+        type={"text"}
+        placeholder={"Введите код из письма"}
+        name={"token"}
+        value={formState.token}
+        onChange={handleFormFields}
+        required
+      />
       <div className="mb-15">
-        <Button type="primary" size="medium" htmlType="submit">
+        <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
           Сохранить
         </Button>
       </div>
