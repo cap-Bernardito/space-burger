@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 import { TYPES_OF_INGREDIENTS } from "./constants";
 
 export const splitIngredientsByTypes = (data) => {
@@ -20,4 +22,18 @@ export const splitIngredientsByTypes = (data) => {
   }, initial);
 
   return Object.entries(result);
+};
+
+export const notify = (message, options = {}, type = "error") => {
+  if (!message) {
+    return;
+  }
+
+  const defaultOptions = {
+    position: "top-center",
+    autoClose: 3000,
+    theme: "colored",
+  };
+
+  toast[type](message, { ...defaultOptions, ...options });
 };

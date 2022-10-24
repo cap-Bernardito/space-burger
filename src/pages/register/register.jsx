@@ -3,10 +3,10 @@ import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-component
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
 
 import { useObserveForm, useToggler } from "../../hooks";
 import { error as errorAction, register } from "../../services/slices/user-register-slice";
+import { notify } from "../../utils/utils";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -20,12 +20,8 @@ const Register = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error, {
-        position: "top-center",
-        autoClose: 3000,
-        theme: "colored",
-        // NOTE: Из за React.strictMode происходит двойное срабатывание => очищаем ошибку после дестроя 2-го тоста
-        onClose: () => setTimeout(() => dispatch(errorAction(false)), 5000),
+      notify(error, {
+        onClose: () => dispatch(errorAction(false)),
       });
     }
   }, [dispatch, error]);
@@ -38,7 +34,6 @@ const Register = () => {
 
   return (
     <>
-      {error && <ToastContainer />}
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>
         <h1 className="text text_type_main-medium">Регистрация</h1>
         <Input
