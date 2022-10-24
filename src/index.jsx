@@ -12,6 +12,7 @@ import { rootReducer } from "./services/reducers";
 import App from "./components/app/app";
 import reportWebVitals from "./reportWebVitals";
 
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/index.scss";
 
 const store = configureStore({
