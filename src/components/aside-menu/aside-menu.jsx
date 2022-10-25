@@ -1,8 +1,34 @@
+import classNames from "classnames";
+
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+
+import { error as errorAction, logout } from "../../services/slices/user-logout-slice";
+import { notify } from "../../utils/utils";
+
+import Spinner from "../spinner/spinner";
 
 import styles from "./aside-menu.module.scss";
 
 const AsideMenu = () => {
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.userLogout);
+
+  useEffect(() => {
+    if (error) {
+      notify(error, {
+        onClose: () => dispatch(errorAction(false)),
+      });
+    }
+  }, [dispatch, error]);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+
+    dispatch(logout());
+  };
+
   return (
     <ul className={styles.root}>
       <li>
@@ -14,8 +40,9 @@ const AsideMenu = () => {
         </a>
       </li>
       <li>
-        <a href="#" title="Выход">
-          Выход
+        <a href="#" title="Выход" className={classNames({ [styles.loading]: loading })} onClick={handleLogout}>
+          <span>Выход</span>
+          <Spinner loading={loading} />
         </a>
       </li>
     </ul>

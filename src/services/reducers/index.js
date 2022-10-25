@@ -6,6 +6,7 @@ import burgerIngredientsReducer from "../slices/burger-ingredients-slice";
 import orderDetailsReducer from "../slices/order-details-slice";
 import userGetReducer from "../slices/user-get-slice";
 import userLoginReducer from "../slices/user-login-slice";
+import userLogoutReducer from "../slices/user-logout-slice";
 import userRegisterReducer from "../slices/user-register-slice";
 import userResetPasswordReducer from "../slices/user-reset-password-slice";
 import userUpdatePasswordReducer from "../slices/user-update-password-slice";
@@ -16,6 +17,7 @@ export const rootReducer = combineReducers({
   ingredientDetails: burgerIngredientDetailsReducer,
   orderDetails: orderDetailsReducer,
   userLogin: userLoginReducer,
+  userLogout: userLogoutReducer,
   userRegister: userRegisterReducer,
   userResetPassword: userResetPasswordReducer,
   userUpdatePassword: userUpdatePasswordReducer,

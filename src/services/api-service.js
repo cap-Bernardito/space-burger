@@ -205,11 +205,15 @@ class ApiService {
     }
   };
 
-  deleteAccessToken = async (refreshToken) => {
-    return this.request(this._endpoint.access_token.delete, {
+  deleteAccessToken = async () => {
+    const result = this.request(this._endpoint.access_token.delete, {
       method: "POST",
-      body: JSON.stringify({ token: refreshToken }),
+      body: JSON.stringify({ token: this._refreshToken }),
     });
+
+    this._removeTokens();
+
+    return result;
   };
 
   _getToken = () => {
