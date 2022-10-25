@@ -5,12 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "../../hooks";
-import { error as errorAction, success as successAction, update } from "../../services/slices/user-update-slice";
+import {
+  error as errorAction,
+  success as successAction,
+  updatePassword,
+} from "../../services/slices/user-update-password-slice";
 import { notify } from "../../utils/utils";
 
 const ResetPassword = () => {
   const dispatch = useDispatch();
-  const { loading, response, error } = useSelector((state) => state.userUpdate);
+  const { loading, response, error } = useSelector((state) => state.userUpdatePassword);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
   const [formState, handleFormFields] = useObserveForm({
     password: "",
@@ -40,7 +44,7 @@ const ResetPassword = () => {
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
-    dispatch(update(formState));
+    dispatch(updatePassword(formState));
   };
 
   return (

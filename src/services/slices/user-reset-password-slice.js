@@ -8,8 +8,8 @@ const initialState = {
   error: false,
 };
 
-const userReset = createSlice({
-  name: "USER_RESET",
+const userResetPassword = createSlice({
+  name: "USER_RESET_PASSWORD",
   initialState,
   reducers: {
     request(state) {
@@ -27,10 +27,10 @@ const userReset = createSlice({
   },
 });
 
-export const reset = (userInfo) => async (dispatch) => {
+export const resetPassword = (userInfo) => async (dispatch) => {
   dispatch(request());
   try {
-    const response = await apiService.resetUser(userInfo);
+    const response = await apiService.resetUserPassword(userInfo);
 
     dispatch(success(response));
   } catch (e) {
@@ -38,5 +38,5 @@ export const reset = (userInfo) => async (dispatch) => {
   }
 };
 
-export const { request, success, error } = userReset.actions;
-export default userReset.reducer;
+export const { request, success, error } = userResetPassword.actions;
+export default userResetPassword.reducer;

@@ -5,12 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { useObserveForm } from "../../hooks";
-import { error as errorAction, reset, success as successAction } from "../../services/slices/user-reset-slice";
+import {
+  error as errorAction,
+  resetPassword,
+  success as successAction,
+} from "../../services/slices/user-reset-password-slice";
 import { notify } from "../../utils/utils";
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
-  const { loading, response, error } = useSelector((state) => state.userReset);
+  const { loading, response, error } = useSelector((state) => state.userResetPassword);
   const [formState, handleFormFields] = useObserveForm({
     email: "",
   });
@@ -38,7 +42,7 @@ const ForgotPassword = () => {
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
-    dispatch(reset(formState));
+    dispatch(resetPassword(formState));
   };
 
   return (

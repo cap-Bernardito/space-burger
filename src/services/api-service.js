@@ -13,9 +13,10 @@ class ApiService {
     },
     user: {
       create: "/auth/register/",
-      reset: "/password-reset/",
-      update: "/password-reset/reset/",
+      update: "/auth/user/",
       get: "/auth/user/",
+      resetPassword: "/password-reset/",
+      updatePassword: "/password-reset/reset/",
     },
     ingredients: {
       get: "/ingredients/",
@@ -143,8 +144,8 @@ class ApiService {
     return result;
   };
 
-  updateUser = async (userInfo) => {
-    const result = await this.request(this._endpoint.user.update, {
+  updateUserPassword = async (userInfo) => {
+    const result = await this.request(this._endpoint.user.updatePassword, {
       method: "POST",
       body: JSON.stringify(userInfo),
     });
@@ -154,8 +155,8 @@ class ApiService {
     return result;
   };
 
-  resetUser = async (email) => {
-    return this.request(this._endpoint.user.reset, {
+  resetUserPassword = async (email) => {
+    return this.request(this._endpoint.user.resetPassword, {
       method: "POST",
       body: JSON.stringify(email),
     });

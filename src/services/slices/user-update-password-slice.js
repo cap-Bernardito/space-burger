@@ -8,8 +8,8 @@ const initialState = {
   error: false,
 };
 
-const userUpdate = createSlice({
-  name: "USER_UPDATE",
+const userUpdatePassword = createSlice({
+  name: "USER_UPDATE_PASSWORD",
   initialState,
   reducers: {
     request(state) {
@@ -27,10 +27,10 @@ const userUpdate = createSlice({
   },
 });
 
-export const update = (userInfo) => async (dispatch) => {
+export const updatePassword = (userInfo) => async (dispatch) => {
   dispatch(request());
   try {
-    const response = await apiService.updateUser(userInfo);
+    const response = await apiService.updateUserPassword(userInfo);
 
     dispatch(success(response));
   } catch (e) {
@@ -38,5 +38,5 @@ export const update = (userInfo) => async (dispatch) => {
   }
 };
 
-export const { request, success, error } = userUpdate.actions;
-export default userUpdate.reducer;
+export const { request, success, error } = userUpdatePassword.actions;
+export default userUpdatePassword.reducer;
