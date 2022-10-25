@@ -14,7 +14,7 @@ const useObserveForm = (initialState = {}) => {
     });
   };
 
-  return [state, handleFormFields];
+  return [state, handleFormFields, setState];
 };
 
 export default useObserveForm;

@@ -37,17 +37,33 @@ class ApiService {
     referrerPolicy: "no-referrer",
   };
 
-  request = async (endpoint, fetchProperties = {}, authProperties = {}) => {
+  constructor() {
+    this._setTokens();
+  }
+
+  request = async (endpoint, fetchProperties = { headers: {} }, authProperties = { headers: {} }) => {
     if (!endpoint) {
       throw new Error('Endpoint in "ApiService.getResource" function is not valid');
     }
 
-    const requestInit = { ...this._defaultFetchProperties, ...fetchProperties, ...authProperties };
+    const requestInit = {
+      ...this._defaultFetchProperties,
+      ...fetchProperties,
+      ...authProperties,
+      headers: { ...this._defaultFetchProperties.headers, ...fetchProperties.headers, ...authProperties.headers },
+    };
+
     const request = `${this._baseApiUrl}${endpoint}`;
     const response = await fetch(request, requestInit);
     const result = await response.json();
 
     if (!result.success) {
+      if (result.message === "jwt expired") {
+        await this.updateAccessToken();
+
+        return this.requestWithAuth(endpoint, fetchProperties);
+      }
+
       throw new Error(result.message);
     }
 
@@ -59,33 +75,13 @@ class ApiService {
   };
 
   requestWithAuth = async (endpoint, fetchProperties = {}) => {
-    const { accessToken, refreshToken } = this._getTokens();
-    const authProperties = {};
+    const authProperties = { headers: {} };
 
-    if (accessToken) {
-      authProperties["Authorization"] = accessToken;
+    if (this._accessToken) {
+      authProperties["headers"]["Authorization"] = this._accessToken;
     }
 
-    const result = await this.request(endpoint, fetchProperties, authProperties);
-
-    if (result.success) {
-      return result;
-    }
-
-    if (result.message === "jwt expired") {
-      try {
-        await this.updateAccessToken(refreshToken);
-
-        return this.requestWithAuth(endpoint, fetchProperties);
-      } catch {
-        this._setTokens({
-          accessToken: null,
-          refreshToken: null,
-        });
-      }
-    }
-
-    throw new Error(result.message);
+    return this.request(endpoint, fetchProperties, authProperties);
   };
 
   getBurgerIngredients = async () => {
@@ -172,7 +168,7 @@ class ApiService {
   };
 
   getUser = async () => {
-    return this.request(this._endpoint.user.get);
+    return this.requestWithAuth(this._endpoint.user.get);
   };
 
   createAccessToken = async (tokenInfo) => {
@@ -186,15 +182,26 @@ class ApiService {
     return result;
   };
 
-  updateAccessToken = async (refreshToken) => {
-    const result = await this.request(this._endpoint.access_token.update, {
-      method: "POST",
-      body: JSON.stringify({ token: refreshToken }),
-    });
+  updateAccessToken = async () => {
+    if (!this._refreshToken) {
+      throw new Error("Access token is not available");
+    }
 
-    this._setTokens(result);
+    try {
+      const result = await this.request(this._endpoint.access_token.update, {
+        method: "POST",
+        body: JSON.stringify({ token: this._refreshToken }),
+      });
 
-    return result;
+      this._setTokens(result);
+    } catch (error) {
+      this._setTokens({
+        accessToken: null,
+        refreshToken: null,
+      });
+
+      throw error;
+    }
   };
 
   deleteAccessToken = async (refreshToken) => {
@@ -204,20 +211,17 @@ class ApiService {
     });
   };
 
-  _setTokens = (tokens = {}) => {
-    this._accessToken = tokens.accessToken;
-    this._refreshToken = tokens.refreshToken;
-  };
+  _setTokens = (tokens) => {
+    if (typeof tokens !== "undefined") {
+      this._accessToken = tokens.accessToken;
+      this._refreshToken = tokens.refreshToken;
 
-  _getTokens = () => {
-    if (this._accessToken && this._refreshToken) {
-      return {
-        accessToken: this._accessToken,
-        refreshToken: this._refreshToken,
-      };
+      // TODO: записать в куки
+
+      return;
     }
 
-    throw new Error("Access token is not available");
+    // TODO: проверить куки
   };
 
   _transformData(data) {
