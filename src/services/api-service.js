@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 import { data as fakeData } from "../utils/data";
 
 class ApiService {
@@ -37,10 +39,6 @@ class ApiService {
     referrerPolicy: "no-referrer",
   };
 
-  constructor() {
-    this._setTokens();
-  }
-
   request = async (endpoint, fetchProperties = { headers: {} }, authProperties = { headers: {} }) => {
     if (!endpoint) {
       throw new Error('Endpoint in "ApiService.getResource" function is not valid');
@@ -76,6 +74,10 @@ class ApiService {
 
   requestWithAuth = async (endpoint, fetchProperties = {}) => {
     const authProperties = { headers: {} };
+
+    if (!this._accessToken) {
+      await this.updateAccessToken();
+    }
 
     if (this._accessToken) {
       authProperties["headers"]["Authorization"] = this._accessToken;
@@ -183,22 +185,21 @@ class ApiService {
   };
 
   updateAccessToken = async () => {
-    if (!this._refreshToken) {
+    const refreshToken = this._getToken();
+
+    if (!refreshToken) {
       throw new Error("Access token is not available");
     }
 
     try {
       const result = await this.request(this._endpoint.access_token.update, {
         method: "POST",
-        body: JSON.stringify({ token: this._refreshToken }),
+        body: JSON.stringify({ token: refreshToken }),
       });
 
       this._setTokens(result);
     } catch (error) {
-      this._setTokens({
-        accessToken: null,
-        refreshToken: null,
-      });
+      this._removeTokens();
 
       throw error;
     }
@@ -211,17 +212,24 @@ class ApiService {
     });
   };
 
-  _setTokens = (tokens) => {
+  _getToken = () => {
+    return this._refreshToken ? this._refreshToken : Cookies.get("token");
+  };
+
+  _removeTokens = async () => {
+    this._accessToken = null;
+    this._refreshToken = null;
+
+    Cookies.remove("token");
+  };
+
+  _setTokens = async (tokens) => {
     if (typeof tokens !== "undefined") {
       this._accessToken = tokens.accessToken;
       this._refreshToken = tokens.refreshToken;
 
-      // TODO: записать в куки
-
-      return;
+      Cookies.set("token", tokens.refreshToken, { path: "/" });
     }
-
-    // TODO: проверить куки
   };
 
   _transformData(data) {
