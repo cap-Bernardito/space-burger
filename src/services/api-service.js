@@ -144,6 +144,15 @@ class ApiService {
     return result;
   };
 
+  updateUser = async (userInfo) => {
+    const result = await this.requestWithAuth(this._endpoint.user.update, {
+      method: "PATCH",
+      body: JSON.stringify(userInfo),
+    });
+
+    return result;
+  };
+
   updateUserPassword = async (userInfo) => {
     const result = await this.request(this._endpoint.user.updatePassword, {
       method: "POST",
