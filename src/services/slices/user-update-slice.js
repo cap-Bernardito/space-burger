@@ -8,8 +8,8 @@ const initialState = {
   error: false,
 };
 
-const userGet = createSlice({
-  name: "USER_GET",
+const userUpdate = createSlice({
+  name: "USER_UPDATE",
   initialState,
   reducers: {
     request(state) {
@@ -32,10 +32,10 @@ const userGet = createSlice({
   },
 });
 
-export const getUser = () => async (dispatch) => {
+export const updateUser = (user) => async (dispatch) => {
   dispatch(request());
   try {
-    const response = await apiService.getUser();
+    const response = await apiService.updateUser(user);
 
     dispatch(success(response));
   } catch (e) {
@@ -43,5 +43,5 @@ export const getUser = () => async (dispatch) => {
   }
 };
 
-export const { request, success, error } = userGet.actions;
-export default userGet.reducer;
+export const { request, success, error } = userUpdate.actions;
+export default userUpdate.reducer;

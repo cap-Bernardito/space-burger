@@ -10,6 +10,7 @@ import userLogoutReducer from "../slices/user-logout-slice";
 import userRegisterReducer from "../slices/user-register-slice";
 import userResetPasswordReducer from "../slices/user-reset-password-slice";
 import userUpdatePasswordReducer from "../slices/user-update-password-slice";
+import userUpdateReducer from "../slices/user-update-slice";
 
 export const rootReducer = combineReducers({
   burgerIngredients: burgerIngredientsReducer,
@@ -19,6 +20,7 @@ export const rootReducer = combineReducers({
   userLogin: userLoginReducer,
   userLogout: userLogoutReducer,
   userRegister: userRegisterReducer,
+  userUpdate: userUpdateReducer,
   userResetPassword: userResetPasswordReducer,
   userUpdatePassword: userUpdatePasswordReducer,
   userGet: userGetReducer,
