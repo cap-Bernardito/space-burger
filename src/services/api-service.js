@@ -90,14 +90,14 @@ class ApiService {
     if (this._isFakeData) {
       return new Promise((resolve) =>
         setTimeout(() => {
-          resolve(this._transformData(fakeData));
+          resolve(fakeData);
         }, 1000)
       );
     }
 
     const { data } = await this.request(this._endpoint.ingredients.get);
 
-    return this._transformData(data);
+    return data;
   };
 
   createOrder = async (ingredientIds) => {
@@ -235,10 +235,6 @@ class ApiService {
       Cookies.set("token", tokens.refreshToken, { path: "/" });
     }
   };
-
-  _transformData(data) {
-    return data.map((item) => ({ ...item, count: 0 }));
-  }
 
   _transformOrderInfo(data) {
     return data?.order?.number;

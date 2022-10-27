@@ -12,7 +12,6 @@ import {
   addIngredient as addIngredientDetails,
   removeIngredient as removeIngredientDetails,
 } from "../../services/slices/burger-ingredient-details-slice";
-import { increaseBunCount, increaseIngredientCount } from "../../services/slices/burger-ingredients-slice";
 import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
 
 import IngredientDetails from "../ingredient-details/ingredient-details";
@@ -20,19 +19,17 @@ import Modal from "../modal/modal";
 
 import styles from "./burger-ingredient.module.scss";
 
-const BurgerIngredient = ({ data }) => {
+const BurgerIngredient = ({ data, count }) => {
   const dispatch = useDispatch();
   const { ingredient } = useSelector((state) => state.ingredientDetails);
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
-  const { name, price, image, image_large, _id, type, count } = data;
+  const { name, price, image, image_large, _id, type } = data;
 
   const addIngridientToConstructor = (type, ingridientData) => {
     if (type === "bun") {
       dispatch(addBun(ingridientData));
-      dispatch(increaseBunCount(ingridientData));
     } else {
       dispatch(addIngredient(ingridientData));
-      dispatch(increaseIngredientCount(ingridientData));
     }
   };
 
@@ -109,6 +106,7 @@ const BurgerIngredient = ({ data }) => {
 
 BurgerIngredient.propTypes = {
   data: PropTypes.shape(INGREDIENT_PROP_TYPES).isRequired,
+  count: PropTypes.number,
 };
 
 export default BurgerIngredient;

@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 
 import { moveIngredient } from "../../services/slices/burger-constructor-slice";
 import { removeIngredient } from "../../services/slices/burger-constructor-slice";
-import { decreaseIngredientCount } from "../../services/slices/burger-ingredients-slice";
 import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
 
 import styles from "./burger-constructor-element.module.scss";
@@ -68,7 +67,6 @@ const BurgerConstructorElement = ({ type = "", data, isLocked = false, index = 0
 
   const handleClose = (removedItem) => {
     dispatch(removeIngredient(removedItem));
-    dispatch(decreaseIngredientCount(removedItem));
   };
 
   return (
