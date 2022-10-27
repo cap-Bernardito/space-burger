@@ -1,4 +1,4 @@
-import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, EmailInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,12 +44,13 @@ const Register = () => {
           onChange={handleFormFields}
           required
         />
-        <Input
+        <EmailInput
           type={"email"}
           placeholder={"E-mail"}
           name={"email"}
           value={formState.email}
           onChange={handleFormFields}
+          errorText="Введите корректный email"
           required
         />
         <Input

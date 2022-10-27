@@ -1,4 +1,4 @@
-import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,12 +48,13 @@ const ForgotPassword = () => {
   return (
     <form className="flex-v-g6" onSubmit={handleSubmitForm}>
       <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-      <Input
+      <EmailInput
         type={"email"}
         placeholder={"Укажите e-mail"}
         name={"email"}
         value={formState.email}
         onChange={handleFormFields}
+        errorText="Введите корректный email"
         required
       />
       <div className="mb-15">

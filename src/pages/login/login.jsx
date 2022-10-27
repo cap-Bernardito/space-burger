@@ -1,4 +1,4 @@
-import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, EmailInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,12 +35,13 @@ const Login = () => {
     <>
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>
         <h1 className="text text_type_main-medium">Вход</h1>
-        <Input
+        <EmailInput
           type={"email"}
           placeholder={"E-mail"}
           name={"email"}
           value={formState.email}
           onChange={handleFormFields}
+          errorText="Введите корректный email"
           required
         />
         <Input

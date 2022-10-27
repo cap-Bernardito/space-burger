@@ -105,6 +105,7 @@ const Profile = () => {
         value={formState.email}
         onChange={handleOnChange}
         isIcon={true}
+        errorText="Введите корректный email"
         required
       />
       <EditableInput
