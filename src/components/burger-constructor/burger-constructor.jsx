@@ -1,7 +1,7 @@
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -18,9 +18,14 @@ import styles from "./burger-constructor.module.scss";
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
-  const { buns, ingredients, total } = useSelector((state) => state.burgerConstructor);
+  const { buns, ingredients } = useSelector((state) => state.burgerConstructor);
   const { number: orderNumber, loading: isLoading, error: isError } = useSelector((state) => state.orderDetails);
   const [topBun, bottomBun] = buns;
+
+  const total = useMemo(
+    () => [...buns, ...ingredients].reduce((acc, { price }) => (acc += price), 0),
+    [buns, ingredients]
+  );
 
   const initialDropState = {
     accept: "bun",
