@@ -32,7 +32,7 @@ const Home = () => {
           : !isError && (
               <DndProvider backend={HTML5Backend}>
                 <div className={classNames(styles.ingredients)}>{<BurgerIngredients data={data} />}</div>
-                <div className={classNames(styles.burgerConstructor)}>
+                <div className={classNames(styles.burger_constructor)}>
                   <h2 className={classNames(styles.title, "text text_type_main-large mb-5 d-desktop-none")}>Заказ</h2>
                   <BurgerConstructor />
                 </div>
