@@ -28,15 +28,15 @@ const userLogout = createSlice({
 });
 
 export const logout = () => async (dispatch) => {
-  dispatch(request());
+  dispatch(logoutRequest());
   try {
     const response = await apiService.deleteAccessToken();
 
-    dispatch(success(response));
+    dispatch(logoutSuccess(response));
   } catch (e) {
-    dispatch(error(e.message));
+    dispatch(logoutError(e.message));
   }
 };
 
-export const { request, success, error } = userLogout.actions;
+export const { request: logoutRequest, success: logoutSuccess, error: logoutError } = userLogout.actions;
 export default userLogout.reducer;

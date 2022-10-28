@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 
 import { useObserveForm } from "../../hooks";
 import {
-  error as errorAction,
   resetPassword,
-  success as successAction,
+  resetPasswordError,
+  resetPasswordSuccess,
 } from "../../services/slices/user-reset-password-slice";
 import { notify } from "../../utils/utils";
 
@@ -22,7 +22,7 @@ const ForgotPassword = () => {
   useEffect(() => {
     if (error) {
       notify(error, {
-        onClose: () => dispatch(errorAction(false)),
+        onClose: () => dispatch(resetPasswordError(false)),
       });
     }
   }, [dispatch, error]);
@@ -32,7 +32,7 @@ const ForgotPassword = () => {
       notify(
         response.message,
         {
-          onClose: () => dispatch(successAction({ loading: false, response: null })),
+          onClose: () => dispatch(resetPasswordSuccess({ loading: false, response: null })),
         },
         "success"
       );

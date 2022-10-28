@@ -7,11 +7,11 @@ import { DragPreviewImage, useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useModal } from "../../hooks";
-import { addBun, addIngredient } from "../../services/slices/burger-constructor-slice";
 import {
-  addIngredient as addIngredientDetails,
-  removeIngredient as removeIngredientDetails,
-} from "../../services/slices/burger-ingredient-details-slice";
+  addBunInBurgerConstructor,
+  addIngredientInBurgerConstructor,
+} from "../../services/slices/burger-constructor-slice";
+import { addIngredientDetails, removeIngredientDetails } from "../../services/slices/burger-ingredient-details-slice";
 import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
 
 import IngredientDetails from "../ingredient-details/ingredient-details";
@@ -27,9 +27,9 @@ const BurgerIngredient = ({ data, count }) => {
 
   const addIngridientToConstructor = (type, ingridientData) => {
     if (type === "bun") {
-      dispatch(addBun(ingridientData));
+      dispatch(addBunInBurgerConstructor(ingridientData));
     } else {
-      dispatch(addIngredient(ingridientData));
+      dispatch(addIngredientInBurgerConstructor(ingridientData));
     }
   };
 

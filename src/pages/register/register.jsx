@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "../../hooks";
-import { error as errorAction, register } from "../../services/slices/user-register-slice";
+import { register, registerError } from "../../services/slices/user-register-slice";
 import { notify } from "../../utils/utils";
 
 const Register = () => {
@@ -21,7 +21,7 @@ const Register = () => {
   useEffect(() => {
     if (error) {
       notify(error, {
-        onClose: () => dispatch(errorAction(false)),
+        onClose: () => dispatch(registerError(false)),
       });
     }
   }, [dispatch, error]);

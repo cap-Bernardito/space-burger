@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "../../hooks";
-import { error as errorAction, login } from "../../services/slices/user-login-slice";
+import { login, loginError } from "../../services/slices/user-login-slice";
 import { notify } from "../../utils/utils";
 
 const Login = () => {
@@ -20,7 +20,7 @@ const Login = () => {
   useEffect(() => {
     if (error) {
       notify(error, {
-        onClose: () => dispatch(errorAction(false)),
+        onClose: () => dispatch(loginError(false)),
       });
     }
   }, [dispatch, error]);

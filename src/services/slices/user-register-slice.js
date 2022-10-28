@@ -28,15 +28,15 @@ const userRegister = createSlice({
 });
 
 export const register = (userInfo) => async (dispatch) => {
-  dispatch(request());
+  dispatch(registerRequest());
   try {
     const response = await apiService.createUser(userInfo);
 
-    dispatch(success(response));
+    dispatch(registerSuccess(response));
   } catch (e) {
-    dispatch(error(e.message));
+    dispatch(registerError(e.message));
   }
 };
 
-export const { request, success, error } = userRegister.actions;
+export const { request: registerRequest, success: registerSuccess, error: registerError } = userRegister.actions;
 export default userRegister.reducer;

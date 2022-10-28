@@ -6,8 +6,10 @@ import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
 
-import { moveIngredient } from "../../services/slices/burger-constructor-slice";
-import { removeIngredient } from "../../services/slices/burger-constructor-slice";
+import {
+  moveIngredientInBurgerConstructor,
+  removeIngredientInBurgerConstructor,
+} from "../../services/slices/burger-constructor-slice";
 import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
 
 import styles from "./burger-constructor-element.module.scss";
@@ -47,7 +49,7 @@ const BurgerConstructorElement = ({ type = "", data, isLocked = false, index = 0
         return;
       }
 
-      dispatch(moveIngredient({ dragIndex, hoverIndex }));
+      dispatch(moveIngredientInBurgerConstructor({ dragIndex, hoverIndex }));
 
       item.index = hoverIndex;
     },
@@ -66,7 +68,7 @@ const BurgerConstructorElement = ({ type = "", data, isLocked = false, index = 0
   drag(drop(ref));
 
   const handleClose = (removedItem) => {
-    dispatch(removeIngredient(removedItem));
+    dispatch(removeIngredientInBurgerConstructor(removedItem));
   };
 
   return (

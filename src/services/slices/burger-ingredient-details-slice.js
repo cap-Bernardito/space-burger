@@ -8,14 +8,14 @@ const burgerIngredientDetails = createSlice({
   name: "BURGER_INGREDIENT_DETAILS",
   initialState,
   reducers: {
-    addIngredient(state, action) {
+    add(state, action) {
       state.ingredient = action.payload;
     },
-    removeIngredient(state) {
+    remove(state) {
       state.ingredient = null;
     },
   },
 });
 
-export const { addIngredient, removeIngredient } = burgerIngredientDetails.actions;
+export const { add: addIngredientDetails, remove: removeIngredientDetails } = burgerIngredientDetails.actions;
 export default burgerIngredientDetails.reducer;

@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "../../hooks";
 import {
-  error as errorAction,
-  success as successAction,
   updatePassword,
+  updatePasswordError,
+  updatePasswordSuccess,
 } from "../../services/slices/user-update-password-slice";
 import { notify } from "../../utils/utils";
 
@@ -24,7 +24,7 @@ const ResetPassword = () => {
   useEffect(() => {
     if (error) {
       notify(error, {
-        onClose: () => dispatch(errorAction(false)),
+        onClose: () => dispatch(updatePasswordError(false)),
       });
     }
   }, [dispatch, error]);
@@ -34,7 +34,7 @@ const ResetPassword = () => {
       notify(
         response.message,
         {
-          onClose: () => dispatch(successAction({ loading: false, response: null })),
+          onClose: () => dispatch(updatePasswordSuccess({ loading: false, response: null })),
         },
         "success"
       );

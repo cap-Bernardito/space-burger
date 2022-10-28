@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-import { error as errorAction, logout } from "../../services/slices/user-logout-slice";
+import { logout, logoutError } from "../../services/slices/user-logout-slice";
 import { notify } from "../../utils/utils";
 
 import Spinner from "../spinner/spinner";
@@ -18,7 +18,7 @@ const AsideMenu = () => {
   useEffect(() => {
     if (error) {
       notify(error, {
-        onClose: () => dispatch(errorAction(false)),
+        onClose: () => dispatch(logoutError(false)),
       });
     }
   }, [dispatch, error]);

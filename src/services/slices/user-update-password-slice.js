@@ -28,15 +28,19 @@ const userUpdatePassword = createSlice({
 });
 
 export const updatePassword = (userInfo) => async (dispatch) => {
-  dispatch(request());
+  dispatch(updatePasswordRequest());
   try {
     const response = await apiService.updateUserPassword(userInfo);
 
-    dispatch(success(response));
+    dispatch(updatePasswordSuccess(response));
   } catch (e) {
-    dispatch(error(e.message));
+    dispatch(updatePasswordError(e.message));
   }
 };
 
-export const { request, success, error } = userUpdatePassword.actions;
+export const {
+  request: updatePasswordRequest,
+  success: updatePasswordSuccess,
+  error: updatePasswordError,
+} = userUpdatePassword.actions;
 export default userUpdatePassword.reducer;

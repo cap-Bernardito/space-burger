@@ -26,16 +26,19 @@ const burgerIngredientsSlice = createSlice({
 });
 
 export const getBurgerIngredients = () => async (dispatch) => {
-  dispatch(request());
+  dispatch(getBurgerIngredientsRequest());
   try {
     const response = await apiService.getBurgerIngredients();
 
-    dispatch(success(response));
+    dispatch(getBurgerIngredientsSuccess(response));
   } catch (e) {
-    dispatch(error(e));
+    dispatch(getBurgerIngredientsError(e));
   }
 };
 
-export const { request, success, error, increaseIngredientCount, decreaseIngredientCount, increaseBunCount } =
-  burgerIngredientsSlice.actions;
+export const {
+  request: getBurgerIngredientsRequest,
+  success: getBurgerIngredientsSuccess,
+  error: getBurgerIngredientsError,
+} = burgerIngredientsSlice.actions;
 export default burgerIngredientsSlice.reducer;

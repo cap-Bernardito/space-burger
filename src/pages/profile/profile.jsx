@@ -4,20 +4,16 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useObserveForm } from "../../hooks";
-import { error as errorAction, getUser, success as setUser } from "../../services/slices/user-get-slice";
-import { error as updateErrorAction, updateUser } from "../../services/slices/user-update-slice";
+import { getUser, getUserError, getUserSuccess } from "../../services/slices/user-get-slice";
+import { updateUser, updateUserError } from "../../services/slices/user-update-slice";
 import { notify } from "../../utils/utils";
 
 import EditableInput from "../../components/editable-input/editable-input";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { user, error } = useSelector((state) => state.userGet);
-  const {
-    loading: loadingUpdateUser,
-    user: userUpdated,
-    error: errorUpdateUser,
-  } = useSelector((state) => state.userUpdate);
+  const userGetState = useSelector((state) => state.userGet);
+  const userUpdateState = useSelector((state) => state.userUpdate);
   const [isFormEditable, setIsFormEditable] = useState(false);
   const [formState, handleFormFields, setFormState] = useObserveForm({
     name: "",
@@ -26,39 +22,39 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    if (user) {
-      setFormState((prevState) => ({ ...prevState, ...user }));
+    if (userGetState.user) {
+      setFormState((prevState) => ({ ...prevState, ...userGetState.user }));
     }
-  }, [user, setFormState]);
+  }, [userGetState.user, setFormState]);
 
   useEffect(() => {
-    if (userUpdated) {
-      setFormState((prevState) => ({ ...prevState, ...userUpdated }));
-      dispatch(setUser({ user: { ...userUpdated } }));
+    if (userUpdateState.user) {
+      setFormState((prevState) => ({ ...prevState, ...userUpdateState.user }));
+      dispatch(getUserSuccess({ user: { ...userUpdateState.user } }));
       setIsFormEditable(false);
       notify("Данные пользователя успешно обновлены", "success");
     }
-  }, [dispatch, userUpdated, setFormState]);
+  }, [dispatch, userUpdateState.user, setFormState]);
 
   useEffect(() => {
     dispatch(getUser());
   }, [dispatch]);
 
   useEffect(() => {
-    if (error) {
-      notify(error, {
-        onClose: () => dispatch(errorAction(false)),
+    if (userGetState.error) {
+      notify(userGetState.error, {
+        onClose: () => dispatch(getUserError(false)),
       });
     }
-  }, [dispatch, error]);
+  }, [dispatch, userGetState.error]);
 
   useEffect(() => {
-    if (errorUpdateUser) {
-      notify(errorUpdateUser, {
-        onClose: () => dispatch(updateErrorAction(false)),
+    if (userUpdateState.error) {
+      notify(userUpdateState.error, {
+        onClose: () => dispatch(updateUserError(false)),
       });
     }
-  }, [dispatch, errorUpdateUser]);
+  }, [dispatch, userUpdateState.error]);
 
   const handleOnChange = (e) => {
     setIsFormEditable(true);
@@ -69,7 +65,7 @@ const Profile = () => {
     e.preventDefault();
 
     setIsFormEditable(false);
-    setFormState(user);
+    setFormState(userGetState.user);
   };
 
   const handleSubmitForm = (e) => {
@@ -121,7 +117,7 @@ const Profile = () => {
           <a href="#" className="mr-7" onClick={handleFormEditableOff}>
             Отмена
           </a>
-          <Button type="primary" size="medium" htmlType="submit" disabled={loadingUpdateUser}>
+          <Button type="primary" size="medium" htmlType="submit" disabled={userUpdateState.loading}>
             Сохранить
           </Button>
         </div>

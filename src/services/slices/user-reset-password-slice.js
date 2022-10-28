@@ -28,15 +28,19 @@ const userResetPassword = createSlice({
 });
 
 export const resetPassword = (userInfo) => async (dispatch) => {
-  dispatch(request());
+  dispatch(resetPasswordRequest());
   try {
     const response = await apiService.resetUserPassword(userInfo);
 
-    dispatch(success(response));
+    dispatch(resetPasswordSuccess(response));
   } catch (e) {
-    dispatch(error(e.message));
+    dispatch(resetPasswordError(e.message));
   }
 };
 
-export const { request, success, error } = userResetPassword.actions;
+export const {
+  request: resetPasswordRequest,
+  success: resetPasswordSuccess,
+  error: resetPasswordError,
+} = userResetPassword.actions;
 export default userResetPassword.reducer;

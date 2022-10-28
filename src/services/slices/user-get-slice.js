@@ -33,15 +33,15 @@ const userGet = createSlice({
 });
 
 export const getUser = () => async (dispatch) => {
-  dispatch(request());
+  dispatch(getUserRequest());
   try {
     const response = await apiService.getUser();
 
-    dispatch(success(response));
+    dispatch(getUserSuccess(response));
   } catch (e) {
-    dispatch(error(e.message));
+    dispatch(getUserError(e.message));
   }
 };
 
-export const { request, success, error } = userGet.actions;
+export const { request: getUserRequest, success: getUserSuccess, error: getUserError } = userGet.actions;
 export default userGet.reducer;

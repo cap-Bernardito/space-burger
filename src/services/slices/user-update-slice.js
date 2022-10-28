@@ -33,15 +33,15 @@ const userUpdate = createSlice({
 });
 
 export const updateUser = (user) => async (dispatch) => {
-  dispatch(request());
+  dispatch(updateUserRequest());
   try {
     const response = await apiService.updateUser(user);
 
-    dispatch(success(response));
+    dispatch(updateUserSuccess(response));
   } catch (e) {
-    dispatch(error(e.message));
+    dispatch(updateUserError(e.message));
   }
 };
 
-export const { request, success, error } = userUpdate.actions;
+export const { request: updateUserRequest, success: updateUserSuccess, error: updateUserError } = userUpdate.actions;
 export default userUpdate.reducer;

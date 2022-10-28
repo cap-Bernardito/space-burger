@@ -28,15 +28,15 @@ const userLogin = createSlice({
 });
 
 export const login = (userInfo) => async (dispatch) => {
-  dispatch(request());
+  dispatch(loginRequest());
   try {
     const response = await apiService.createAccessToken(userInfo);
 
-    dispatch(success(response));
+    dispatch(loginSuccess(response));
   } catch (e) {
-    dispatch(error(e.message));
+    dispatch(loginError(e.message));
   }
 };
 
-export const { request, success, error } = userLogin.actions;
+export const { request: loginRequest, success: loginSuccess, error: loginError } = userLogin.actions;
 export default userLogin.reducer;
