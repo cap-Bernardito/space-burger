@@ -6,16 +6,13 @@ import { useEffect } from "react";
 import { DragPreviewImage, useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useModal } from "../../hooks";
-import {
-  addBunInBurgerConstructor,
-  addIngredientInBurgerConstructor,
-} from "../../services/slices/burger-constructor-slice";
-import { addIngredientDetails, removeIngredientDetails } from "../../services/slices/burger-ingredient-details-slice";
-import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
+import { useModal } from "hooks";
+import { addBunInBurgerConstructor, addIngredientInBurgerConstructor } from "services/slices/burger-constructor-slice";
+import { addIngredientDetails, removeIngredientDetails } from "services/slices/burger-ingredient-details-slice";
+import { INGREDIENT_PROP_TYPES } from "utils/constants";
 
-import IngredientDetails from "../ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
+import IngredientDetails from "components/ingredient-details/ingredient-details";
+import Modal from "components/modal/modal";
 
 import styles from "./burger-ingredient.module.scss";
 

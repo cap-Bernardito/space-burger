@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 
-import { useScreenTest } from "../../hooks";
+import { useScreenTest } from "hooks";
 
-import AsideMenu from "../../components/aside-menu/aside-menu";
+import AsideMenu from "components/aside-menu/aside-menu";
 
 import styles from "./with-sidebar.module.scss";
 

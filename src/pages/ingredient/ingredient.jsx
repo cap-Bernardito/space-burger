@@ -1,4 +1,4 @@
-import IngredientDetails from "../../components/ingredient-details/ingredient-details";
+import IngredientDetails from "components/ingredient-details/ingredient-details";
 
 const Ingredient = () => {
   const data = {

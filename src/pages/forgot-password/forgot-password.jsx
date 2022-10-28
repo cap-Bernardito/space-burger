@@ -4,13 +4,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useObserveForm } from "../../hooks";
-import {
-  resetPassword,
-  resetPasswordError,
-  resetPasswordSuccess,
-} from "../../services/slices/user-reset-password-slice";
-import { notify } from "../../utils/utils";
+import { useObserveForm } from "hooks";
+import { resetPassword, resetPasswordError, resetPasswordSuccess } from "services/slices/user-reset-password-slice";
+import { notify } from "utils/utils";
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();

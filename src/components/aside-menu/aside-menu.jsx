@@ -4,10 +4,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-import { logout, logoutError } from "../../services/slices/user-logout-slice";
-import { notify } from "../../utils/utils";
+import { logout, logoutError } from "services/slices/user-logout-slice";
+import { notify } from "utils/utils";
 
-import Spinner from "../spinner/spinner";
+import Spinner from "components/spinner/spinner";
 
 import styles from "./aside-menu.module.scss";
 

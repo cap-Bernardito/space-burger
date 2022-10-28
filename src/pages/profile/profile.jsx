@@ -3,12 +3,12 @@ import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-comp
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useObserveForm } from "../../hooks";
-import { getUser, getUserError, getUserSuccess } from "../../services/slices/user-get-slice";
-import { updateUser, updateUserError } from "../../services/slices/user-update-slice";
-import { notify } from "../../utils/utils";
+import { useObserveForm } from "hooks";
+import { getUser, getUserError, getUserSuccess } from "services/slices/user-get-slice";
+import { updateUser, updateUserError } from "services/slices/user-update-slice";
+import { notify } from "utils/utils";
 
-import EditableInput from "../../components/editable-input/editable-input";
+import EditableInput from "components/editable-input/editable-input";
 
 const Profile = () => {
   const dispatch = useDispatch();

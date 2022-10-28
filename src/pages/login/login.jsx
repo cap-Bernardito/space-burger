@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useObserveForm, useToggler } from "../../hooks";
-import { login, loginError } from "../../services/slices/user-login-slice";
-import { notify } from "../../utils/utils";
+import { useObserveForm, useToggler } from "hooks";
+import { login, loginError } from "services/slices/user-login-slice";
+import { notify } from "utils/utils";
 
 const Login = () => {
   const dispatch = useDispatch();

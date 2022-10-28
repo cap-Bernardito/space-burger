@@ -5,14 +5,14 @@ import { useEffect } from "react";
 import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useModal } from "../../hooks";
-import { selectBuns, selectIngredients, selectTotalPrice } from "../../services/slices/burger-constructor-slice";
-import { createOrder, removeOrderDetails } from "../../services/slices/order-details-slice";
-import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT } from "../../utils/constants";
+import { useModal } from "hooks";
+import { selectBuns, selectIngredients, selectTotalPrice } from "services/slices/burger-constructor-slice";
+import { createOrder, removeOrderDetails } from "services/slices/order-details-slice";
+import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT } from "utils/constants";
 
-import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
-import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
+import BurgerConstructorElement from "components/burger-constructor-element/burger-constructor-element";
+import Modal from "components/modal/modal";
+import OrderDetails from "components/order-details/order-details";
 
 import styles from "./burger-constructor.module.scss";
 

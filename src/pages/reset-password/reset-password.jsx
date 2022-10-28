@@ -4,13 +4,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useObserveForm, useToggler } from "../../hooks";
-import {
-  updatePassword,
-  updatePasswordError,
-  updatePasswordSuccess,
-} from "../../services/slices/user-update-password-slice";
-import { notify } from "../../utils/utils";
+import { useObserveForm, useToggler } from "hooks";
+import { updatePassword, updatePasswordError, updatePasswordSuccess } from "services/slices/user-update-password-slice";
+import { notify } from "utils/utils";
 
 const ResetPassword = () => {
   const dispatch = useDispatch();

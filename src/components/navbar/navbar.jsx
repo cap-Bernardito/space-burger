@@ -5,9 +5,9 @@ import { Spin as Hamburger } from "hamburger-react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-import { useScreenTest } from "../../hooks";
+import { useScreenTest } from "hooks";
 
-import AsideMenu from "../../components/aside-menu/aside-menu";
+import AsideMenu from "components/aside-menu/aside-menu";
 
 import styles from "./navbar.module.scss";
 

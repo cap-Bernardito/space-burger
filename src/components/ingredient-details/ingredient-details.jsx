@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
-import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
+import { INGREDIENT_PROP_TYPES } from "utils/constants";
 
 import styles from "./ingredient-details.module.scss";
 

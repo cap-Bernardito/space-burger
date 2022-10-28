@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-import { data as fakeData } from "../utils/data";
+import { data as fakeData } from "utils/data";
 
 class ApiService {
   _accessToken = null;

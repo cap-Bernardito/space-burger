@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { INGREDIENT_PROP_TYPES, TYPES_OF_INGREDIENTS } from "../../utils/constants";
-import { splitIngredientsByTypes } from "../../utils/utils";
+import { INGREDIENT_PROP_TYPES, TYPES_OF_INGREDIENTS } from "utils/constants";
+import { splitIngredientsByTypes } from "utils/utils";
 
-import BurgerIngredientsCategory from "../burger-ingredients-category/burger-ingredients-category";
+import BurgerIngredientsCategory from "components/burger-ingredients-category/burger-ingredients-category";
 
 import styles from "./burger-ingredients.module.scss";
 

@@ -9,8 +9,8 @@ import { useDispatch } from "react-redux";
 import {
   moveIngredientInBurgerConstructor,
   removeIngredientInBurgerConstructor,
-} from "../../services/slices/burger-constructor-slice";
-import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
+} from "services/slices/burger-constructor-slice";
+import { INGREDIENT_PROP_TYPES } from "utils/constants";
 
 import styles from "./burger-constructor-element.module.scss";
 

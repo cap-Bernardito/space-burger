@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useObserveForm, useToggler } from "../../hooks";
-import { register, registerError } from "../../services/slices/user-register-slice";
-import { notify } from "../../utils/utils";
+import { useObserveForm, useToggler } from "hooks";
+import { register, registerError } from "services/slices/user-register-slice";
+import { notify } from "utils/utils";
 
 const Register = () => {
   const dispatch = useDispatch();

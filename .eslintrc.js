@@ -20,8 +20,10 @@ module.exports = {
         groups: [
           ["^@?\\w"],
           ["^react"],
-          ["^.+(services|hooks|utils)(/.*|$)"],
-          ["^.+(layouts|pages)(/.*|$)"],
+          ["^(services|hooks|utils)(/.*|$)"],
+          ["^(layouts|pages)(/.*|$)"],
+          ["^components"],
+          ["^images(/.*|$)"],
           ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
           ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
           ["^styles(/.*|$)"],

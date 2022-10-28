@@ -1,7 +1,7 @@
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 
-import Navbar from "../navbar/navbar";
+import Navbar from "components/navbar/navbar";
 
 import styles from "./app-header.module.scss";
 

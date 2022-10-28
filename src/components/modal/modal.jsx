@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { useEffect, useRef } from "react";
 import ReactDom from "react-dom";
 
-import ModalOverlay from "../modal-overlay/modal-overlay";
+import ModalOverlay from "components/modal-overlay/modal-overlay";
 
 import styles from "./modal.module.scss";
 

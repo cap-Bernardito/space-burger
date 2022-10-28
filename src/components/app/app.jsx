@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import { SmallCentered, WithSidebar } from "../../layouts/";
-import { ForgotPassword, Home, Ingredient, Login, NotFound, Profile, Register, ResetPassword } from "../../pages/";
+import { SmallCentered, WithSidebar } from "layouts";
+import { ForgotPassword, Home, Ingredient, Login, NotFound, Profile, Register, ResetPassword } from "pages";
 
-import AppHeader from "../app-header/app-header";
+import AppHeader from "components/app-header/app-header";
 
 const App = () => {
   return (
