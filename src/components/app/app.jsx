@@ -16,6 +16,7 @@ import {
   Login,
   NotFound,
   Profile,
+  ProfileOrder,
   ProfileOrders,
   Register,
   ResetPassword,
@@ -57,6 +58,7 @@ const App = () => {
           >
             <Route index element={<Profile />} />
             <Route path="orders" element={<ProfileOrders />} />
+            <Route path="orders/:id" element={<ProfileOrder />} />
           </Route>
 
           <Route path="/" element={<Home />} />
