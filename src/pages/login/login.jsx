@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
-import { login, loginError } from "services/slices/user-login-slice";
+import { login, selectAuth, setError } from "services/slices/auth-slice";
 import { notify } from "utils/utils";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.userLogin);
+  const { loading, error } = useSelector(selectAuth);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
   const [formState, handleFormFields] = useObserveForm({
     email: "",
@@ -20,7 +20,7 @@ const Login = () => {
   useEffect(() => {
     if (error) {
       notify(error, {
-        onClose: () => dispatch(loginError(false)),
+        onClose: () => dispatch(setError(false)),
       });
     }
   }, [dispatch, error]);

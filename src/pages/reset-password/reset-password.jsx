@@ -1,46 +1,34 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
-import { updatePassword, updatePasswordError, updatePasswordSuccess } from "services/slices/user-update-password-slice";
+import apiService from "services/api-service";
 import { notify } from "utils/utils";
 
 const ResetPassword = () => {
-  const dispatch = useDispatch();
-  const { loading, response, error } = useSelector((state) => state.userUpdatePassword);
+  const [loading, setLoading] = useState();
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
   const [formState, handleFormFields] = useObserveForm({
     password: "",
     token: "",
   });
 
-  useEffect(() => {
-    if (error) {
-      notify(error, {
-        onClose: () => dispatch(updatePasswordError(false)),
-      });
-    }
-  }, [dispatch, error]);
-
-  useEffect(() => {
-    if (response) {
-      notify(
-        response.message,
-        {
-          onClose: () => dispatch(updatePasswordSuccess({ loading: false, response: null })),
-        },
-        "success"
-      );
-    }
-  }, [dispatch, response]);
-
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
 
-    dispatch(updatePassword(formState));
+    setLoading(true);
+
+    try {
+      const response = await apiService.updateUserPassword(formState);
+
+      notify(response.message, "success");
+    } catch (error) {
+      notify(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

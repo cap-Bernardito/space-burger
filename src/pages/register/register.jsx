@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
-import { register, registerError } from "services/slices/user-register-slice";
+import { register, selectAuth, setError } from "services/slices/auth-slice";
 import { notify } from "utils/utils";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.userRegister);
+  const { loading, error } = useSelector(selectAuth);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
   const [formState, handleFormFields] = useObserveForm({
     name: "",
@@ -21,7 +21,7 @@ const Register = () => {
   useEffect(() => {
     if (error) {
       notify(error, {
-        onClose: () => dispatch(registerError(false)),
+        onClose: () => dispatch(setError(false)),
       });
     }
   }, [dispatch, error]);

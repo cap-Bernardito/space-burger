@@ -1,44 +1,32 @@
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useObserveForm } from "hooks";
-import { resetPassword, resetPasswordError, resetPasswordSuccess } from "services/slices/user-reset-password-slice";
+import apiService from "services/api-service";
 import { notify } from "utils/utils";
 
 const ForgotPassword = () => {
-  const dispatch = useDispatch();
-  const { loading, response, error } = useSelector((state) => state.userResetPassword);
+  const [loading, setLoading] = useState();
   const [formState, handleFormFields] = useObserveForm({
     email: "",
   });
 
-  useEffect(() => {
-    if (error) {
-      notify(error, {
-        onClose: () => dispatch(resetPasswordError(false)),
-      });
-    }
-  }, [dispatch, error]);
-
-  useEffect(() => {
-    if (response) {
-      notify(
-        response.message,
-        {
-          onClose: () => dispatch(resetPasswordSuccess({ loading: false, response: null })),
-        },
-        "success"
-      );
-    }
-  }, [dispatch, response]);
-
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
 
-    dispatch(resetPassword(formState));
+    setLoading(true);
+
+    try {
+      const response = await apiService.resetUserPassword(formState);
+
+      notify(response.message, "success");
+    } catch (error) {
+      notify(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

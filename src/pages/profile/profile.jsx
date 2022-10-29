@@ -4,16 +4,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useObserveForm } from "hooks";
-import { getUser, getUserError, getUserSuccess } from "services/slices/user-get-slice";
-import { updateUser, updateUserError } from "services/slices/user-update-slice";
+import { auth, selectAuth, setError, updateUser } from "services/slices/auth-slice";
 import { notify } from "utils/utils";
 
 import EditableInput from "components/editable-input/editable-input";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const userGetState = useSelector((state) => state.userGet);
-  const userUpdateState = useSelector((state) => state.userUpdate);
+  const { user, loading, error } = useSelector(selectAuth);
   const [isFormEditable, setIsFormEditable] = useState(false);
   const [formState, handleFormFields, setFormState] = useObserveForm({
     name: "",
@@ -22,39 +20,22 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    if (userGetState.user) {
-      setFormState((prevState) => ({ ...prevState, ...userGetState.user }));
+    if (user) {
+      setFormState((prevState) => ({ ...prevState, ...user }));
     }
-  }, [userGetState.user, setFormState]);
+  }, [user, setFormState]);
 
   useEffect(() => {
-    if (userUpdateState.user) {
-      setFormState((prevState) => ({ ...prevState, ...userUpdateState.user }));
-      dispatch(getUserSuccess({ user: { ...userUpdateState.user } }));
-      setIsFormEditable(false);
-      notify("Данные пользователя успешно обновлены", "success");
-    }
-  }, [dispatch, userUpdateState.user, setFormState]);
-
-  useEffect(() => {
-    dispatch(getUser());
+    dispatch(auth());
   }, [dispatch]);
 
   useEffect(() => {
-    if (userGetState.error) {
-      notify(userGetState.error, {
-        onClose: () => dispatch(getUserError(false)),
+    if (error) {
+      notify(error, {
+        onClose: () => dispatch(setError(false)),
       });
     }
-  }, [dispatch, userGetState.error]);
-
-  useEffect(() => {
-    if (userUpdateState.error) {
-      notify(userUpdateState.error, {
-        onClose: () => dispatch(updateUserError(false)),
-      });
-    }
-  }, [dispatch, userUpdateState.error]);
+  }, [dispatch, error]);
 
   const handleOnChange = (e) => {
     setIsFormEditable(true);
@@ -65,7 +46,7 @@ const Profile = () => {
     e.preventDefault();
 
     setIsFormEditable(false);
-    setFormState(userGetState.user);
+    setFormState(user);
   };
 
   const handleSubmitForm = (e) => {
@@ -117,7 +98,7 @@ const Profile = () => {
           <a href="#" className="mr-7" onClick={handleFormEditableOff}>
             Отмена
           </a>
-          <Button type="primary" size="medium" htmlType="submit" disabled={userUpdateState.loading}>
+          <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
             Сохранить
           </Button>
         </div>

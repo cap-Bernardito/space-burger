@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-import { logout, logoutError } from "services/slices/user-logout-slice";
+import { logout, selectAuth, setError } from "services/slices/auth-slice";
 import { notify } from "utils/utils";
 
 import Spinner from "components/spinner/spinner";
@@ -13,12 +13,12 @@ import styles from "./aside-menu.module.scss";
 
 const AsideMenu = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.userLogout);
+  const { loading, error } = useSelector(selectAuth);
 
   useEffect(() => {
     if (error) {
       notify(error, {
-        onClose: () => dispatch(logoutError(false)),
+        onClose: () => dispatch(setError(false)),
       });
     }
   }, [dispatch, error]);
