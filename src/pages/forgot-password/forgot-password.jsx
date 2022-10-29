@@ -1,13 +1,17 @@
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
 
 import { useObserveForm } from "hooks";
 import apiService from "services/api-service";
+import { selectAuth } from "services/slices/auth-slice";
+import { authStatus } from "utils/constants";
 import { notify } from "utils/utils";
 
 const ForgotPassword = () => {
+  const { status } = useSelector(selectAuth);
   const [loading, setLoading] = useState();
   const [formState, handleFormFields] = useObserveForm({
     email: "",
@@ -29,7 +33,13 @@ const ForgotPassword = () => {
     }
   };
 
-  return (
+  if (status === authStatus.pending) {
+    return null;
+  }
+
+  return status === authStatus.ok ? (
+    <Navigate to="/" />
+  ) : (
     <form className="flex-v-g6" onSubmit={handleSubmitForm}>
       <h1 className="text text_type_main-medium">Восстановление пароля</h1>
       <EmailInput

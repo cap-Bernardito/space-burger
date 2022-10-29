@@ -40,7 +40,10 @@ export const authStatus = {
 };
 
 export const isErrorVisibility = (error) => {
-  if (error === "Access token is not available") {
+  // NOTE: пользователю эти ошибки показывать не надо
+  const ignoredErrors = ["Access token is not available", "Incorrect reset token", "Token is invalid"];
+
+  if (ignoredErrors.includes(error)) {
     return false;
   }
 
