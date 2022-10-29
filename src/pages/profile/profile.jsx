@@ -59,6 +59,7 @@ const Profile = () => {
     }
 
     dispatch(updateUser(data));
+    setIsFormEditable(false);
   };
 
   return (
