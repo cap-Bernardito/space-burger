@@ -9,7 +9,17 @@ import { auth, selectAuth } from "services/slices/auth-slice";
 import { authStatus } from "utils/constants";
 
 import { SmallCentered, WithSidebar } from "layouts";
-import { ForgotPassword, Home, Ingredient, Login, NotFound, Profile, Register, ResetPassword } from "pages";
+import {
+  ForgotPassword,
+  Home,
+  Ingredient,
+  Login,
+  NotFound,
+  Profile,
+  ProfileOrders,
+  Register,
+  ResetPassword,
+} from "pages";
 
 import AppHeader from "components/app-header/app-header";
 
@@ -46,6 +56,7 @@ const App = () => {
             }
           >
             <Route index element={<Profile />} />
+            <Route path="orders" element={<ProfileOrders />} />
           </Route>
 
           <Route path="/" element={<Home />} />

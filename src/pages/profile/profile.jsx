@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useObserveForm } from "hooks";
-import { auth, selectAuth, setError, updateUser } from "services/slices/auth-slice";
+import { selectAuth, setError, updateUser } from "services/slices/auth-slice";
 import { authStatus } from "utils/constants";
 import { notify } from "utils/utils";
 
@@ -25,10 +25,6 @@ const Profile = () => {
       setFormState((prevState) => ({ ...prevState, ...user }));
     }
   }, [user, setFormState]);
-
-  useEffect(() => {
-    dispatch(auth());
-  }, [dispatch]);
 
   useEffect(() => {
     if (error && status === authStatus.ok) {
