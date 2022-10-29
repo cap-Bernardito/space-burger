@@ -2,15 +2,16 @@ import { Button, EmailInput, Input } from "@ya.praktikum/react-developer-burger-
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
 import { login, selectAuth, setError } from "services/slices/auth-slice";
+import { authStatus, isErrorVisibility } from "utils/constants";
 import { notify } from "utils/utils";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector(selectAuth);
+  const { status, loading, error } = useSelector(selectAuth);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
   const [formState, handleFormFields] = useObserveForm({
     email: "",
@@ -18,7 +19,7 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if (error) {
+    if (error && isErrorVisibility(error)) {
       notify(error, {
         onClose: () => dispatch(setError(false)),
       });
@@ -31,7 +32,13 @@ const Login = () => {
     dispatch(login(formState));
   };
 
-  return (
+  if (status === authStatus.pending) {
+    return null;
+  }
+
+  return status === authStatus.ok ? (
+    <Navigate to="/" />
+  ) : (
     <>
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>
         <h1 className="text text_type_main-medium">Вход</h1>

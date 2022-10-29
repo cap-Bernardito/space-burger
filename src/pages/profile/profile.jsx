@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useObserveForm } from "hooks";
 import { auth, selectAuth, setError, updateUser } from "services/slices/auth-slice";
+import { authStatus } from "utils/constants";
 import { notify } from "utils/utils";
 
 import EditableInput from "components/editable-input/editable-input";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { user, loading, error } = useSelector(selectAuth);
+  const { user, loading, error, status } = useSelector(selectAuth);
   const [isFormEditable, setIsFormEditable] = useState(false);
   const [formState, handleFormFields, setFormState] = useObserveForm({
     name: "",
@@ -30,12 +31,12 @@ const Profile = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (error) {
+    if (error && status === authStatus.ok) {
       notify(error, {
         onClose: () => dispatch(setError(false)),
       });
     }
-  }, [dispatch, error]);
+  }, [dispatch, error, status]);
 
   const handleOnChange = (e) => {
     setIsFormEditable(true);

@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
+import { authStatus } from "utils/constants";
 
 const initialState = {
   user: null,
   loading: false,
   error: false,
+  status: authStatus.pending,
 };
 
 const userGet = createSlice({
@@ -24,6 +26,9 @@ const userGet = createSlice({
       state.error = action.payload;
       state.user = null;
     },
+    status(state, action) {
+      state.status = action.payload;
+    },
   },
 });
 
@@ -33,8 +38,10 @@ export const auth = () => async (dispatch) => {
     const response = await apiService.getUser();
 
     dispatch(setSuccess(response));
+    dispatch(setStatus(authStatus.ok));
   } catch (e) {
     dispatch(setError(e.message));
+    dispatch(setStatus(authStatus.no));
   }
 };
 
@@ -44,6 +51,7 @@ export const login = (userInfo) => async (dispatch) => {
     const response = await apiService.createAccessToken(userInfo);
 
     dispatch(setSuccess(response));
+    dispatch(setStatus(authStatus.ok));
   } catch (e) {
     dispatch(setError(e.message));
   }
@@ -55,8 +63,10 @@ export const logout = () => async (dispatch) => {
     await apiService.deleteAccessToken();
 
     dispatch(setSuccess({ user: null }));
+    dispatch(setStatus(authStatus.no));
   } catch (e) {
     dispatch(setError(e.message));
+    dispatch(setStatus(authStatus.no));
   }
 };
 
@@ -66,6 +76,7 @@ export const register = (userInfo) => async (dispatch) => {
     const response = await apiService.createUser(userInfo);
 
     dispatch(setSuccess(response));
+    dispatch(setStatus(authStatus.ok));
   } catch (e) {
     dispatch(setError(e.message));
   }
@@ -84,5 +95,5 @@ export const updateUser = (user) => async (dispatch) => {
 
 export const selectAuth = (state) => state.auth;
 
-export const { request: setRequest, success: setSuccess, error: setError } = userGet.actions;
+export const { request: setRequest, success: setSuccess, error: setError, status: setStatus } = userGet.actions;
 export default userGet.reducer;

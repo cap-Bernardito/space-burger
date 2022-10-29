@@ -3,15 +3,18 @@ import classNames from "classnames";
 import { Spin as Hamburger } from "hamburger-react";
 
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import { useScreenTest } from "hooks";
+import { selectAuth } from "services/slices/auth-slice";
 
 import AsideMenu from "components/aside-menu/aside-menu";
 
 import styles from "./navbar.module.scss";
 
 const Navbar = () => {
+  const { user } = useSelector(selectAuth);
   const [isOpen, setOpen] = useState(false);
   const isSmallScreen = useScreenTest();
 
@@ -40,7 +43,7 @@ const Navbar = () => {
         <li className={classNames(styles.navbar__item)}>
           <NavLink to="/profile" className={activeClass}>
             <ProfileIcon type="secondary" />
-            <span>Личный кабинет</span>
+            <span>{user ? user.name : "Личный кабинет"}</span>
           </NavLink>
 
           {isSmallScreen && <AsideMenu />}

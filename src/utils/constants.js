@@ -24,3 +24,25 @@ export const INGREDIENT_PROP_TYPES = {
   image_large: PropTypes.string.isRequired,
   __v: PropTypes.number.isRequired,
 };
+
+export const routes = {
+  login: "/login",
+  profile: "/profile",
+  register: "/register",
+  forgotPassword: "/forgot-password",
+  resetPassword: "/reset-password",
+};
+
+export const authStatus = {
+  pending: "pending",
+  ok: "auth",
+  no: "notAuth",
+};
+
+export const isErrorVisibility = (error) => {
+  if (error === "Access token is not available") {
+    return false;
+  }
+
+  return true;
+};
