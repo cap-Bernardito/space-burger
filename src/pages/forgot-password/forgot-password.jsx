@@ -2,7 +2,7 @@ import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-comp
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 
 import { useObserveForm } from "hooks";
 import apiService from "services/api-service";
@@ -11,8 +11,10 @@ import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { notify } from "utils/utils";
 
 const ForgotPassword = () => {
+  const location = useLocation();
   const { status } = useSelector(selectAuth);
   const [loading, setLoading] = useState();
+  const [allowResetPassword, setAllowResetPassword] = useState(false);
   const [formState, handleFormFields] = useObserveForm({
     email: "",
   });
@@ -25,7 +27,13 @@ const ForgotPassword = () => {
     try {
       const response = await apiService.resetUserPassword(formState);
 
-      notify(response.message, "success");
+      notify(
+        response.message,
+        {
+          onClose: () => setAllowResetPassword(true),
+        },
+        "success"
+      );
     } catch (error) {
       notify(error.message);
     } finally {
@@ -37,9 +45,15 @@ const ForgotPassword = () => {
     return null;
   }
 
-  return status === AUTH_STATUS.ok ? (
-    <Navigate to="/" />
-  ) : (
+  if (allowResetPassword) {
+    return <Navigate to={ROUTES.resetPassword} state={{ from: location }} />;
+  }
+
+  if (status === AUTH_STATUS.ok) {
+    return <Navigate to="/" />;
+  }
+
+  return (
     <form className="flex-v-g6" onSubmit={handleSubmitForm}>
       <h1 className="text text_type_main-medium">Восстановление пароля</h1>
       <EmailInput

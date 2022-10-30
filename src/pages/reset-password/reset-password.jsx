@@ -2,7 +2,7 @@ import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-component
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
 import apiService from "services/api-service";
@@ -11,8 +11,10 @@ import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { notify } from "utils/utils";
 
 const ResetPassword = () => {
+  const location = useLocation();
   const { status } = useSelector(selectAuth);
   const [loading, setLoading] = useState();
+  const [allowLogin, setAllowLogin] = useState(false);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
   const [formState, handleFormFields] = useObserveForm({
     password: "",
@@ -27,7 +29,13 @@ const ResetPassword = () => {
     try {
       const response = await apiService.updateUserPassword(formState);
 
-      notify(response.message, "success");
+      notify(
+        response.message,
+        {
+          onClose: () => setAllowLogin(true),
+        },
+        "success"
+      );
     } catch (error) {
       notify(error.message);
     } finally {
@@ -35,13 +43,23 @@ const ResetPassword = () => {
     }
   };
 
+  if (location?.state?.from?.pathname !== ROUTES.forgotPassword) {
+    return <Navigate to={ROUTES.forgotPassword} />;
+  }
+
   if (status === AUTH_STATUS.pending) {
     return null;
   }
 
-  return status === AUTH_STATUS.ok ? (
-    <Navigate to="/" />
-  ) : (
+  if (allowLogin) {
+    return <Navigate to={ROUTES.login} />;
+  }
+
+  if (status === AUTH_STATUS.ok) {
+    return <Navigate to="/" />;
+  }
+
+  return (
     <form className="flex-v-g6" onSubmit={handleSubmitForm}>
       <h1 className="text text_type_main-medium">Сброс пароля</h1>
       <Input
