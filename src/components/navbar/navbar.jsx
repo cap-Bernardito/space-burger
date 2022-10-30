@@ -8,16 +8,17 @@ import { NavLink } from "react-router-dom";
 
 import { useScreenTest } from "hooks";
 import { selectAuth } from "services/slices/auth-slice";
-import { ROUTES } from "utils/constants";
+import { AUTH_STATUS, ROUTES } from "utils/constants";
 
 import AsideMenu from "components/aside-menu/aside-menu";
 
 import styles from "./navbar.module.scss";
 
 const Navbar = () => {
-  const { user } = useSelector(selectAuth);
+  const { status, user } = useSelector(selectAuth);
   const [isOpen, setOpen] = useState(false);
   const isSmallScreen = useScreenTest();
+  const isVisibilityProfileMenu = isSmallScreen && status === AUTH_STATUS.ok;
 
   const buttonClass = styles.link;
   const activeClass = ({ isActive }) => (isActive ? classNames(buttonClass, styles.link_active) : buttonClass);
@@ -47,7 +48,7 @@ const Navbar = () => {
             <span>{user ? user.name : "Личный кабинет"}</span>
           </NavLink>
 
-          {isSmallScreen && <AsideMenu />}
+          {isVisibilityProfileMenu && <AsideMenu />}
         </li>
       </ul>
       <div className={classNames(styles.navbar__hamburger)}>
