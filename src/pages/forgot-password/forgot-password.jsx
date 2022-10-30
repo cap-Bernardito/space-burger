@@ -52,7 +52,7 @@ const ForgotPassword = () => {
   }
 
   if (status === AUTH_STATUS.ok) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace={true} />;
   }
 
   return (

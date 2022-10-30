@@ -40,7 +40,7 @@ const Register = () => {
   }
 
   return status === AUTH_STATUS.ok ? (
-    <Navigate to="/" />
+    <Navigate to="/" replace={true} />
   ) : (
     <>
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>

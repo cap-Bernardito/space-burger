@@ -40,7 +40,7 @@ const Login = () => {
   }
 
   return status === AUTH_STATUS.ok ? (
-    <Navigate to={location?.state?.from || "/"} />
+    <Navigate to={location?.state?.from || "/"} replace={true} />
   ) : (
     <>
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>

@@ -45,20 +45,20 @@ const ResetPassword = () => {
     }
   };
 
-  if (location?.state?.from?.pathname !== ROUTES.forgotPassword) {
-    return <Navigate to={ROUTES.forgotPassword} />;
-  }
-
   if (status === AUTH_STATUS.pending) {
     return null;
   }
 
   if (allowLogin) {
-    return <Navigate to={ROUTES.login} />;
+    return <Navigate to={ROUTES.login} replace={true} />;
   }
 
   if (status === AUTH_STATUS.ok) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace={true} />;
+  }
+
+  if (location?.state?.from?.pathname !== ROUTES.forgotPassword) {
+    return <Navigate to={ROUTES.forgotPassword} replace={true} />;
   }
 
   return (
