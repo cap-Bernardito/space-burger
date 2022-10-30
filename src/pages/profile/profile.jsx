@@ -3,7 +3,7 @@ import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-comp
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useObserveForm } from "hooks";
+import { useObserveForm, useTitle } from "hooks";
 import { selectAuth, setError, updateUser } from "services/slices/auth-slice";
 import { AUTH_STATUS } from "utils/constants";
 import { isErrorVisibility, notify } from "utils/utils";
@@ -11,6 +11,8 @@ import { isErrorVisibility, notify } from "utils/utils";
 import EditableInput from "components/editable-input/editable-input";
 
 const Profile = () => {
+  useTitle("Информация о пользователе");
+
   const dispatch = useDispatch();
   const { user, loading, error, status } = useSelector(selectAuth);
   const [isFormEditable, setIsFormEditable] = useState(false);

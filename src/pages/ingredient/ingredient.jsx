@@ -1,6 +1,10 @@
+import { useTitle } from "hooks";
+
 import IngredientDetails from "components/ingredient-details/ingredient-details";
 
 const Ingredient = () => {
+  useTitle("Биокотлета из марсианской Магнолии");
+
   const data = {
     _id: "60d3b41abdacab0026a733cb",
     name: "Биокотлета из марсианской Магнолии",

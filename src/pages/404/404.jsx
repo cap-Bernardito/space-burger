@@ -2,7 +2,11 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useNavigate } from "react-router-dom";
 
+import { useTitle } from "hooks";
+
 const NotFound = () => {
+  useTitle("Страница не найдена");
+
   const navigate = useNavigate();
 
   const handleClick = () => {

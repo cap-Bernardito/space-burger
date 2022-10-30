@@ -5,6 +5,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from "react-redux";
 
+import { useTitle } from "hooks";
 import { getBurgerIngredients } from "services/slices/burger-ingredients-slice";
 
 import BurgerConstructor from "components/burger-constructor/burger-constructor";
@@ -13,6 +14,8 @@ import BurgerIngredients from "components/burger-ingredients/burger-ingredients"
 import styles from "./home.module.scss";
 
 const Home = () => {
+  useTitle("Конструктор бургера");
+
   const dispatch = useDispatch();
   const { data, loading: isLoading, error: isError } = useSelector((state) => state.burgerIngredients);
 
