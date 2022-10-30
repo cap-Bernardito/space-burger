@@ -9,6 +9,8 @@ import { login, selectAuth, setError } from "services/slices/auth-slice";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { isErrorVisibility, notify } from "utils/utils";
 
+import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
+
 const Login = () => {
   useTitle("Вход на сайт");
 
@@ -36,7 +38,7 @@ const Login = () => {
   };
 
   if (status === AUTH_STATUS.pending) {
-    return null;
+    return <AuthPlaceholder />;
   }
 
   return status === AUTH_STATUS.ok ? (

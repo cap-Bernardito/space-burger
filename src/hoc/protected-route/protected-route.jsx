@@ -6,12 +6,14 @@ import { Navigate, useLocation } from "react-router-dom";
 import { selectAuth } from "services/slices/auth-slice";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
 
+import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
+
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   const { status } = useSelector(selectAuth);
 
   if (status === AUTH_STATUS.pending) {
-    return <div className="container text-center pt-20">Аутентификация...</div>;
+    return <AuthPlaceholder />;
   }
 
   return status === AUTH_STATUS.ok ? children : <Navigate to={ROUTES.login} state={{ from: location }} />;

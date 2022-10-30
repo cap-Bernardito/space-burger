@@ -10,6 +10,8 @@ import { selectAuth } from "services/slices/auth-slice";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { notify } from "utils/utils";
 
+import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
+
 const ResetPassword = () => {
   useTitle("Сброс пароля");
 
@@ -46,7 +48,7 @@ const ResetPassword = () => {
   };
 
   if (status === AUTH_STATUS.pending) {
-    return null;
+    return <AuthPlaceholder />;
   }
 
   if (allowLogin) {
