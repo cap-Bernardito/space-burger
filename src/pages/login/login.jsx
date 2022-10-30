@@ -20,7 +20,7 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if (error && isErrorVisibility(error)) {
+    if (isErrorVisibility(error)) {
       notify(error, {
         onClose: () => dispatch(setError(false)),
       });

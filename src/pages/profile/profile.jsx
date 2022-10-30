@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useObserveForm } from "hooks";
 import { selectAuth, setError, updateUser } from "services/slices/auth-slice";
 import { AUTH_STATUS } from "utils/constants";
-import { notify } from "utils/utils";
+import { isErrorVisibility, notify } from "utils/utils";
 
 import EditableInput from "components/editable-input/editable-input";
 
@@ -27,7 +27,7 @@ const Profile = () => {
   }, [user, setFormState]);
 
   useEffect(() => {
-    if (error && status === AUTH_STATUS.ok) {
+    if (isErrorVisibility(error) && status === AUTH_STATUS.ok) {
       notify(error, {
         onClose: () => dispatch(setError(false)),
       });

@@ -41,6 +41,10 @@ export const notify = (message, options = {}, type = "error") => {
 };
 
 export const isErrorVisibility = (error) => {
+  if (!error) {
+    return false;
+  }
+
   // NOTE: пользователю эти ошибки показывать не надо
   const ignoredErrors = ["Access token is not available", "Incorrect reset token", "Token is invalid"];
 

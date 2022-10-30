@@ -7,7 +7,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useObserveForm, useToggler } from "hooks";
 import { register, selectAuth, setError } from "services/slices/auth-slice";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
-import { notify } from "utils/utils";
+import { isErrorVisibility, notify } from "utils/utils";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const Register = () => {
   });
 
   useEffect(() => {
-    if (error) {
+    if (isErrorVisibility(error)) {
       notify(error, {
         onClose: () => dispatch(setError(false)),
       });

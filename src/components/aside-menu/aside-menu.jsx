@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 
 import { logout, selectAuth, setError } from "services/slices/auth-slice";
 import { ROUTES } from "utils/constants";
-import { notify } from "utils/utils";
+import { isErrorVisibility, notify } from "utils/utils";
 
 import Spinner from "components/spinner/spinner";
 
@@ -17,7 +17,7 @@ const AsideMenu = () => {
   const { loading, error } = useSelector(selectAuth);
 
   useEffect(() => {
-    if (error) {
+    if (isErrorVisibility(error)) {
       notify(error, {
         onClose: () => dispatch(setError(false)),
       });
