@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import { logout, selectAuth, setError } from "services/slices/auth-slice";
+import { ROUTES } from "utils/constants";
 import { notify } from "utils/utils";
 
 import Spinner from "components/spinner/spinner";
@@ -32,12 +33,12 @@ const AsideMenu = () => {
   return (
     <ul className={styles.root}>
       <li>
-        <NavLink to="/profile" end>
+        <NavLink to={ROUTES.profile} end>
           Профиль
         </NavLink>
       </li>
       <li>
-        <NavLink to="/profile/orders">История заказов</NavLink>
+        <NavLink to={ROUTES.profileOrders}>История заказов</NavLink>
       </li>
       <li>
         <a href="#" title="Выход" className={classNames({ [styles.loading]: loading })} onClick={handleLogout}>

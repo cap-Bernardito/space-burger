@@ -6,8 +6,8 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
 import { login, selectAuth, setError } from "services/slices/auth-slice";
-import { authStatus, isErrorVisibility } from "utils/constants";
-import { notify } from "utils/utils";
+import { AUTH_STATUS, ROUTES } from "utils/constants";
+import { isErrorVisibility, notify } from "utils/utils";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -33,11 +33,11 @@ const Login = () => {
     dispatch(login(formState));
   };
 
-  if (status === authStatus.pending) {
+  if (status === AUTH_STATUS.pending) {
     return null;
   }
 
-  return status === authStatus.ok ? (
+  return status === AUTH_STATUS.ok ? (
     <Navigate to={location?.state?.from || "/"} />
   ) : (
     <>
@@ -70,9 +70,9 @@ const Login = () => {
         <div>
           <div className="mb-4">
             {/* eslint-disable-next-line no-irregular-whitespace */}
-            Вы — новый пользователь? <Link to="/register">Зарегистрироваться</Link>
+            Вы — новый пользователь? <Link to={ROUTES.register}>Зарегистрироваться</Link>
           </div>
-          Забыли пароль? <Link to="/forgot-password">Восстановить пароль</Link>
+          Забыли пароль? <Link to={ROUTES.forgotPassword}>Восстановить пароль</Link>
         </div>
       </form>
     </>

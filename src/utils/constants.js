@@ -25,27 +25,19 @@ export const INGREDIENT_PROP_TYPES = {
   __v: PropTypes.number.isRequired,
 };
 
-export const routes = {
+export const ROUTES = {
   login: "/login",
-  profile: "/profile",
   register: "/register",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
+  ingredient: "/ingredients/:id",
+  profile: "/profile",
+  profileOrders: "/profile/orders",
+  profileOrder: "/profile/orders/:id",
 };
 
-export const authStatus = {
+export const AUTH_STATUS = {
   pending: "pending",
   ok: "auth",
   no: "notAuth",
-};
-
-export const isErrorVisibility = (error) => {
-  // NOTE: пользователю эти ошибки показывать не надо
-  const ignoredErrors = ["Access token is not available", "Incorrect reset token", "Token is invalid"];
-
-  if (ignoredErrors.includes(error)) {
-    return false;
-  }
-
-  return true;
 };

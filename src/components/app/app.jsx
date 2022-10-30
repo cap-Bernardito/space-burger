@@ -6,7 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import { auth, selectAuth } from "services/slices/auth-slice";
-import { authStatus } from "utils/constants";
+import { AUTH_STATUS, ROUTES } from "utils/constants";
 
 import { SmallCentered, WithSidebar } from "layouts";
 import {
@@ -29,7 +29,7 @@ const App = () => {
   const { status } = useSelector(selectAuth);
 
   useEffect(() => {
-    if (status === authStatus.pending) {
+    if (status === AUTH_STATUS.pending) {
       dispatch(auth());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,15 +41,15 @@ const App = () => {
         <AppHeader />
         <Routes>
           <Route element={<SmallCentered />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/ingredients/:id" element={<Ingredient />} />
+            <Route path={ROUTES.login} element={<Login />} />
+            <Route path={ROUTES.register} element={<Register />} />
+            <Route path={ROUTES.forgotPassword} element={<ForgotPassword />} />
+            <Route path={ROUTES.resetPassword} element={<ResetPassword />} />
+            <Route path={ROUTES.ingredient} element={<Ingredient />} />
           </Route>
 
           <Route
-            path="/profile"
+            path={ROUTES.profile}
             element={
               <ProtectedRoute>
                 <WithSidebar />
@@ -57,8 +57,8 @@ const App = () => {
             }
           >
             <Route index element={<Profile />} />
-            <Route path="orders" element={<ProfileOrders />} />
-            <Route path="orders/:id" element={<ProfileOrder />} />
+            <Route path={ROUTES.profileOrders} element={<ProfileOrders />} />
+            <Route path={ROUTES.profileOrder} element={<ProfileOrder />} />
           </Route>
 
           <Route path="/" element={<Home />} />

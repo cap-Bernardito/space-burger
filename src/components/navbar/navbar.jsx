@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 
 import { useScreenTest } from "hooks";
 import { selectAuth } from "services/slices/auth-slice";
+import { ROUTES } from "utils/constants";
 
 import AsideMenu from "components/aside-menu/aside-menu";
 
@@ -35,13 +36,13 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li className={classNames(styles.navbar__item)}>
-          <NavLink to="/orders" className={activeClass}>
+          <NavLink to={ROUTES.profileOrders} className={activeClass}>
             <ListIcon type="secondary" />
             <span>Лента заказов</span>
           </NavLink>
         </li>
         <li className={classNames(styles.navbar__item)}>
-          <NavLink to="/profile" className={activeClass}>
+          <NavLink to={ROUTES.profile} className={activeClass} end>
             <ProfileIcon type="secondary" />
             <span>{user ? user.name : "Личный кабинет"}</span>
           </NavLink>

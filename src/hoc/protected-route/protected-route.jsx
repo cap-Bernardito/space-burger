@@ -4,17 +4,17 @@ import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 
 import { selectAuth } from "services/slices/auth-slice";
-import { authStatus, routes } from "utils/constants";
+import { AUTH_STATUS, ROUTES } from "utils/constants";
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   const { status } = useSelector(selectAuth);
 
-  if (status === authStatus.pending) {
+  if (status === AUTH_STATUS.pending) {
     return <div className="container text-center pt-20">Аутентификация...</div>;
   }
 
-  return status === authStatus.ok ? children : <Navigate to={routes.login} state={{ from: location }} />;
+  return status === AUTH_STATUS.ok ? children : <Navigate to={ROUTES.login} state={{ from: location }} />;
 };
 
 ProtectedRoute.propTypes = {

@@ -6,7 +6,7 @@ import { Link, Navigate } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
 import { register, selectAuth, setError } from "services/slices/auth-slice";
-import { authStatus } from "utils/constants";
+import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { notify } from "utils/utils";
 
 const Register = () => {
@@ -33,11 +33,11 @@ const Register = () => {
     dispatch(register(formState));
   };
 
-  if (status === authStatus.pending) {
+  if (status === AUTH_STATUS.pending) {
     return null;
   }
 
-  return status === authStatus.ok ? (
+  return status === AUTH_STATUS.ok ? (
     <Navigate to="/" />
   ) : (
     <>
@@ -76,7 +76,7 @@ const Register = () => {
           </Button>
         </div>
         <div>
-          Уже зарегистрированы? <Link to="/login">Войти</Link>
+          Уже зарегистрированы? <Link to={ROUTES.login}>Войти</Link>
         </div>
       </form>
     </>

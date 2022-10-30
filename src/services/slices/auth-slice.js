@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
-import { authStatus } from "utils/constants";
+import { AUTH_STATUS } from "utils/constants";
 
 const initialState = {
   user: null,
   loading: false,
   error: false,
-  status: authStatus.pending,
+  status: AUTH_STATUS.pending,
 };
 
 const userGet = createSlice({
@@ -40,10 +40,10 @@ export const auth = () => async (dispatch) => {
     const response = await apiService.getUser();
 
     dispatch(setSuccess(response));
-    dispatch(setStatus(authStatus.ok));
+    dispatch(setStatus(AUTH_STATUS.ok));
   } catch (e) {
     dispatch(setError(e.message));
-    dispatch(setStatus(authStatus.no));
+    dispatch(setStatus(AUTH_STATUS.no));
   }
 };
 
@@ -55,7 +55,7 @@ export const login = (userInfo) => async (dispatch) => {
     const response = await apiService.createAccessToken(userInfo);
 
     dispatch(setSuccess(response));
-    dispatch(setStatus(authStatus.ok));
+    dispatch(setStatus(AUTH_STATUS.ok));
   } catch (e) {
     dispatch(setError(e.message));
   }
@@ -69,10 +69,10 @@ export const logout = () => async (dispatch) => {
     await apiService.deleteAccessToken();
 
     dispatch(setSuccess({ user: null }));
-    dispatch(setStatus(authStatus.no));
+    dispatch(setStatus(AUTH_STATUS.no));
   } catch (e) {
     dispatch(setError(e.message));
-    dispatch(setStatus(authStatus.no));
+    dispatch(setStatus(AUTH_STATUS.no));
   }
 };
 
@@ -84,7 +84,7 @@ export const register = (userInfo) => async (dispatch) => {
     const response = await apiService.createUser(userInfo);
 
     dispatch(setSuccess(response));
-    dispatch(setStatus(authStatus.ok));
+    dispatch(setStatus(AUTH_STATUS.ok));
   } catch (e) {
     dispatch(setError(e.message));
   }

@@ -7,7 +7,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useObserveForm, useToggler } from "hooks";
 import apiService from "services/api-service";
 import { selectAuth } from "services/slices/auth-slice";
-import { authStatus } from "utils/constants";
+import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { notify } from "utils/utils";
 
 const ResetPassword = () => {
@@ -35,11 +35,11 @@ const ResetPassword = () => {
     }
   };
 
-  if (status === authStatus.pending) {
+  if (status === AUTH_STATUS.pending) {
     return null;
   }
 
-  return status === authStatus.ok ? (
+  return status === AUTH_STATUS.ok ? (
     <Navigate to="/" />
   ) : (
     <form className="flex-v-g6" onSubmit={handleSubmitForm}>
@@ -68,7 +68,7 @@ const ResetPassword = () => {
         </Button>
       </div>
       <div>
-        Вспомнили пароль? <Link to="/login">Войти</Link>
+        Вспомнили пароль? <Link to={ROUTES.login}>Войти</Link>
       </div>
     </form>
   );
