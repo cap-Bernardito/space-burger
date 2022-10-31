@@ -43,9 +43,11 @@ const Login = ({ pageTitle }) => {
     return <AuthPlaceholder />;
   }
 
-  return status === AUTH_STATUS.ok ? (
-    <Navigate to={location?.state?.from || "/"} replace={true} />
-  ) : (
+  if (status === AUTH_STATUS.ok) {
+    return <Navigate to={location?.state?.from || "/"} replace={true} />;
+  }
+
+  return (
     <>
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>
         <h1 className="text text_type_main-medium">Вход</h1>
