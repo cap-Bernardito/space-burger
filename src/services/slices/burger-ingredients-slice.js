@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
 
 const initialState = {
-  data: [],
+  data: null,
   loading: false,
   error: false,
 };
@@ -35,6 +35,21 @@ export const getBurgerIngredients = () => async (dispatch) => {
     dispatch(getBurgerIngredientsError(e));
   }
 };
+
+export const selectIngredients = (state) => state.burgerIngredients;
+
+export const selectIngredient = (id) =>
+  createSelector(selectIngredients, (ingredients) => {
+    let result;
+    let statusMessage = "Получение данных ингредиента...";
+
+    if (ingredients.data) {
+      [result] = ingredients.data.filter(({ _id }) => _id === id);
+      statusMessage = !result && `Ингредиент с id "${id}" не найден`;
+    }
+
+    return [result, statusMessage];
+  });
 
 export const {
   request: getBurgerIngredientsRequest,

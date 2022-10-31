@@ -6,6 +6,7 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import { auth, selectAuth } from "services/slices/auth-slice";
+import { getBurgerIngredients } from "services/slices/burger-ingredients-slice";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
 
 import { SmallCentered, WithSidebar } from "layouts";
@@ -31,7 +32,6 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { status } = useSelector(selectAuth);
-  const { ingredient } = useSelector((state) => state.ingredientDetails);
 
   const background = location?.state?.background;
 
@@ -40,6 +40,10 @@ const App = () => {
       dispatch(auth());
     }
   }, [status, dispatch]);
+
+  useEffect(() => {
+    dispatch(getBurgerIngredients());
+  }, [dispatch]);
 
   const handleCloseModalIngredient = useCallback(() => {
     navigate(-1);
@@ -85,7 +89,7 @@ const App = () => {
               path={ROUTES.ingredient}
               element={
                 <Modal onClose={handleCloseModalIngredient} title="Детали ингридиента">
-                  <IngredientDetails data={ingredient} />
+                  <IngredientDetails />
                 </Modal>
               }
             />

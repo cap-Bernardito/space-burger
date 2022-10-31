@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import { addBunInBurgerConstructor, addIngredientInBurgerConstructor } from "services/slices/burger-constructor-slice";
-import { addIngredientDetails } from "services/slices/burger-ingredient-details-slice";
 import { INGREDIENT_PROP_TYPES } from "utils/constants";
 
 import styles from "./burger-ingredient.module.scss";
@@ -40,10 +39,6 @@ const BurgerIngredient = ({ data, count }) => {
     },
   });
 
-  const handleClick = () => {
-    dispatch(addIngredientDetails(data));
-  };
-
   const handleOrder = (e, item) => {
     e.preventDefault();
     e.stopPropagation();
@@ -54,7 +49,7 @@ const BurgerIngredient = ({ data, count }) => {
   return (
     <>
       <DragPreviewImage connect={preview} src={image} />
-      <div className={classNames(styles.box, { [styles.onDrag]: isDrag }, "pb-4")} onClick={handleClick} ref={dragRef}>
+      <div className={classNames(styles.box, { [styles.onDrag]: isDrag }, "pb-4")} ref={dragRef}>
         {count > 0 && <Counter count={count} size="default" />}
         <Link to={`/ingredients/${_id}`} state={{ background: location }}>
           <div className={classNames(styles.image, "mb-1 pr-1 pl-1")}>
