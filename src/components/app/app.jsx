@@ -1,8 +1,8 @@
 import ProtectedRoute from "hoc/protected-route/protected-route";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import { auth, selectAuth } from "services/slices/auth-slice";
@@ -23,23 +23,34 @@ import {
 } from "pages";
 
 import AppHeader from "components/app-header/app-header";
+import IngredientDetails from "components/ingredient-details/ingredient-details";
+import Modal from "components/modal/modal";
 
 const App = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { status } = useSelector(selectAuth);
+  const { ingredient } = useSelector((state) => state.ingredientDetails);
+
+  const background = location?.state?.background;
 
   useEffect(() => {
     if (status === AUTH_STATUS.pending) {
       dispatch(auth());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [status, dispatch]);
+
+  const handleCloseModalIngredient = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
 
   return (
     <>
       <div className="text text_type_main-default">
         <AppHeader />
-        <Routes>
+
+        <Routes location={background || location}>
           <Route element={<SmallCentered />}>
             <Route path={ROUTES.login} element={<Login />} />
             <Route path={ROUTES.register} element={<Register />} />
@@ -67,6 +78,19 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
+
+        {background && (
+          <Routes>
+            <Route
+              path={ROUTES.ingredient}
+              element={
+                <Modal onClose={handleCloseModalIngredient} title="Детали ингридиента">
+                  <IngredientDetails data={ingredient} />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
       </div>
       {<ToastContainer />}
     </>
