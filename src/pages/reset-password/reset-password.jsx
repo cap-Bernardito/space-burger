@@ -7,14 +7,15 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import { useObserveForm, useToggler } from "hooks";
 import apiService from "services/api-service";
 import { selectAuth } from "services/slices/auth-slice";
+import { PAGES_PROTYPES } from "utils/constants";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 import { notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 
-const ResetPassword = () => {
-  setDocumentTitle("Сброс пароля");
+const ResetPassword = ({ pageTitle }) => {
+  setDocumentTitle(pageTitle);
 
   const location = useLocation();
   const { status } = useSelector(selectAuth);
@@ -53,15 +54,15 @@ const ResetPassword = () => {
   }
 
   if (allowLogin) {
-    return <Navigate to={ROUTES.login} replace={true} />;
+    return <Navigate to={ROUTES.login.path} replace={true} />;
   }
 
   if (status === AUTH_STATUS.ok) {
     return <Navigate to="/" replace={true} />;
   }
 
-  if (location?.state?.from?.pathname !== ROUTES.forgotPassword) {
-    return <Navigate to={ROUTES.forgotPassword} replace={true} />;
+  if (location?.state?.from?.pathname !== ROUTES.forgotPassword.path) {
+    return <Navigate to={ROUTES.forgotPassword.path} replace={true} />;
   }
 
   return (
@@ -91,10 +92,12 @@ const ResetPassword = () => {
         </Button>
       </div>
       <div>
-        Вспомнили пароль? <Link to={ROUTES.login}>Войти</Link>
+        Вспомнили пароль? <Link to={ROUTES.login.path}>Войти</Link>
       </div>
     </form>
   );
 };
+
+ResetPassword.propTypes = PAGES_PROTYPES;
 
 export default ResetPassword;

@@ -5,6 +5,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useSelector } from "react-redux";
 
 import { selectIngredients } from "services/slices/burger-ingredients-slice";
+import { PAGES_PROTYPES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 
 import BurgerConstructor from "components/burger-constructor/burger-constructor";
@@ -12,8 +13,8 @@ import BurgerIngredients from "components/burger-ingredients/burger-ingredients"
 
 import styles from "./home.module.scss";
 
-const Home = () => {
-  setDocumentTitle("Конструктор бургера");
+const Home = ({ pageTitle }) => {
+  setDocumentTitle(pageTitle);
 
   const { data, loading: isLoading, error: isError } = useSelector(selectIngredients);
 
@@ -40,5 +41,7 @@ const Home = () => {
     </main>
   );
 };
+
+Home.propTypes = PAGES_PROTYPES;
 
 export default Home;

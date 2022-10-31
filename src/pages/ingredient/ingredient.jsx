@@ -1,9 +1,10 @@
+import { PAGES_PROTYPES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 
 import IngredientDetails from "components/ingredient-details/ingredient-details";
 
-const Ingredient = () => {
-  setDocumentTitle("Детали ингредиента");
+const Ingredient = ({ pageTitle }) => {
+  setDocumentTitle(pageTitle);
 
   return (
     <div className="flex-v-g6">
@@ -12,5 +13,7 @@ const Ingredient = () => {
     </div>
   );
 };
+
+Ingredient.propTypes = PAGES_PROTYPES;
 
 export default Ingredient;

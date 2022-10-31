@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { selectIngredient } from "services/slices/burger-ingredients-slice";
+import { setDocumentTitle } from "utils/utils";
 
 import styles from "./ingredient-details.module.scss";
 
@@ -17,6 +18,9 @@ const IngredientDetails = () => {
   }
 
   const { name, image, image_mobile, image_large, calories, proteins, fat, carbohydrates } = data;
+
+  setDocumentTitle(name);
+
   const nutrients = [
     {
       name: "Калории,ккал",

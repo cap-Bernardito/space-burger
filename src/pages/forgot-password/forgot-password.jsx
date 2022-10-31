@@ -7,14 +7,15 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import { useObserveForm } from "hooks";
 import apiService from "services/api-service";
 import { selectAuth } from "services/slices/auth-slice";
+import { PAGES_PROTYPES } from "utils/constants";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 import { notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 
-const ForgotPassword = () => {
-  setDocumentTitle("Восстановление пароля");
+const ForgotPassword = ({ pageTitle }) => {
+  setDocumentTitle(pageTitle);
 
   const location = useLocation();
   const { status } = useSelector(selectAuth);
@@ -51,7 +52,7 @@ const ForgotPassword = () => {
   }
 
   if (allowResetPassword) {
-    return <Navigate to={ROUTES.resetPassword} state={{ from: location }} />;
+    return <Navigate to={ROUTES.resetPassword.path} state={{ from: location }} />;
   }
 
   if (status === AUTH_STATUS.ok) {
@@ -76,10 +77,12 @@ const ForgotPassword = () => {
         </Button>
       </div>
       <div>
-        Вспомнили пароль? <Link to={ROUTES.login}>Войти</Link>
+        Вспомнили пароль? <Link to={ROUTES.login.path}>Войти</Link>
       </div>
     </form>
   );
 };
+
+ForgotPassword.propTypes = PAGES_PROTYPES;
 
 export default ForgotPassword;

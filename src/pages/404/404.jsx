@@ -2,10 +2,11 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useNavigate } from "react-router-dom";
 
+import { PAGES_PROTYPES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 
-const NotFound = () => {
-  setDocumentTitle("Страница не найдена");
+const NotFound = ({ pageTitle }) => {
+  setDocumentTitle(pageTitle);
 
   const navigate = useNavigate();
 
@@ -25,5 +26,7 @@ const NotFound = () => {
     </div>
   );
 };
+
+NotFound.propTypes = PAGES_PROTYPES;
 
 export default NotFound;

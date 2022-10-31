@@ -16,7 +16,7 @@ const ProtectedRoute = ({ children }) => {
     return <AuthPlaceholder />;
   }
 
-  return status === AUTH_STATUS.ok ? children : <Navigate to={ROUTES.login} state={{ from: location }} />;
+  return status === AUTH_STATUS.ok ? children : <Navigate to={ROUTES.login.path} state={{ from: location }} />;
 };
 
 ProtectedRoute.propTypes = {

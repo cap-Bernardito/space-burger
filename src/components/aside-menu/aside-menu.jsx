@@ -33,12 +33,12 @@ const AsideMenu = () => {
   return (
     <ul className={styles.root}>
       <li>
-        <NavLink to={ROUTES.profile} end>
+        <NavLink to={ROUTES.profile.path} end>
           Профиль
         </NavLink>
       </li>
       <li>
-        <NavLink to={ROUTES.profileOrders}>История заказов</NavLink>
+        <NavLink to={ROUTES.profileOrders.path}>История заказов</NavLink>
       </li>
       <li>
         <a href="#" title="Выход" className={classNames({ [styles.loading]: loading })} onClick={handleLogout}>

@@ -5,14 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useObserveForm } from "hooks";
 import { selectAuth, setError, updateUser } from "services/slices/auth-slice";
+import { PAGES_PROTYPES } from "utils/constants";
 import { AUTH_STATUS } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 import { isErrorVisibility, notify } from "utils/utils";
 
 import EditableInput from "components/editable-input/editable-input";
 
-const Profile = () => {
-  setDocumentTitle("Информация о пользователе");
+const Profile = ({ pageTitle }) => {
+  setDocumentTitle(pageTitle);
 
   const dispatch = useDispatch();
   const { user, loading, error, status } = useSelector(selectAuth);
@@ -107,5 +108,7 @@ const Profile = () => {
     </form>
   );
 };
+
+Profile.propTypes = PAGES_PROTYPES;
 
 export default Profile;

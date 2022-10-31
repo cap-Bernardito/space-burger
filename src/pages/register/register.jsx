@@ -6,14 +6,15 @@ import { Link, Navigate } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
 import { register, selectAuth, setError } from "services/slices/auth-slice";
+import { PAGES_PROTYPES } from "utils/constants";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 import { isErrorVisibility, notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 
-const Register = () => {
-  setDocumentTitle("Регистрация нового пользователя");
+const Register = ({ pageTitle }) => {
+  setDocumentTitle(pageTitle);
 
   const dispatch = useDispatch();
   const { status, loading, error } = useSelector(selectAuth);
@@ -81,11 +82,13 @@ const Register = () => {
           </Button>
         </div>
         <div>
-          Уже зарегистрированы? <Link to={ROUTES.login}>Войти</Link>
+          Уже зарегистрированы? <Link to={ROUTES.login.path}>Войти</Link>
         </div>
       </form>
     </>
   );
 };
+
+Register.propTypes = PAGES_PROTYPES;
 
 export default Register;

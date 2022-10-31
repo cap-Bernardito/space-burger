@@ -56,39 +56,48 @@ const App = () => {
 
         <Routes location={background || location}>
           <Route element={<SmallCentered />}>
-            <Route path={ROUTES.login} element={<Login />} />
-            <Route path={ROUTES.register} element={<Register />} />
-            <Route path={ROUTES.forgotPassword} element={<ForgotPassword />} />
-            <Route path={ROUTES.resetPassword} element={<ResetPassword />} />
-            <Route path={ROUTES.ingredient} element={<Ingredient />} />
+            <Route path={ROUTES.login.path} element={<Login pageTitle={ROUTES.login.title} />} />
+            <Route path={ROUTES.register.path} element={<Register pageTitle={ROUTES.register.title} />} />
+            <Route
+              path={ROUTES.forgotPassword.path}
+              element={<ForgotPassword pageTitle={ROUTES.forgotPassword.title} />}
+            />
+            <Route
+              path={ROUTES.resetPassword.path}
+              element={<ResetPassword pageTitle={ROUTES.resetPassword.title} />}
+            />
+            <Route path={ROUTES.ingredient.path} element={<Ingredient pageTitle={ROUTES.ingredient.title} />} />
           </Route>
 
           <Route
-            path={ROUTES.profile}
+            path={ROUTES.profile.path}
             element={
               <ProtectedRoute>
                 <WithSidebar />
               </ProtectedRoute>
             }
           >
-            <Route index element={<Profile />} />
-            <Route path={ROUTES.profileOrders} element={<ProfileOrders />} />
-            <Route path={ROUTES.profileOrder} element={<ProfileOrder />} />
+            <Route index element={<Profile pageTitle={ROUTES.profile.title} />} />
+            <Route
+              path={ROUTES.profileOrders.path}
+              element={<ProfileOrders pageTitle={ROUTES.profileOrders.title} />}
+            />
+            <Route path={ROUTES.profileOrder.path} element={<ProfileOrder pageTitle={ROUTES.profileOrder.title} />} />
           </Route>
 
-          <Route path="/" element={<Home />} />
+          <Route path={ROUTES.home.path} element={<Home pageTitle={ROUTES.home.title} />} />
 
           <Route element={<SmallCentered />}>
-            <Route path="*" element={<NotFound />} />
+            <Route path={ROUTES.notFound.path} element={<NotFound pageTitle={ROUTES.notFound.title} />} />
           </Route>
         </Routes>
 
         {background && (
           <Routes>
             <Route
-              path={ROUTES.ingredient}
+              path={ROUTES.ingredient.path}
               element={
-                <Modal onClose={handleCloseModalIngredient} title="Детали ингридиента">
+                <Modal onClose={handleCloseModalIngredient} pageTitle="Детали ингридиента">
                   <IngredientDetails />
                 </Modal>
               }

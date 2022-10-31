@@ -6,14 +6,15 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
 import { login, selectAuth, setError } from "services/slices/auth-slice";
+import { PAGES_PROTYPES } from "utils/constants";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 import { isErrorVisibility, notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 
-const Login = () => {
-  setDocumentTitle("Вход на сайт");
+const Login = ({ pageTitle }) => {
+  setDocumentTitle(pageTitle);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -75,13 +76,15 @@ const Login = () => {
         <div>
           <div className="mb-4">
             {/* eslint-disable-next-line no-irregular-whitespace */}
-            Вы — новый пользователь? <Link to={ROUTES.register}>Зарегистрироваться</Link>
+            Вы — новый пользователь? <Link to={ROUTES.register.path}>Зарегистрироваться</Link>
           </div>
-          Забыли пароль? <Link to={ROUTES.forgotPassword}>Восстановить пароль</Link>
+          Забыли пароль? <Link to={ROUTES.forgotPassword.path}>Восстановить пароль</Link>
         </div>
       </form>
     </>
   );
 };
+
+Login.propTypes = PAGES_PROTYPES;
 
 export default Login;
