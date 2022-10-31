@@ -54,3 +54,12 @@ export const isErrorVisibility = (error) => {
 
   return true;
 };
+
+export const setDocumentTitle = (title) => {
+  const prevTitle = document.title;
+  document.title = `${title} | Space Burger`;
+
+  return () => {
+    document.title = prevTitle;
+  };
+};

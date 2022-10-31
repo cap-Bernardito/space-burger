@@ -4,16 +4,17 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, useLocation } from "react-router-dom";
 
-import { useObserveForm, useTitle, useToggler } from "hooks";
+import { useObserveForm, useToggler } from "hooks";
 import apiService from "services/api-service";
 import { selectAuth } from "services/slices/auth-slice";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
+import { setDocumentTitle } from "utils/utils";
 import { notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 
 const ResetPassword = () => {
-  useTitle("Сброс пароля");
+  setDocumentTitle("Сброс пароля");
 
   const location = useLocation();
   const { status } = useSelector(selectAuth);

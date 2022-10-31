@@ -4,15 +4,16 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 
-import { useObserveForm, useTitle, useToggler } from "hooks";
+import { useObserveForm, useToggler } from "hooks";
 import { register, selectAuth, setError } from "services/slices/auth-slice";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
+import { setDocumentTitle } from "utils/utils";
 import { isErrorVisibility, notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 
 const Register = () => {
-  useTitle("Регистрация нового пользователя");
+  setDocumentTitle("Регистрация нового пользователя");
 
   const dispatch = useDispatch();
   const { status, loading, error } = useSelector(selectAuth);

@@ -1,7 +1,7 @@
-import { useTitle } from "hooks";
+import { setDocumentTitle } from "utils/utils";
 
 const ProfileOrder = () => {
-  useTitle("Информация о заказе");
+  setDocumentTitle("Информация о заказе");
 
   return "Заказ";
 };

@@ -4,8 +4,8 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useSelector } from "react-redux";
 
-import { useTitle } from "hooks";
 import { selectIngredients } from "services/slices/burger-ingredients-slice";
+import { setDocumentTitle } from "utils/utils";
 
 import BurgerConstructor from "components/burger-constructor/burger-constructor";
 import BurgerIngredients from "components/burger-ingredients/burger-ingredients";
@@ -13,7 +13,7 @@ import BurgerIngredients from "components/burger-ingredients/burger-ingredients"
 import styles from "./home.module.scss";
 
 const Home = () => {
-  useTitle("Конструктор бургера");
+  setDocumentTitle("Конструктор бургера");
 
   const { data, loading: isLoading, error: isError } = useSelector(selectIngredients);
 

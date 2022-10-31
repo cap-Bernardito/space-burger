@@ -2,10 +2,10 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useNavigate } from "react-router-dom";
 
-import { useTitle } from "hooks";
+import { setDocumentTitle } from "utils/utils";
 
 const NotFound = () => {
-  useTitle("Страница не найдена");
+  setDocumentTitle("Страница не найдена");
 
   const navigate = useNavigate();
 

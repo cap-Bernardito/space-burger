@@ -1,9 +1,9 @@
-import { useTitle } from "hooks";
+import { setDocumentTitle } from "utils/utils";
 
 import IngredientDetails from "components/ingredient-details/ingredient-details";
 
 const Ingredient = () => {
-  useTitle("Биокотлета из марсианской Магнолии");
+  setDocumentTitle("Детали ингредиента");
 
   return (
     <div className="flex-v-g6">
