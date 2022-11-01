@@ -37,6 +37,10 @@ const burgerConstructorSlice = createSlice({
 
       state.ingredients = cloneIngredients;
     },
+    resetStore(state) {
+      state.buns = initialState.buns;
+      state.ingredients = initialState.ingredients;
+    },
   },
 });
 
@@ -66,6 +70,7 @@ export const {
   addIngredient: addIngredientInBurgerConstructor,
   removeIngredient: removeIngredientInBurgerConstructor,
   moveIngredient: moveIngredientInBurgerConstructor,
+  resetStore: resetIngredientInBurgerConstructor,
 } = burgerConstructorSlice.actions;
 
 export default burgerConstructorSlice.reducer;

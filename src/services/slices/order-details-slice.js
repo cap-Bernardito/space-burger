@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
 
+import { resetIngredientInBurgerConstructor } from "./burger-constructor-slice";
+
 const initialState = {
   number: null,
   loading: false,
@@ -36,6 +38,7 @@ export const createOrder = (ingredientIds) => async (dispatch) => {
     const response = await apiService.createOrder(ingredientIds);
 
     dispatch(createOrderSuccess(response));
+    dispatch(resetIngredientInBurgerConstructor());
   } catch (e) {
     dispatch(createOrderError(e));
   }
