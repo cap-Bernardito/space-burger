@@ -39,7 +39,7 @@ class ApiService {
     referrerPolicy: "no-referrer",
   };
 
-  request = async (endpoint, fetchProperties = { headers: {} }, authProperties = { headers: {} }) => {
+  request = async (endpoint, fetchProperties = {}) => {
     if (!endpoint) {
       throw new Error('Endpoint in "ApiService.getResource" function is not valid');
     }
@@ -47,8 +47,7 @@ class ApiService {
     const requestInit = {
       ...this._defaultFetchProperties,
       ...fetchProperties,
-      ...authProperties,
-      headers: { ...this._defaultFetchProperties.headers, ...fetchProperties.headers, ...authProperties.headers },
+      headers: { ...this._defaultFetchProperties.headers, ...(fetchProperties.headers || {}) },
     };
 
     const request = `${this._baseApiUrl}${endpoint}`;
@@ -73,17 +72,15 @@ class ApiService {
   };
 
   requestWithAuth = async (endpoint, fetchProperties = {}) => {
-    const authProperties = { headers: {} };
-
     if (!this._accessToken) {
       await this.updateAccessToken();
     }
 
     if (this._accessToken) {
-      authProperties["headers"]["Authorization"] = this._accessToken;
+      fetchProperties.headers = { ...(fetchProperties.headers || {}), Authorization: this._accessToken };
     }
 
-    return this.request(endpoint, fetchProperties, authProperties);
+    return this.request(endpoint, fetchProperties);
   };
 
   getBurgerIngredients = async () => {
