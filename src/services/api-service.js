@@ -122,7 +122,7 @@ class ApiService {
         ingredients: ingredientIds,
       };
 
-      data = await this.request(this._endpoint.orders.create, {
+      data = await this.requestWithAuth(this._endpoint.orders.create, {
         method: "POST",
         body: JSON.stringify(requestBody),
       });
