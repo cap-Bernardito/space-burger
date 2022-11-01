@@ -16,6 +16,7 @@ const userGet = createSlice({
   reducers: {
     request(state) {
       state.loading = true;
+      state.error = false;
     },
     success(state, action) {
       state.loading = false;
@@ -34,7 +35,6 @@ const userGet = createSlice({
 
 export const auth = () => async (dispatch) => {
   dispatch(setRequest());
-  dispatch(setError(false));
 
   try {
     const response = await apiService.getUser();
@@ -49,7 +49,6 @@ export const auth = () => async (dispatch) => {
 
 export const login = (userInfo) => async (dispatch) => {
   dispatch(setRequest());
-  dispatch(setError(false));
 
   try {
     const response = await apiService.createAccessToken(userInfo);
@@ -63,7 +62,6 @@ export const login = (userInfo) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   dispatch(setRequest());
-  dispatch(setError(false));
 
   try {
     await apiService.deleteAccessToken();
@@ -78,7 +76,6 @@ export const logout = () => async (dispatch) => {
 
 export const register = (userInfo) => async (dispatch) => {
   dispatch(setRequest());
-  dispatch(setError(false));
 
   try {
     const response = await apiService.createUser(userInfo);
@@ -92,7 +89,6 @@ export const register = (userInfo) => async (dispatch) => {
 
 export const updateUser = (user) => async (dispatch) => {
   dispatch(setRequest());
-  dispatch(setError(false));
 
   try {
     const response = await apiService.updateUser(user);

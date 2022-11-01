@@ -14,6 +14,7 @@ const burgerIngredientsSlice = createSlice({
   reducers: {
     request(state) {
       state.loading = true;
+      state.error = false;
     },
     success(state, action) {
       state.loading = false;
