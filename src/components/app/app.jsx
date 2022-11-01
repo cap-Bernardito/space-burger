@@ -1,5 +1,3 @@
-import ProtectedRoute from "hoc/protected-route/protected-route";
-
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
@@ -22,6 +20,8 @@ import {
   Register,
   ResetPassword,
 } from "pages";
+
+import ProtectedRoute from "hoc/protected-route/protected-route";
 
 import AppHeader from "components/app-header/app-header";
 import IngredientDetails from "components/ingredient-details/ingredient-details";

@@ -22,6 +22,7 @@ module.exports = {
           ["^react"],
           ["^(services|hooks|utils)(/.*|$)"],
           ["^(layouts|pages)(/.*|$)"],
+          ["^hoc"],
           ["^components"],
           ["^images(/.*|$)"],
           ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
