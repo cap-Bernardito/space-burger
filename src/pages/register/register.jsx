@@ -6,10 +6,8 @@ import { Link, Navigate } from "react-router-dom";
 
 import { useObserveForm, useToggler } from "hooks";
 import { register, selectAuth, setError } from "services/slices/auth-slice";
-import { PAGES_PROTYPES } from "utils/constants";
-import { AUTH_STATUS, ROUTES } from "utils/constants";
-import { setDocumentTitle } from "utils/utils";
-import { isErrorVisibility, notify } from "utils/utils";
+import { AUTH_STATUS, PAGES_PROTYPES, ROUTES } from "utils/constants";
+import { isErrorVisibility, notify, setDocumentTitle } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 
@@ -17,13 +15,21 @@ const Register = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
   const dispatch = useDispatch();
-  const { status, loading, error } = useSelector(selectAuth);
+  const { status, user, loading, error } = useSelector(selectAuth);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
   const [formState, handleFormFields] = useObserveForm({
     name: "",
     email: "",
     password: "",
   });
+
+  const userName = user?.name;
+
+  useEffect(() => {
+    if (status === AUTH_STATUS.ok) {
+      notify(`Поздравляем, ${userName}, вы успешно зарегистрированы. Заказывайте пожалуйста.`, "success");
+    }
+  }, [status, userName]);
 
   useEffect(() => {
     if (isErrorVisibility(error)) {
@@ -43,9 +49,11 @@ const Register = ({ pageTitle }) => {
     return <AuthPlaceholder />;
   }
 
-  return status === AUTH_STATUS.ok ? (
-    <Navigate to="/" replace={true} />
-  ) : (
+  if (status === AUTH_STATUS.ok) {
+    return <Navigate to="/" replace={true} />;
+  }
+
+  return (
     <>
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>
         <h1 className="text text_type_main-medium">Регистрация</h1>
