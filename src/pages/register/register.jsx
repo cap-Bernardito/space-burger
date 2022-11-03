@@ -82,6 +82,7 @@ const Register = ({ pageTitle }) => {
           onIconClick={togglePasswordVisible}
           value={formState.password}
           onChange={handleFormFields}
+          autoComplete="new-password"
           required
         />
         <div className="mb-15">

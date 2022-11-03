@@ -76,6 +76,7 @@ const ResetPassword = ({ pageTitle }) => {
         onIconClick={togglePasswordVisible}
         value={formState.password}
         onChange={handleFormFields}
+        autoComplete="new-password"
         required
       />
       <Input

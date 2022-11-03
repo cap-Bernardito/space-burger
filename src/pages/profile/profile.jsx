@@ -94,6 +94,7 @@ const Profile = ({ pageTitle }) => {
         value={formState.password}
         onChange={handleOnChange}
         icon={"EditIcon"}
+        autoComplete="new-password"
       />
       {isFormEditable && (
         <div className="mb-15 ml-auto">
