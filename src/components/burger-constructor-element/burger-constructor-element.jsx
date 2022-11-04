@@ -1,14 +1,17 @@
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDrag, useDrop } from "react-dnd";
 import classNames from "classnames";
-import { decreaseIngredientCount } from "../../services/slices/burger-ingredients-slice";
-import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
-import { moveIngredient } from "../../services/slices/burger-constructor-slice";
 import PropTypes from "prop-types";
-import { removeIngredient } from "../../services/slices/burger-constructor-slice";
-import { useDispatch } from "react-redux";
+
 import { useRef } from "react";
-// eslint-disable-next-line sort-imports
+import { useDrag, useDrop } from "react-dnd";
+import { useDispatch } from "react-redux";
+
+import {
+  moveIngredientInBurgerConstructor,
+  removeIngredientInBurgerConstructor,
+} from "services/slices/burger-constructor-slice";
+import { INGREDIENT_PROP_TYPES } from "utils/constants";
+
 import styles from "./burger-constructor-element.module.scss";
 
 const BurgerConstructorElement = ({ type = "", data, isLocked = false, index = 0 }) => {
@@ -46,7 +49,7 @@ const BurgerConstructorElement = ({ type = "", data, isLocked = false, index = 0
         return;
       }
 
-      dispatch(moveIngredient({ dragIndex, hoverIndex }));
+      dispatch(moveIngredientInBurgerConstructor({ dragIndex, hoverIndex }));
 
       item.index = hoverIndex;
     },
@@ -65,8 +68,7 @@ const BurgerConstructorElement = ({ type = "", data, isLocked = false, index = 0
   drag(drop(ref));
 
   const handleClose = (removedItem) => {
-    dispatch(removeIngredient(removedItem));
-    dispatch(decreaseIngredientCount(removedItem));
+    dispatch(removeIngredientInBurgerConstructor(removedItem));
   };
 
   return (

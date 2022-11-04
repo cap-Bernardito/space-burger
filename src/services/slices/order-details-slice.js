@@ -1,5 +1,8 @@
-import apiService from "../api-service";
 import { createSlice } from "@reduxjs/toolkit";
+
+import apiService from "services/api-service";
+
+import { resetIngredientInBurgerConstructor } from "./burger-constructor-slice";
 
 const initialState = {
   number: null,
@@ -13,6 +16,7 @@ const orderDetails = createSlice({
   reducers: {
     request(state) {
       state.loading = true;
+      state.error = false;
     },
     success(state, action) {
       state.loading = false;
@@ -23,22 +27,28 @@ const orderDetails = createSlice({
       state.error = action.payload;
       state.number = null;
     },
-    removeOrderDetails(state) {
+    remove(state) {
       state.number = null;
     },
   },
 });
 
 export const createOrder = (ingredientIds) => async (dispatch) => {
-  dispatch(request());
+  dispatch(createOrderRequest());
   try {
     const response = await apiService.createOrder(ingredientIds);
 
-    dispatch(success(response));
+    dispatch(createOrderSuccess(response));
+    dispatch(resetIngredientInBurgerConstructor());
   } catch (e) {
-    dispatch(error(e));
+    dispatch(createOrderError(e));
   }
 };
 
-export const { removeOrderDetails, request, success, error } = orderDetails.actions;
+export const {
+  request: createOrderRequest,
+  success: createOrderSuccess,
+  error: createOrderError,
+  remove: removeOrderDetails,
+} = orderDetails.actions;
 export default orderDetails.reducer;

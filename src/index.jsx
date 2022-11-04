@@ -1,12 +1,18 @@
+// eslint-disable-next-line simple-import-sort/imports
 import "@ya.praktikum/react-developer-burger-ui-components";
-import App from "./components/app/app";
 import { configureStore } from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
+
 import React from "react";
 import ReactDOM from "react-dom/client";
-import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+
 import { rootReducer } from "./services/reducers";
-// eslint-disable-next-line sort-imports
+
+import App from "./components/app/app";
+import reportWebVitals from "./reportWebVitals";
+
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/index.scss";
 
 const store = configureStore({
@@ -18,7 +24,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );

@@ -1,11 +1,26 @@
 import classNames from "classnames";
-import { INGREDIENT_PROP_TYPES } from "../../utils/constants";
-import PropTypes from "prop-types";
-// eslint-disable-next-line sort-imports
+
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
+import { selectIngredient } from "services/slices/burger-ingredients-slice";
+import { setDocumentTitle } from "utils/utils";
+
 import styles from "./ingredient-details.module.scss";
 
-const IngredientDetails = ({ data }) => {
+const IngredientDetails = () => {
+  const { id } = useParams();
+
+  const [data, statusMessage] = useSelector(selectIngredient(id));
+
+  if (!data) {
+    return statusMessage;
+  }
+
   const { name, image, image_mobile, image_large, calories, proteins, fat, carbohydrates } = data;
+
+  setDocumentTitle(name);
+
   const nutrients = [
     {
       name: "Калории,ккал",
@@ -47,10 +62,6 @@ const IngredientDetails = ({ data }) => {
       </div>
     </div>
   );
-};
-
-IngredientDetails.propTypes = {
-  data: PropTypes.shape(INGREDIENT_PROP_TYPES).isRequired,
 };
 
 export default IngredientDetails;

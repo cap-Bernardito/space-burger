@@ -1,10 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
+import { createSelector, createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = {
   buns: [],
   ingredients: [],
-  total: 0,
 };
 
 const burgerConstructorSlice = createSlice({
@@ -16,15 +14,17 @@ const burgerConstructorSlice = createSlice({
         { ...action.payload, name: `${action.payload.name} (верх)` },
         { ...action.payload, name: `${action.payload.name} (низ)` },
       ];
-      state.total = calculate(state);
     },
-    addIngredient(state, action) {
-      state.ingredients.push({ ...action.payload, key: uuidv4() });
-      state.total = calculate(state);
+    addIngredient: {
+      reducer: (state, action) => {
+        state.ingredients.push(action.payload);
+      },
+      prepare: (data) => {
+        return { payload: { ...data, key: nanoid() } };
+      },
     },
     removeIngredient(state, action) {
       state.ingredients = state.ingredients.filter((item) => item.key !== action.payload.key);
-      state.total = calculate(state);
     },
     moveIngredient(state, action) {
       const { dragIndex, hoverIndex } = action.payload;
@@ -37,12 +37,40 @@ const burgerConstructorSlice = createSlice({
 
       state.ingredients = cloneIngredients;
     },
+    resetStore(state) {
+      state.buns = initialState.buns;
+      state.ingredients = initialState.ingredients;
+    },
   },
 });
 
-function calculate(state) {
-  return [...state.buns, ...state.ingredients].reduce((acc, { price }) => (acc += price), 0);
-}
+export const selectBuns = (state) => state.burgerConstructor.buns;
+export const selectIngredients = (state) => state.burgerConstructor.ingredients;
 
-export const { addBun, addIngredient, removeIngredient, moveIngredient } = burgerConstructorSlice.actions;
+export const selectTotalPrice = createSelector(selectBuns, selectIngredients, (buns, ingredients) =>
+  [...buns, ...ingredients].reduce((acc, { price }) => (acc += price), 0)
+);
+
+export const selectCounters = createSelector(selectBuns, selectIngredients, (buns, ingredients) => {
+  const counters = {};
+
+  [...buns, ...ingredients].forEach((ingredient) => {
+    if (!counters[ingredient._id]) {
+      counters[ingredient._id] = 0;
+    }
+
+    counters[ingredient._id] += 1;
+  });
+
+  return counters;
+});
+
+export const {
+  addBun: addBunInBurgerConstructor,
+  addIngredient: addIngredientInBurgerConstructor,
+  removeIngredient: removeIngredientInBurgerConstructor,
+  moveIngredient: moveIngredientInBurgerConstructor,
+  resetStore: resetIngredientInBurgerConstructor,
+} = burgerConstructorSlice.actions;
+
 export default burgerConstructorSlice.reducer;

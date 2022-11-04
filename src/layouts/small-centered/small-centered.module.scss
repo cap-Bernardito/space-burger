@@ -1,0 +1,25 @@
+@use "../../styles/variables.scss" as *;
+
+.body_wrapper {
+  margin: 180px auto 80px;
+
+  @include media-bp-up(tablet) {
+    display: table;
+  }
+
+  @include media-bp-down(desktop) {
+    margin-top: 100px;
+  }
+}
+
+:global(.flex-v-g6) {
+  display: inline-flex;
+  flex-direction: column;
+  gap: $spacer * 6;
+  text-align: center;
+  align-items: center;
+
+  @include media-bp-down(tablet) {
+    width: 100%;
+  }
+}

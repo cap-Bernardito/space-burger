@@ -10,6 +10,11 @@
   &__logo {
     grid-area: 1 / 1 / -1 / -1;
 
+    a {
+      position: relative;
+      z-index: 10;
+    }
+
     @include media-bp-up(desktop) {
       text-align: center;
     }

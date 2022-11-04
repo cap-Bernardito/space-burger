@@ -53,6 +53,12 @@
         margin-left: auto;
       }
     }
+
+    ul {
+      @include media-bp-down(tablet) {
+        margin-left: $spacer * 13;
+      }
+    }
   }
 
   &__hamburger {
@@ -64,6 +70,7 @@
 
     @include media-bp-up(desktop) {
       opacity: 0;
+      pointer-events: none;
     }
   }
 }

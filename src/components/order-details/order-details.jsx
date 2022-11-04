@@ -1,9 +1,10 @@
 import classNames from "classnames";
-import image from "../../images/done.png";
-import image_large from "../../images/done.png";
-import image_mobile from "../../images/done.png";
 import PropTypes from "prop-types";
-// eslint-disable-next-line sort-imports
+
+import image from "images/done.png";
+import image_large from "images/done.png";
+import image_mobile from "images/done.png";
+
 import styles from "./order-details.module.scss";
 
 const OrderDetails = ({ number }) => (

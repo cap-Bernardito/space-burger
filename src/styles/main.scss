@@ -5,10 +5,14 @@
 }
 
 body {
+  --toastify-color-error: #{$error};
+  --toastify-color-success: #{$accent};
+
   background: $bg;
   color: $primary;
 }
 
+// Layout
 .container {
   max-width: 1240px + $spacer * 10;
   margin-right: auto;
@@ -21,6 +25,55 @@ body {
     padding-left: $spacer * 2;
   }
 }
+// End Layout
+
+// Helpers
+.d-desktop-none {
+  @include media-bp-up(desktop) {
+    display: none;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+// End Helpers
+
+// Common
+a {
+  &,
+  &:link,
+  &:visited {
+    color: $accent;
+    text-decoration: none;
+    transition: color 0.25s;
+  }
+
+  &:hover,
+  &:active {
+    color: $primary;
+  }
+}
+
+.input_size_default,
+.input__container {
+  @include media-bp-down(tablet) {
+    width: 100%;
+  }
+}
+// End Common
 
 // .custom-scroll - react-developer-burger-ui-components/src/ui/common.css
 .custom-scroll,
@@ -34,11 +87,5 @@ body {
   &::-webkit-scrollbar-thumb {
     border: 1px solid #2f2f37;
     border-radius: 0;
-  }
-}
-
-.d-desktop-none {
-  @include media-bp-up(desktop) {
-    display: none;
   }
 }

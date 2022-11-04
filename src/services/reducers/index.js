@@ -1,12 +1,13 @@
-import burgerConstructorReducer from "../slices/burger-constructor-slice";
-import burgerIngredientDetailsReducer from "../slices/burger-ingredient-details-slice";
-import burgerIngredientsReducer from "../slices/burger-ingredients-slice";
 import { combineReducers } from "redux";
-import orderDetailsReducer from "../slices/order-details-slice";
+
+import authReducer from "services/slices/auth-slice";
+import burgerConstructorReducer from "services/slices/burger-constructor-slice";
+import burgerIngredientsReducer from "services/slices/burger-ingredients-slice";
+import orderDetailsReducer from "services/slices/order-details-slice";
 
 export const rootReducer = combineReducers({
   burgerIngredients: burgerIngredientsReducer,
   burgerConstructor: burgerConstructorReducer,
-  ingredientDetails: burgerIngredientDetailsReducer,
   orderDetails: orderDetailsReducer,
+  auth: authReducer,
 });

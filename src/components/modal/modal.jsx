@@ -1,10 +1,12 @@
-import { useEffect, useRef } from "react";
-import classNames from "classnames";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import ModalOverlay from "../modal-overlay/modal-overlay";
+import classNames from "classnames";
 import PropTypes from "prop-types";
+
+import { useEffect, useRef } from "react";
 import ReactDom from "react-dom";
-// eslint-disable-next-line sort-imports
+
+import ModalOverlay from "components/modal-overlay/modal-overlay";
+
 import styles from "./modal.module.scss";
 
 const bodyClass = "modal-opened";

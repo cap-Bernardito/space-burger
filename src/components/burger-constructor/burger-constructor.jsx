@@ -1,21 +1,32 @@
-import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT } from "../../utils/constants";
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { createOrder, removeOrderDetails } from "../../services/slices/order-details-slice";
-import { useDispatch, useSelector } from "react-redux";
-import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import classNames from "classnames";
-import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
-import { useDrop } from "react-dnd";
+
 import { useEffect } from "react";
-import { useModal } from "../../hooks";
-// eslint-disable-next-line sort-imports
+import { useDrop } from "react-dnd";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import { useModal } from "hooks";
+import { selectAuth } from "services/slices/auth-slice";
+import { selectBuns, selectIngredients, selectTotalPrice } from "services/slices/burger-constructor-slice";
+import { createOrder, removeOrderDetails } from "services/slices/order-details-slice";
+import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT, AUTH_STATUS, ROUTES } from "utils/constants";
+import { notify } from "utils/utils";
+
+import BurgerConstructorElement from "components/burger-constructor-element/burger-constructor-element";
+import Modal from "components/modal/modal";
+import OrderDetails from "components/order-details/order-details";
+
 import styles from "./burger-constructor.module.scss";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { status } = useSelector(selectAuth);
+  const buns = useSelector(selectBuns);
+  const ingredients = useSelector(selectIngredients);
+  const total = useSelector(selectTotalPrice);
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
-  const { buns, ingredients, total } = useSelector((state) => state.burgerConstructor);
   const { number: orderNumber, loading: isLoading, error: isError } = useSelector((state) => state.orderDetails);
   const [topBun, bottomBun] = buns;
 
@@ -52,9 +63,16 @@ const BurgerConstructor = () => {
   const checkout = (e) => {
     e.preventDefault();
 
-    const extractedIds = [topBun, ...ingredients, bottomBun].map(({ _id }) => _id);
+    if (status === AUTH_STATUS.ok) {
+      const extractedIds = [topBun, ...ingredients, bottomBun].map(({ _id }) => _id);
 
-    dispatch(createOrder(extractedIds));
+      dispatch(createOrder(extractedIds));
+
+      return;
+    }
+
+    notify("Пожалуйста авторизуйтесь. Только авторизованные пользователи могут оставлять заказ.");
+    navigate(ROUTES.login.path);
   };
 
   const topBunElement = topBun ? (

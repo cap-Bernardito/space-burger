@@ -1,8 +1,9 @@
-import apiService from "../api-service";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
+
+import apiService from "services/api-service";
 
 const initialState = {
-  data: [],
+  data: null,
   loading: false,
   error: false,
 };
@@ -13,6 +14,7 @@ const burgerIngredientsSlice = createSlice({
   reducers: {
     request(state) {
       state.loading = true;
+      state.error = false;
     },
     success(state, action) {
       state.loading = false;
@@ -21,39 +23,38 @@ const burgerIngredientsSlice = createSlice({
     error(state, action) {
       (state.loading = false), (state.error = action.payload);
     },
-    increaseIngredientCount(state, action) {
-      state.data = state.data.map((item) =>
-        item._id === action.payload._id ? { ...item, count: item.count + 1 } : item
-      );
-    },
-    decreaseIngredientCount(state, action) {
-      state.data = state.data.map((item) =>
-        item._id === action.payload._id ? { ...item, count: Math.max(item.count - 1, 0) } : item
-      );
-    },
-    increaseBunCount(state, action) {
-      state.data = state.data.map((item) => {
-        if (item.type !== "bun") {
-          return item;
-        }
-
-        return item._id === action.payload._id ? { ...item, count: 2 } : { ...item, count: 0 };
-      });
-    },
   },
 });
 
 export const getBurgerIngredients = () => async (dispatch) => {
-  dispatch(request());
+  dispatch(getBurgerIngredientsRequest());
   try {
     const response = await apiService.getBurgerIngredients();
 
-    dispatch(success(response));
+    dispatch(getBurgerIngredientsSuccess(response));
   } catch (e) {
-    dispatch(error(e));
+    dispatch(getBurgerIngredientsError(e));
   }
 };
 
-export const { request, success, error, increaseIngredientCount, decreaseIngredientCount, increaseBunCount } =
-  burgerIngredientsSlice.actions;
+export const selectIngredients = (state) => state.burgerIngredients;
+
+export const selectIngredient = (id) =>
+  createSelector(selectIngredients, (ingredients) => {
+    let result;
+    let statusMessage = "Получение данных ингредиента...";
+
+    if (ingredients.data) {
+      [result] = ingredients.data.filter(({ _id }) => _id === id);
+      statusMessage = !result && `Ингредиент с id "${id}" не найден`;
+    }
+
+    return [result, statusMessage];
+  });
+
+export const {
+  request: getBurgerIngredientsRequest,
+  success: getBurgerIngredientsSuccess,
+  error: getBurgerIngredientsError,
+} = burgerIngredientsSlice.actions;
 export default burgerIngredientsSlice.reducer;
