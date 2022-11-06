@@ -158,7 +158,7 @@ const BurgerConstructor = () => {
             onClick={checkout}
             disabled={isLoading || buns.length === 0}
           >
-            {isLoading ? "Загрузка ..." : "Оформить заказ"}
+            {isLoading ? "Загрузка".padEnd("Оформить заказ".length, ".") : "Оформить заказ"}
           </Button>
         </div>
       </div>
