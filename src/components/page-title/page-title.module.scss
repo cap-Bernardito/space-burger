@@ -1,0 +1,7 @@
+@use "../../styles/variables.scss" as *;
+
+.root {
+  @include media-bp-down(tablet) {
+    font-size: 28px;
+  }
+}

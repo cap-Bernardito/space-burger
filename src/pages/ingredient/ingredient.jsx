@@ -2,15 +2,18 @@ import { PAGES_PROTYPES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 
 import IngredientDetails from "components/ingredient-details/ingredient-details";
+import PageTitle from "components/page-title/page-title";
 
 const Ingredient = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
   return (
-    <div className="flex-v-g6">
-      <h1 className="text text_type_main-large">Детали ингредиента</h1>
-      <IngredientDetails />
-    </div>
+    <>
+      <PageTitle titleMobile={pageTitle} titleDesktop={pageTitle} />
+      <div className="flex-v-g6">
+        <IngredientDetails />
+      </div>
+    </>
   );
 };
 

@@ -12,6 +12,7 @@ import { setDocumentTitle } from "utils/utils";
 import { isErrorVisibility, notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
+import PageTitle from "components/page-title/page-title";
 
 const Login = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
@@ -48,40 +49,42 @@ const Login = ({ pageTitle }) => {
   }
 
   return (
-    <form className="flex-v-g6" onSubmit={handleSubmitForm}>
-      <h1 className="text text_type_main-medium">Вход</h1>
-      <EmailInput
-        type={"email"}
-        placeholder={"E-mail"}
-        name={"email"}
-        value={formState.email}
-        onChange={handleFormFields}
-        errorText="Введите корректный email"
-        required
-      />
-      <Input
-        type={isPasswordVisible ? "text" : "password"}
-        placeholder={"Пароль"}
-        icon={isPasswordVisible ? "HideIcon" : "ShowIcon"}
-        name={"password"}
-        onIconClick={togglePasswordVisible}
-        value={formState.password}
-        onChange={handleFormFields}
-        required
-      />
-      <div className="mb-15">
-        <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
-          Войти
-        </Button>
-      </div>
-      <div>
-        <div className="mb-4">
-          {/* eslint-disable-next-line no-irregular-whitespace */}
-          Вы — новый пользователь? <Link to={ROUTES.register.path}>Зарегистрироваться</Link>
+    <>
+      <PageTitle titleMobile={pageTitle} titleDesktop={pageTitle} />
+      <form className="flex-v-g6" onSubmit={handleSubmitForm}>
+        <EmailInput
+          type={"email"}
+          placeholder={"E-mail"}
+          name={"email"}
+          value={formState.email}
+          onChange={handleFormFields}
+          errorText="Введите корректный email"
+          required
+        />
+        <Input
+          type={isPasswordVisible ? "text" : "password"}
+          placeholder={"Пароль"}
+          icon={isPasswordVisible ? "HideIcon" : "ShowIcon"}
+          name={"password"}
+          onIconClick={togglePasswordVisible}
+          value={formState.password}
+          onChange={handleFormFields}
+          required
+        />
+        <div className="mb-15">
+          <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
+            Войти
+          </Button>
         </div>
-        Забыли пароль? <Link to={ROUTES.forgotPassword.path}>Восстановить пароль</Link>
-      </div>
-    </form>
+        <div>
+          <div className="mb-4">
+            {/* eslint-disable-next-line no-irregular-whitespace */}
+            Вы — новый пользователь? <Link to={ROUTES.register.path}>Зарегистрироваться</Link>
+          </div>
+          Забыли пароль? <Link to={ROUTES.forgotPassword.path}>Восстановить пароль</Link>
+        </div>
+      </form>
+    </>
   );
 };
 

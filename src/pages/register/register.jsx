@@ -10,6 +10,7 @@ import { AUTH_STATUS, PAGES_PROTYPES, ROUTES } from "utils/constants";
 import { isErrorVisibility, notify, setDocumentTitle } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
+import PageTitle from "components/page-title/page-title";
 
 const Register = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
@@ -55,8 +56,8 @@ const Register = ({ pageTitle }) => {
 
   return (
     <>
+      <PageTitle titleMobile={pageTitle} titleDesktop={pageTitle} />
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>
-        <h1 className="text text_type_main-medium">Регистрация</h1>
         <Input
           type={"text"}
           placeholder={"Имя"}

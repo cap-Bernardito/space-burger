@@ -13,6 +13,7 @@ import { setDocumentTitle } from "utils/utils";
 import { notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
+import PageTitle from "components/page-title/page-title";
 
 const ForgotPassword = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
@@ -60,26 +61,28 @@ const ForgotPassword = ({ pageTitle }) => {
   }
 
   return (
-    <form className="flex-v-g6" onSubmit={handleSubmitForm}>
-      <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-      <EmailInput
-        type={"email"}
-        placeholder={"Укажите e-mail"}
-        name={"email"}
-        value={formState.email}
-        onChange={handleFormFields}
-        errorText="Введите корректный email"
-        required
-      />
-      <div className="mb-15">
-        <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
-          Восстановить
-        </Button>
-      </div>
-      <div>
-        Вспомнили пароль? <Link to={ROUTES.login.path}>Войти</Link>
-      </div>
-    </form>
+    <>
+      <PageTitle titleMobile={pageTitle} titleDesktop={pageTitle} />
+      <form className="flex-v-g6" onSubmit={handleSubmitForm}>
+        <EmailInput
+          type={"email"}
+          placeholder={"Укажите e-mail"}
+          name={"email"}
+          value={formState.email}
+          onChange={handleFormFields}
+          errorText="Введите корректный email"
+          required
+        />
+        <div className="mb-15">
+          <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
+            Восстановить
+          </Button>
+        </div>
+        <div>
+          Вспомнили пароль? <Link to={ROUTES.login.path}>Войти</Link>
+        </div>
+      </form>
+    </>
   );
 };
 

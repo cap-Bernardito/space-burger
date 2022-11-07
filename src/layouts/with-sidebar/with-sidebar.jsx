@@ -27,7 +27,6 @@ const WithSidebar = () => {
         )}
 
         <main className={styles.main}>
-          {isSmallScreen && description}
           <Outlet />
         </main>
       </div>

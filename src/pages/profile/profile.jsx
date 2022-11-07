@@ -11,6 +11,7 @@ import { setDocumentTitle } from "utils/utils";
 import { isErrorVisibility, notify } from "utils/utils";
 
 import EditableInput from "components/editable-input/editable-input";
+import PageTitle from "components/page-title/page-title";
 
 const Profile = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
@@ -67,46 +68,49 @@ const Profile = ({ pageTitle }) => {
   };
 
   return (
-    <form className="flex-v-g6" onSubmit={handleSubmitForm}>
-      <EditableInput
-        type={"text"}
-        placeholder={"Имя"}
-        name={"name"}
-        value={formState.name}
-        onChange={handleOnChange}
-        icon={"EditIcon"}
-        required
-      />
-      <EmailInput
-        type={"email"}
-        placeholder={"Логин"}
-        name={"email"}
-        value={formState.email}
-        onChange={handleOnChange}
-        isIcon={true}
-        errorText="Введите корректный email"
-        required
-      />
-      <EditableInput
-        type={"password"}
-        placeholder={"Пароль"}
-        name={"password"}
-        value={formState.password}
-        onChange={handleOnChange}
-        icon={"EditIcon"}
-        autoComplete="new-password"
-      />
-      {isFormEditable && (
-        <div className="mb-15 ml-auto">
-          <a href="#" className="mr-7" onClick={handleFormEditableOff}>
-            Отмена
-          </a>
-          <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
-            Сохранить
-          </Button>
-        </div>
-      )}
-    </form>
+    <>
+      <PageTitle titleMobile={pageTitle} />
+      <form className="flex-v-g6" onSubmit={handleSubmitForm}>
+        <EditableInput
+          type={"text"}
+          placeholder={"Имя"}
+          name={"name"}
+          value={formState.name}
+          onChange={handleOnChange}
+          icon={"EditIcon"}
+          required
+        />
+        <EmailInput
+          type={"email"}
+          placeholder={"Логин"}
+          name={"email"}
+          value={formState.email}
+          onChange={handleOnChange}
+          isIcon={true}
+          errorText="Введите корректный email"
+          required
+        />
+        <EditableInput
+          type={"password"}
+          placeholder={"Пароль"}
+          name={"password"}
+          value={formState.password}
+          onChange={handleOnChange}
+          icon={"EditIcon"}
+          autoComplete="new-password"
+        />
+        {isFormEditable && (
+          <div className="mb-15 ml-auto">
+            <a href="#" className="mr-7" onClick={handleFormEditableOff}>
+              Отмена
+            </a>
+            <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
+              Сохранить
+            </Button>
+          </div>
+        )}
+      </form>
+    </>
   );
 };
 

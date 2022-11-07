@@ -31,12 +31,12 @@ export const PAGES_PROTYPES = {
 
 export const ROUTES = {
   home: { path: "/", title: "Конструктор бургера" },
-  login: { path: "/login", title: "Вход на сайт" },
-  register: { path: "/register", title: "Регистрация нового пользователя" },
+  login: { path: "/login", title: "Вход" },
+  register: { path: "/register", title: "Регистрация" },
   forgotPassword: { path: "/forgot-password", title: "Восстановление пароля" },
   resetPassword: { path: "/reset-password", title: "Сброс пароля" },
   ingredient: { path: "/ingredients/:id", title: "Детали ингредиента" },
-  profile: { path: "/profile", title: "Информация о пользователе" },
+  profile: { path: "/profile", title: "Профиль" },
   profileOrders: { path: "/profile/orders", title: "История заказов" },
   profileOrder: { path: "/profile/orders/:id", title: "Информация о заказе" },
   notFound: { path: "*", title: "Страница не найдена" },

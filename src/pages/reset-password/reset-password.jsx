@@ -13,6 +13,7 @@ import { setDocumentTitle } from "utils/utils";
 import { notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
+import PageTitle from "components/page-title/page-title";
 
 const ResetPassword = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
@@ -66,36 +67,38 @@ const ResetPassword = ({ pageTitle }) => {
   }
 
   return (
-    <form className="flex-v-g6" onSubmit={handleSubmitForm}>
-      <h1 className="text text_type_main-medium">Сброс пароля</h1>
-      <Input
-        type={isPasswordVisible ? "text" : "password"}
-        placeholder={"Введите новый пароль"}
-        icon={isPasswordVisible ? "HideIcon" : "ShowIcon"}
-        name={"password"}
-        onIconClick={togglePasswordVisible}
-        value={formState.password}
-        onChange={handleFormFields}
-        autoComplete="new-password"
-        required
-      />
-      <Input
-        type={"text"}
-        placeholder={"Введите код из письма"}
-        name={"token"}
-        value={formState.token}
-        onChange={handleFormFields}
-        required
-      />
-      <div className="mb-15">
-        <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
-          Сохранить
-        </Button>
-      </div>
-      <div>
-        Вспомнили пароль? <Link to={ROUTES.login.path}>Войти</Link>
-      </div>
-    </form>
+    <>
+      <PageTitle titleMobile={pageTitle} titleDesktop={pageTitle} />
+      <form className="flex-v-g6" onSubmit={handleSubmitForm}>
+        <Input
+          type={isPasswordVisible ? "text" : "password"}
+          placeholder={"Введите новый пароль"}
+          icon={isPasswordVisible ? "HideIcon" : "ShowIcon"}
+          name={"password"}
+          onIconClick={togglePasswordVisible}
+          value={formState.password}
+          onChange={handleFormFields}
+          autoComplete="new-password"
+          required
+        />
+        <Input
+          type={"text"}
+          placeholder={"Введите код из письма"}
+          name={"token"}
+          value={formState.token}
+          onChange={handleFormFields}
+          required
+        />
+        <div className="mb-15">
+          <Button type="primary" size="medium" htmlType="submit" disabled={loading}>
+            Сохранить
+          </Button>
+        </div>
+        <div>
+          Вспомнили пароль? <Link to={ROUTES.login.path}>Войти</Link>
+        </div>
+      </form>
+    </>
   );
 };
 
