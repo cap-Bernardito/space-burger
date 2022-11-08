@@ -28,6 +28,13 @@ $bottomFieldsSpacer: $spacer * 15;
     align-items: center;
     justify-content: center;
     margin: $vSpaser;
+
+    @include media-bp-down(tablet) {
+      display: block;
+      min-height: 100vh;
+      margin: 0;
+      background: $bg;
+    }
   }
 
   &__content {
@@ -36,8 +43,16 @@ $bottomFieldsSpacer: $spacer * 15;
     max-width: 720px;
     padding: $topFieldsSpacer $inlineFieldsSpacer $bottomFieldsSpacer;
     background: $modalBg;
-    border: 1px solid $modalEdge;
-    border-radius: $spacer * 10;
+
+    @include media-bp-up(tablet) {
+      border: 1px solid $modalEdge;
+      border-radius: $spacer * 10;
+    }
+
+    @include media-bp-down(tablet) {
+      padding: $topFieldsSpacer / 2 $inlineFieldsSpacer / 2 $bottomFieldsSpacer / 2;
+      background: $bg;
+    }
 
     &_withoutHeader {
       padding-top: $spacer * 30;
@@ -65,8 +80,19 @@ $bottomFieldsSpacer: $spacer * 15;
       transform: scale(1.15);
     }
   }
+
+  @include media-bp-down(tablet) {
+    top: $spacer * 6.5;
+    right: $spacer * 5;
+  }
 }
 
 .header {
   margin-right: ($spacer * 15 - $inlineFieldsSpacer) + $closeSize;
+
+  @include media-bp-down(tablet) {
+    margin-right: ($spacer * 12 - $inlineFieldsSpacer) + $closeSize;
+    margin-bottom: 13vh;
+    font-size: 28px;
+  }
 }

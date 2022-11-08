@@ -6,7 +6,7 @@ import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { useModal } from "hooks";
+import { useModal, useScreenTest } from "hooks";
 import { selectAuth } from "services/slices/auth-slice";
 import { selectBuns, selectIngredients, selectTotalPrice } from "services/slices/burger-constructor-slice";
 import { createOrder, removeOrderDetails } from "services/slices/order-details-slice";
@@ -22,6 +22,7 @@ import styles from "./burger-constructor.module.scss";
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isSmallScreen = useScreenTest();
   const { status } = useSelector(selectAuth);
   const buns = useSelector(selectBuns);
   const ingredients = useSelector(selectIngredients);
@@ -163,7 +164,7 @@ const BurgerConstructor = () => {
         </div>
       </div>
       {modalIsOpen && orderNumber && (
-        <Modal onClose={closeModal}>
+        <Modal onClose={closeModal} title={isSmallScreen ? <span>Заказ оформлен</span> : null}>
           <OrderDetails number={orderNumber} />
         </Modal>
       )}
