@@ -1,4 +1,4 @@
-import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 
 import { useEffect } from "react";
@@ -16,6 +16,7 @@ import { notify } from "utils/utils";
 import BurgerConstructorElement from "components/burger-constructor-element/burger-constructor-element";
 import Modal from "components/modal/modal";
 import OrderDetails from "components/order-details/order-details";
+import ResponsiveButton from "components/responsive-button/responsive-button";
 
 import styles from "./burger-constructor.module.scss";
 
@@ -79,13 +80,13 @@ const BurgerConstructor = () => {
   const topBunElement = topBun ? (
     <BurgerConstructorElement isLocked={true} type="top" data={topBun} />
   ) : (
-    <span className="text text_type_main-medium">{ADD_BUN_EMPTY_TEXT}</span>
+    <span className={classNames(styles.drop_text, "text text_type_main-medium")}>{ADD_BUN_EMPTY_TEXT}</span>
   );
 
   const bottomBunElement = bottomBun ? (
     <BurgerConstructorElement isLocked={true} type="bottom" data={bottomBun} />
   ) : (
-    <span className="text text_type_main-medium">{ADD_BUN_EMPTY_TEXT}</span>
+    <span className={classNames(styles.drop_text, "text text_type_main-medium")}>{ADD_BUN_EMPTY_TEXT}</span>
   );
 
   const ingredientsListElement =
@@ -94,7 +95,7 @@ const BurgerConstructor = () => {
         <BurgerConstructorElement key={ingredient.key} data={ingredient} index={index} />
       ))
     ) : (
-      <span className="text text_type_main-medium">{ADD_INGREDIENTS_EMPTY_TEXT}</span>
+      <span className={classNames(styles.drop_text, "text text_type_main-medium")}>{ADD_INGREDIENTS_EMPTY_TEXT}</span>
     );
 
   const errorMessage = isError && (
@@ -152,7 +153,7 @@ const BurgerConstructor = () => {
             {total}&nbsp;
             <CurrencyIcon type="primary" />
           </div>
-          <Button
+          <ResponsiveButton
             type="primary"
             size="large"
             htmlType="button"
@@ -160,8 +161,9 @@ const BurgerConstructor = () => {
             disabled={isLoading || buns.length === 0}
           >
             {isLoading ? "Загрузка".padEnd("Оформить заказ".length, ".") : "Оформить заказ"}
-          </Button>
+          </ResponsiveButton>
         </div>
+        <div className={styles.order_spacer}></div>
       </div>
       {modalIsOpen && orderNumber && (
         <Modal onClose={closeModal} title={isSmallScreen ? <span>Заказ оформлен</span> : null}>

@@ -43,6 +43,12 @@
 .drop {
   position: relative;
 
+  &_text {
+    @include media-bp-down(tablet) {
+      font-size: 20px;
+    }
+  }
+
   &::after {
     content: "";
     position: absolute;
@@ -53,6 +59,10 @@
     border: 5px dashed transparent;
     background: transparent;
     transition: 0.25s all;
+
+    @include media-bp-down(tablet) {
+      border-width: 4px;
+    }
   }
 
   &.canDrop {
@@ -136,6 +146,21 @@
   gap: $spacer * 10;
   padding: $spacer * 10 0;
 
+  @include media-bp-down(tablet) {
+    z-index: 2000;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    gap: $spacer * 5;
+    padding: $spacer * 4 $spacer * 2;
+    background: $modalBg;
+
+    &_spacer {
+      height: 150px;
+    }
+  }
+
   &__sum {
     display: flex;
     align-items: center;
@@ -143,6 +168,15 @@
     svg {
       width: 36px;
       height: 36px;
+    }
+
+    @include media-bp-down(tablet) {
+      font-size: 26px;
+
+      svg {
+        width: 26px;
+        height: 26px;
+      }
     }
   }
 }

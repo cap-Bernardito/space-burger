@@ -20,7 +20,15 @@
     }
   }
 
+  &__lock {
+    @include media-bp-down(tablet) {
+      display: none;
+    }
+  }
+
   :global(.constructor-element) {
+    display: inline-flex;
+    align-items: center;
     background-color: $modalBg;
 
     @include media-bp-down(desktop) {
