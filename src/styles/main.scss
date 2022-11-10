@@ -73,6 +73,23 @@ a {
     width: 100%;
   }
 }
+
+@include media-bp-down(tablet) {
+  .text_type_main {
+    &-default {
+      font-size: 14px;
+    }
+
+    &-medium {
+      font-size: 20px;
+    }
+
+    &-large {
+      font-size: 28px;
+    }
+  }
+}
+
 // End Common
 
 // .custom-scroll - react-developer-burger-ui-components/src/ui/common.css
