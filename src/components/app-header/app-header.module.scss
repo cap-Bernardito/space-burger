@@ -1,7 +1,12 @@
 @use "../../styles/variables.scss" as *;
 
 .header {
+  padding: $spacer * 4 0;
   background: $modalBg;
+
+  @include media-bp-down(tablet) {
+    padding: $spacer * 2 0;
+  }
 
   &__container {
     display: grid;
@@ -12,6 +17,7 @@
 
     a {
       position: relative;
+      top: 4px;
       z-index: 10;
     }
 
