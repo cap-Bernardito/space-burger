@@ -7,7 +7,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 1;
+  width: 100%;
+  user-select: none;
+
+  &__wrapper {
+    position: relative;
+  }
 
   &:not(.locked) {
     cursor: move;
@@ -21,6 +26,8 @@
   }
 
   &__lock {
+    flex: 0 0 30px;
+
     @include media-bp-down(tablet) {
       display: none;
     }
@@ -33,10 +40,14 @@
 
     @include media-bp-down(desktop) {
       padding: $spacer * 3 $spacer * 3 $spacer * 3 0;
-      background: transparent;
+      background: $bg;
       border-bottom: 1px solid $secondary;
       border-radius: 0;
     }
+  }
+
+  :global(.constructor-element__row) {
+    width: 100%;
   }
 
   :global(.constructor-element__image) {

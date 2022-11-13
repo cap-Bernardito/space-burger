@@ -26,16 +26,8 @@ const burgerConstructorSlice = createSlice({
     removeIngredient(state, action) {
       state.ingredients = state.ingredients.filter((item) => item.key !== action.payload.key);
     },
-    moveIngredient(state, action) {
-      const { dragIndex, hoverIndex } = action.payload;
-      const cloneIngredients = [...state.ingredients];
-
-      [cloneIngredients[dragIndex], cloneIngredients[hoverIndex]] = [
-        cloneIngredients[hoverIndex],
-        cloneIngredients[dragIndex],
-      ];
-
-      state.ingredients = cloneIngredients;
+    setIngredients(state, action) {
+      state.ingredients = action.payload;
     },
     resetStore(state) {
       state.buns = initialState.buns;
@@ -69,7 +61,7 @@ export const {
   addBun: addBunInBurgerConstructor,
   addIngredient: addIngredientInBurgerConstructor,
   removeIngredient: removeIngredientInBurgerConstructor,
-  moveIngredient: moveIngredientInBurgerConstructor,
+  setIngredients: setIngredientsInBurgerConstructor,
   resetStore: resetIngredientInBurgerConstructor,
 } = burgerConstructorSlice.actions;
 

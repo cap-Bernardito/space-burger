@@ -1,5 +1,6 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
+import { Reorder } from "framer-motion";
 
 import { useEffect } from "react";
 import { useDrop } from "react-dnd";
@@ -8,7 +9,12 @@ import { useNavigate } from "react-router-dom";
 
 import { useModal, useScreenTest } from "hooks";
 import { selectAuth } from "services/slices/auth-slice";
-import { selectBuns, selectIngredients, selectTotalPrice } from "services/slices/burger-constructor-slice";
+import {
+  selectBuns,
+  selectIngredients,
+  selectTotalPrice,
+  setIngredientsInBurgerConstructor,
+} from "services/slices/burger-constructor-slice";
 import { createOrder, removeOrderDetails } from "services/slices/order-details-slice";
 import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT, AUTH_STATUS, ROUTES } from "utils/constants";
 import { notify } from "utils/utils";
@@ -92,7 +98,7 @@ const BurgerConstructor = () => {
   const ingredientsListElement =
     ingredients.length > 0 ? (
       ingredients.map((ingredient, index) => (
-        <BurgerConstructorElement key={ingredient.key} data={ingredient} index={index} />
+        <BurgerConstructorElement key={ingredient.key} isOrdered={true} data={ingredient} index={index} />
       ))
     ) : (
       <span className={classNames(styles.drop_text, "text text_type_main-medium")}>{ADD_INGREDIENTS_EMPTY_TEXT}</span>
@@ -101,6 +107,10 @@ const BurgerConstructor = () => {
   const errorMessage = isError && (
     <div className={styles.error}>{`Возникла ошибка при получении данных заказа: ${isError}`}</div>
   );
+
+  const reorderIngredients = (items) => {
+    dispatch(setIngredientsInBurgerConstructor(items));
+  };
 
   return (
     <>
@@ -118,21 +128,24 @@ const BurgerConstructor = () => {
           {topBunElement}
         </div>
 
-        <div
-          className={classNames(
-            styles.list,
-            styles.drop,
-            {
+        <Reorder.Group
+          as="div"
+          axis="y"
+          layoutScroll
+          onReorder={reorderIngredients}
+          values={ingredients}
+          className={classNames(styles.list, { [styles.empty]: ingredients.length === 0 }, "custom-scroll")}
+        >
+          <div
+            className={classNames(styles.list__inner, styles.drop, {
               [styles.empty]: ingredients.length === 0,
               [styles.onHover]: isIngredientHover,
               [styles.canDrop]: isIngredientCanDrop,
-            },
-            "custom-scroll"
-          )}
-          ref={dropIngredientTarget}
-        >
+            })}
+            ref={dropIngredientTarget}
+          ></div>
           {ingredientsListElement}
-        </div>
+        </Reorder.Group>
 
         <div
           className={classNames(
