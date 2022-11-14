@@ -16,7 +16,7 @@ const BurgerIngredientsCategory = ({ type, list }) => {
 
   return (
     <>
-      <h2 className={classNames("text text_type_main-medium mb-6")}>{TYPES_OF_INGREDIENTS[type]}</h2>
+      <h2 className={classNames("text text_type_main-medium mb-6")}>{TYPES_OF_INGREDIENTS.get(type)}</h2>
       <div className={classNames(styles.list, "pr-3")}>
         {list.map((ingredient) => {
           return (
@@ -31,7 +31,7 @@ const BurgerIngredientsCategory = ({ type, list }) => {
 };
 
 BurgerIngredientsCategory.propTypes = {
-  type: PropTypes.oneOf(Object.keys(TYPES_OF_INGREDIENTS)).isRequired,
+  type: PropTypes.oneOf([...TYPES_OF_INGREDIENTS.keys()]).isRequired,
   list: PropTypes.arrayOf(PropTypes.shape(INGREDIENT_PROP_TYPES)).isRequired,
 };
 

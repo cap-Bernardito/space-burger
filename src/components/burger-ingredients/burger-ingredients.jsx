@@ -13,7 +13,7 @@ import styles from "./burger-ingredients.module.scss";
 
 const BurgerIngredients = ({ data }) => {
   const [activeTabName, setActiveTab] = useState(() => {
-    const [activeType] = Object.keys(TYPES_OF_INGREDIENTS);
+    const [activeType] = [...TYPES_OF_INGREDIENTS.keys()];
 
     return activeType;
   });
@@ -43,12 +43,12 @@ const BurgerIngredients = ({ data }) => {
       threshold: 0,
     });
 
-    Object.keys(TYPES_OF_INGREDIENTS).forEach((type) => {
+    for (const type of TYPES_OF_INGREDIENTS.keys()) {
       const element = document.getElementById(type);
       categoryDOMElements[type] = element;
 
       observer.observe(element);
-    });
+    }
 
     return () => {
       Object.values(categoryDOMElements).forEach((el) => {
@@ -68,7 +68,7 @@ const BurgerIngredients = ({ data }) => {
 
   const tabs = ingredientTypes.map((tabName) => (
     <Tab key={tabName} value={tabName} active={activeTabName === tabName} onClick={setCurrentTab}>
-      {TYPES_OF_INGREDIENTS[tabName]}
+      {TYPES_OF_INGREDIENTS.get(tabName)}
     </Tab>
   ));
 

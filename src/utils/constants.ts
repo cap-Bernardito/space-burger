@@ -1,10 +1,13 @@
 import PropTypes from "prop-types";
 
-export const TYPES_OF_INGREDIENTS = {
-  bun: "Булки",
-  sauce: "Соусы",
-  main: "Начинки",
-};
+import { TIngredientType } from "../../declarations";
+
+// NOTE: Map нужен для сохранения порядка свойств при обходе коллекции
+export const TYPES_OF_INGREDIENTS: ReadonlyMap<TIngredientType, string> = new Map([
+  ["bun", "Булки"],
+  ["sauce", "Соусы"],
+  ["main", "Начинки"],
+]);
 
 export const ADD_BUN_EMPTY_TEXT = "Добавьте булку";
 

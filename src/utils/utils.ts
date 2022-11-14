@@ -1,11 +1,17 @@
-import { toast } from "react-toastify";
+import { toast, ToastContent, ToastOptions, TypeOptions } from "react-toastify";
+
+import { TIngredient, TIngredientType } from "../../declarations";
 
 import { TYPES_OF_INGREDIENTS } from "./constants";
 
-export const splitIngredientsByTypes = (data) => {
-  const initial = {};
+export const splitIngredientsByTypes = (data: TIngredient[]) => {
+  type TIngredientsByTypes = {
+    [K in TIngredientType]?: TIngredient[];
+  };
 
-  for (const type of Object.keys(TYPES_OF_INGREDIENTS)) {
+  const initial: TIngredientsByTypes = {};
+
+  for (const type of TYPES_OF_INGREDIENTS.keys()) {
     initial[type] = [];
   }
 
@@ -16,7 +22,7 @@ export const splitIngredientsByTypes = (data) => {
       acc[type] = [];
     }
 
-    acc[type].push(item);
+    (acc[type] as TIngredient[]).push(item);
 
     return acc;
   }, initial);
@@ -24,14 +30,16 @@ export const splitIngredientsByTypes = (data) => {
   return Object.entries(result);
 };
 
-export const notify = (message, options = {}, type = "error") => {
+export const notify = (
+  message: ToastContent,
+  options: ToastOptions = {},
+  toastType: Exclude<TypeOptions, "default"> = "error"
+) => {
   if (!message) {
     return;
   }
 
-  const toastType = typeof options === "string" ? options : type;
-
-  const defaultOptions = {
+  const defaultOptions: ToastOptions = {
     position: "top-center",
     autoClose: 3000,
     theme: "colored",
@@ -40,7 +48,7 @@ export const notify = (message, options = {}, type = "error") => {
   toast[toastType](message, { ...defaultOptions, ...options });
 };
 
-export const isErrorVisibility = (error) => {
+export const isErrorVisibility = (error: string) => {
   if (!error) {
     return false;
   }
@@ -55,7 +63,7 @@ export const isErrorVisibility = (error) => {
   return true;
 };
 
-export const setDocumentTitle = (title) => {
+export const setDocumentTitle = (title: string) => {
   const prevTitle = document.title;
   document.title = `${title} | Space Burger`;
 
