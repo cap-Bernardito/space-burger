@@ -1,6 +1,7 @@
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 
+import { FC } from "react";
 import { Link } from "react-router-dom";
 
 import { useScreenTest } from "hooks";
@@ -12,7 +13,7 @@ import logo_xs from "../../images/logo_xs.svg";
 
 import styles from "./app-header.module.scss";
 
-const AppHeader = () => {
+const AppHeader: FC = () => {
   const isSmallScreen = useScreenTest();
 
   return (
@@ -20,7 +21,7 @@ const AppHeader = () => {
       <div className={classNames(styles.header__container, "container")}>
         <div className={classNames(styles.header__logo)}>
           <Link to={ROUTES.home.path} title={ROUTES.home.title}>
-            {isSmallScreen ? <img src={logo_xs} with="50" height="50" /> : <Logo />}
+            {isSmallScreen ? <img src={logo_xs} width="50" height="50" /> : <Logo />}
           </Link>
         </div>
         <nav className={classNames(styles.header__navbar)}>
