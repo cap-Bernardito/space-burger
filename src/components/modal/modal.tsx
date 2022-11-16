@@ -1,8 +1,7 @@
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
-import { useEffect, useRef } from "react";
+import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import ReactDom from "react-dom";
 
 import ModalOverlay from "components/modal-overlay/modal-overlay";
@@ -10,14 +9,19 @@ import ModalOverlay from "components/modal-overlay/modal-overlay";
 import styles from "./modal.module.scss";
 
 const bodyClass = "modal-opened";
-const modalRoot = document.getElementById("modals");
-const documentBody = document.querySelector("body");
+const modalRoot = document.getElementById("modals") as HTMLDivElement;
+const documentBody = document.querySelector("body") as HTMLBodyElement;
 
-const Modal = ({ title, children, onClose }) => {
-  const overlayRef = useRef();
+type Props = {
+  title: React.ReactNode;
+  onClose: () => void;
+};
+
+const Modal: FC<PropsWithChildren<Props>> = ({ title, onClose, children }) => {
+  const overlayRef = useRef(null);
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
       }
@@ -36,7 +40,7 @@ const Modal = ({ title, children, onClose }) => {
     return () => documentBody.classList.remove(bodyClass);
   }, []);
 
-  const handleClose = (event) => {
+  const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === overlayRef.current) {
       onClose();
     }
@@ -63,13 +67,6 @@ const Modal = ({ title, children, onClose }) => {
     </>,
     modalRoot
   );
-};
-
-Modal.propTypes = {
-  // NOTE: Стилизация заголовка может быть разная, потому должна быть возможность передать стилизованный элемент
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  onClose: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
 };
 
 export default Modal;
