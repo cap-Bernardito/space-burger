@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { useScreenTest } from "hooks";
 import { INGREDIENT_PROP_TYPES, TYPES_OF_INGREDIENTS } from "utils/constants";
 import { splitIngredientsByTypes } from "utils/utils";
 
@@ -12,6 +13,7 @@ import BurgerIngredientsCategory from "components/burger-ingredients-category/bu
 import styles from "./burger-ingredients.module.scss";
 
 const BurgerIngredients = ({ data }) => {
+  const isPortraitScreen = useScreenTest("(max-width: 1137px)");
   const [activeTabName, setActiveTab] = useState(() => {
     const [activeType] = [...TYPES_OF_INGREDIENTS.keys()];
 
@@ -55,7 +57,7 @@ const BurgerIngredients = ({ data }) => {
         observer.unobserve(el);
       });
     };
-  }, [categoryDOMElements]);
+  }, [categoryDOMElements, isPortraitScreen]);
 
   const setCurrentTab = useCallback(
     (tabName) => {
