@@ -1,15 +1,9 @@
 import { toast, ToastContent, ToastOptions, TypeOptions } from "react-toastify";
 
-import { TIngredient, TIngredientType } from "../../declarations";
-
 import { TYPES_OF_INGREDIENTS } from "./constants";
 
 export const splitIngredientsByTypes = (data: TIngredient[]) => {
-  type TIngredientsByTypes = {
-    [K in TIngredientType]?: TIngredient[];
-  };
-
-  const initial: TIngredientsByTypes = {};
+  const initial: Partial<Record<TIngredientType, TIngredient[]>> = {};
 
   for (const type of TYPES_OF_INGREDIENTS.keys()) {
     initial[type] = [];
@@ -27,7 +21,7 @@ export const splitIngredientsByTypes = (data: TIngredient[]) => {
     return acc;
   }, initial);
 
-  return Object.entries(result);
+  return Object.entries(result) as TIngredientsByTypes;
 };
 
 export const notify = (
@@ -64,10 +58,5 @@ export const isErrorVisibility = (error: string) => {
 };
 
 export const setDocumentTitle = (title: string) => {
-  const prevTitle = document.title;
   document.title = `${title} | Space Burger`;
-
-  return () => {
-    document.title = prevTitle;
-  };
 };

@@ -1,6 +1,6 @@
-export type TIngredientType = "bun" | "sauce" | "main";
+declare type TIngredientType = "bun" | "sauce" | "main";
 
-export type TIngredient = {
+declare type TIngredient = {
   readonly _id: string;
   readonly name: string;
   readonly type: TIngredientType;
@@ -14,3 +14,11 @@ export type TIngredient = {
   readonly image_mobile: string;
   readonly __v: number;
 };
+
+declare type TIngredientsByTypes = [TIngredientType, TIngredient[]][];
+
+declare enum EAuthStatus {
+  pending = "pending",
+  ok = "auth",
+  no = "notAuth",
+}

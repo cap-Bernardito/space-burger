@@ -18,7 +18,7 @@ type Props = {
 };
 
 const Modal: FC<PropsWithChildren<Props>> = ({ title, onClose, children }) => {
-  const overlayRef = useRef(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
