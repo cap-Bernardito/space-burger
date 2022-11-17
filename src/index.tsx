@@ -19,7 +19,7 @@ const store = configureStore({
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== "production",
 });
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLDivElement);
 
 root.render(
   <React.StrictMode>
@@ -35,3 +35,6 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

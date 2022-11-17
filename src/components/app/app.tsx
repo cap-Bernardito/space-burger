@@ -1,8 +1,8 @@
-import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useCallback, useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
+import { useAppDispatch, useAppSelector } from "hooks";
 import { auth, selectAuth } from "services/slices/auth-slice";
 import { getBurgerIngredients } from "services/slices/burger-ingredients-slice";
 import { AUTH_STATUS, ROUTES } from "utils/constants";
@@ -27,13 +27,13 @@ import AppHeader from "components/app-header/app-header";
 import IngredientDetails from "components/ingredient-details/ingredient-details";
 import Modal from "components/modal/modal";
 
-const App = () => {
-  const dispatch = useDispatch();
+const App: FC = () => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const { status } = useSelector(selectAuth);
+  const { status } = useAppSelector(selectAuth);
 
-  const background = location?.state?.background;
+  const background: Location | undefined = location?.state?.background;
 
   useEffect(() => {
     if (status === AUTH_STATUS.pending) {
