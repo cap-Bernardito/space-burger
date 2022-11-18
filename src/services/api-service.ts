@@ -2,32 +2,36 @@ import Cookies from "js-cookie";
 
 import { data as fakeData } from "utils/data";
 
+enum EEndpointAccessToken {
+  create = "/auth/login/",
+  delete = "/auth/logout/",
+  update = "/auth/token/",
+}
+
+enum EEndpointUser {
+  create = "/auth/register/",
+  update = "/auth/user/",
+  get = "/auth/user/",
+  resetPassword = "/password-reset/",
+  updatePassword = "/password-reset/reset/",
+}
+
+enum EEndpointIngredients {
+  get = "/ingredients/",
+}
+
+enum EEndpointOrders {
+  create = "/orders/",
+}
+
+type TEndpoints = EEndpointAccessToken | EEndpointUser | EEndpointIngredients | EEndpointOrders;
+
 class ApiService {
-  _accessToken = null;
-  _refreshToken = null;
-  _baseApiUrl = "https://norma.nomoreparties.space/api";
+  _accessToken: TTokens["accessToken"] = null;
+  _refreshToken: TTokens["refreshToken"] = null;
+  _baseApiUrl = "https://norma.nomoreparties.space/api" as const;
   _isFakeData = process.env.REACT_APP_DATA_SOURCE === "fake-data";
-  _endpoint = {
-    access_token: {
-      create: "/auth/login/",
-      delete: "/auth/logout/",
-      update: "/auth/token/",
-    },
-    user: {
-      create: "/auth/register/",
-      update: "/auth/user/",
-      get: "/auth/user/",
-      resetPassword: "/password-reset/",
-      updatePassword: "/password-reset/reset/",
-    },
-    ingredients: {
-      get: "/ingredients/",
-    },
-    orders: {
-      create: "/orders/",
-    },
-  };
-  _defaultFetchProperties = {
+  _defaultFetchProperties: RequestInit = {
     method: "GET",
     mode: "cors",
     cache: "no-cache",
@@ -39,7 +43,7 @@ class ApiService {
     referrerPolicy: "no-referrer",
   };
 
-  request = async (endpoint, fetchProperties = {}) => {
+  request = async <T>(endpoint: TEndpoints, fetchProperties: RequestInit = {}): Promise<T> => {
     if (!endpoint) {
       throw new Error('Endpoint in "ApiService.getResource" function is not valid');
     }
@@ -52,7 +56,7 @@ class ApiService {
 
     const request = `${this._baseApiUrl}${endpoint}`;
     const response = await fetch(request, requestInit);
-    const result = await response.json();
+    const result: T & Partial<TResponseCommon> = await response.json();
 
     if (!result.success) {
       if (result.message === "jwt expired") {
@@ -71,7 +75,7 @@ class ApiService {
     return result;
   };
 
-  requestWithAuth = async (endpoint, fetchProperties = {}) => {
+  requestWithAuth = async <T>(endpoint: TEndpoints, fetchProperties: RequestInit = {}): Promise<T> => {
     if (!this._accessToken) {
       await this.updateAccessToken();
     }
@@ -89,19 +93,19 @@ class ApiService {
         setTimeout(() => {
           resolve(fakeData);
         }, 1000)
-      );
+      ) as Promise<TIngredient[]>;
     }
 
-    const { data } = await this.request(this._endpoint.ingredients.get);
+    const { data } = <TResponseSuccessIngredients>await this.request(EEndpointIngredients.get);
 
     return data;
   };
 
-  createOrder = async (ingredientIds) => {
-    let data;
+  createOrder = async (ingredientIds: TOrderCreateIngredientsIds) => {
+    let data: TResponseSuccessOrder;
 
     if (this._isFakeData) {
-      data = await new Promise((resolve) =>
+      data = <TResponseSuccessOrder>await new Promise((resolve) =>
         setTimeout(
           () =>
             resolve({
@@ -119,7 +123,7 @@ class ApiService {
         ingredients: ingredientIds,
       };
 
-      data = await this.requestWithAuth(this._endpoint.orders.create, {
+      data = <TResponseSuccessOrder>await this.requestWithAuth(EEndpointOrders.create, {
         method: "POST",
         body: JSON.stringify(requestBody),
       });
@@ -128,8 +132,8 @@ class ApiService {
     return this._transformOrderInfo(data);
   };
 
-  createUser = async (userInfo) => {
-    const result = await this.request(this._endpoint.user.create, {
+  createUser = async (userInfo: TRequestBodyUserCreate) => {
+    const result = <TResponseSuccessUserAll>await this.request(EEndpointUser.create, {
       method: "POST",
       body: JSON.stringify(userInfo),
     });
@@ -139,8 +143,8 @@ class ApiService {
     return result;
   };
 
-  updateUser = async (userInfo) => {
-    const result = await this.requestWithAuth(this._endpoint.user.update, {
+  updateUser = async (userInfo: TRequestBodyUserUpdate) => {
+    const result = <TResponseSuccessUser>await this.requestWithAuth(EEndpointUser.update, {
       method: "PATCH",
       body: JSON.stringify(userInfo),
     });
@@ -148,30 +152,28 @@ class ApiService {
     return result;
   };
 
-  updateUserPassword = async (userInfo) => {
-    const result = await this.request(this._endpoint.user.updatePassword, {
+  updateUserPassword = async (userInfo: TRequestBodyUserUpdatePassword) => {
+    const result = <TResponseCommon>await this.request(EEndpointUser.updatePassword, {
       method: "POST",
       body: JSON.stringify(userInfo),
     });
 
-    this._setTokens(result);
-
     return result;
   };
 
-  resetUserPassword = async (email) => {
-    return this.request(this._endpoint.user.resetPassword, {
+  resetUserPassword = async (email: TRequestBodyUserResetPassword) => {
+    return this.request(EEndpointUser.resetPassword, {
       method: "POST",
       body: JSON.stringify(email),
-    });
+    }) as Promise<TResponseCommon>;
   };
 
   getUser = async () => {
-    return this.requestWithAuth(this._endpoint.user.get);
+    return this.requestWithAuth(EEndpointUser.get) as Promise<TResponseSuccessUser>;
   };
 
-  createAccessToken = async (tokenInfo) => {
-    const result = await this.request(this._endpoint.access_token.create, {
+  createAccessToken = async (tokenInfo: TRequestBodyATCreate) => {
+    const result = <TResponseSuccessUserAll>await this.request(EEndpointAccessToken.create, {
       method: "POST",
       body: JSON.stringify(tokenInfo),
     });
@@ -189,7 +191,7 @@ class ApiService {
     }
 
     try {
-      const result = await this.request(this._endpoint.access_token.update, {
+      const result = <TTokens & Pick<TResponseCommon, "success">>await this.request(EEndpointAccessToken.update, {
         method: "POST",
         body: JSON.stringify({ token: refreshToken }),
       });
@@ -203,10 +205,10 @@ class ApiService {
   };
 
   deleteAccessToken = async () => {
-    const result = this.request(this._endpoint.access_token.delete, {
+    const result = this.request(EEndpointAccessToken.delete, {
       method: "POST",
       body: JSON.stringify({ token: this._refreshToken }),
-    });
+    }) as Promise<TResponseCommon>;
 
     this._removeTokens();
 
@@ -224,16 +226,21 @@ class ApiService {
     Cookies.remove("token");
   };
 
-  _setTokens = async (tokens) => {
-    if (typeof tokens !== "undefined") {
+  _setTokens = async (tokens: TTokens) => {
+    if ("accessToken" in tokens) {
       this._accessToken = tokens.accessToken;
+    }
+
+    if ("refreshToken" in tokens) {
       this._refreshToken = tokens.refreshToken;
 
-      Cookies.set("token", tokens.refreshToken, { path: "/" });
+      if (typeof tokens.refreshToken === "string") {
+        Cookies.set("token", tokens.refreshToken, { path: "/" });
+      }
     }
   };
 
-  _transformOrderInfo(data) {
+  _transformOrderInfo(data: TResponseSuccessOrder) {
     return data?.order?.number;
   }
 }

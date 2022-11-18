@@ -28,7 +28,7 @@ const userGet = createSlice({
       state.loading = true;
       state.error = false;
     },
-    success(state, action: PayloadAction<Pick<TAuthState, "user">>) {
+    success(state, action: PayloadAction<TResponseSuccessUser | { user: null }>) {
       state.loading = false;
       state.user = action.payload.user;
     },
@@ -57,7 +57,7 @@ export const auth = () => async (dispatch: AppDispatch) => {
   }
 };
 
-export const login = (userInfo: Pick<TUser, "email" | "password">) => async (dispatch: AppDispatch) => {
+export const login = (userInfo: TRequestBodyATCreate) => async (dispatch: AppDispatch) => {
   dispatch(setRequest());
 
   try {
@@ -97,18 +97,17 @@ export const register = (userInfo: TUser) => async (dispatch: AppDispatch) => {
   }
 };
 
-export const updateUser =
-  (user: Pick<TUser, "name" | "email"> & Partial<Pick<TUser, "password">>) => async (dispatch: AppDispatch) => {
-    dispatch(setRequest());
+export const updateUser = (user: TRequestBodyUserUpdate) => async (dispatch: AppDispatch) => {
+  dispatch(setRequest());
 
-    try {
-      const response = await apiService.updateUser(user);
+  try {
+    const response = await apiService.updateUser(user);
 
-      dispatch(setSuccess(response));
-    } catch (e) {
-      dispatch(setError(getErrorMessage(e)));
-    }
-  };
+    dispatch(setSuccess(response));
+  } catch (e) {
+    dispatch(setError(getErrorMessage(e)));
+  }
+};
 
 export const selectAuth = (state: RootState) => state.auth;
 

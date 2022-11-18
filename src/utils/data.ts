@@ -1,4 +1,4 @@
-export const data = [
+export const data: TIngredient[] = [
   {
     _id: "60d3b41abdacab0026a733c6",
     name: "Краторная булка N-200i (fake)",
