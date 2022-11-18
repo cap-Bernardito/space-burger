@@ -43,6 +43,12 @@ export const ROUTES = {
   notFound: { path: "*", title: "Страница не найдена" },
 };
 
+export enum EAuthStatus {
+  pending = "pending",
+  ok = "auth",
+  no = "notAuth",
+}
+
 export const AUTH_STATUS = {
   pending: "pending",
   ok: "auth",

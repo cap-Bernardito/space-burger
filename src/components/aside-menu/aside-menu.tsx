@@ -1,9 +1,9 @@
 import classNames from "classnames";
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
+import { useAppDispatch, useAppSelector } from "hooks";
 import { logout, selectAuth, setError } from "services/slices/auth-slice";
 import { ROUTES } from "utils/constants";
 import { isErrorVisibility, notify } from "utils/utils";
@@ -12,9 +12,9 @@ import Spinner from "components/spinner/spinner";
 
 import styles from "./aside-menu.module.scss";
 
-const AsideMenu = () => {
-  const dispatch = useDispatch();
-  const { loading, error } = useSelector(selectAuth);
+const AsideMenu: FC = () => {
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector(selectAuth);
 
   useEffect(() => {
     if (isErrorVisibility(error)) {
@@ -24,8 +24,8 @@ const AsideMenu = () => {
     }
   }, [dispatch, error]);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
+  const handleLogout = (event: React.MouseEvent) => {
+    event.preventDefault();
 
     dispatch(logout());
   };

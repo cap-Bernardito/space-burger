@@ -17,8 +17,8 @@ declare type TIngredient = {
 
 declare type TIngredientsByTypes = [TIngredientType, TIngredient[]][];
 
-declare enum EAuthStatus {
-  pending = "pending",
-  ok = "auth",
-  no = "notAuth",
-}
+declare type TUser = {
+  email: string;
+  name: string;
+  password: string;
+};

@@ -42,7 +42,7 @@ export const notify = (
   toast[toastType](message, { ...defaultOptions, ...options });
 };
 
-export const isErrorVisibility = (error: string) => {
+export const isErrorVisibility = (error: string | false): error is string => {
   if (!error) {
     return false;
   }
@@ -55,6 +55,18 @@ export const isErrorVisibility = (error: string) => {
   }
 
   return true;
+};
+
+export const getErrorMessage = (error: unknown) => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  if (typeof error === "string") {
+    return error;
+  }
+
+  return "Что-то пошло не так";
 };
 
 export const setDocumentTitle = (title: string) => {
