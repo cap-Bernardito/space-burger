@@ -14,7 +14,7 @@ const IngredientDetails = () => {
   const [data, statusMessage] = useSelector(selectIngredient(id));
 
   if (!data) {
-    return statusMessage;
+    return typeof statusMessage === "string" ? <span>{statusMessage}</span> : null;
   }
 
   const { name, image, image_mobile, image_large, calories, proteins, fat, carbohydrates } = data;
