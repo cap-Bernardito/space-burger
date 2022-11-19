@@ -43,7 +43,10 @@ class ApiService {
     referrerPolicy: "no-referrer",
   };
 
-  request = async <T>(endpoint: TEndpoints, fetchProperties: RequestInit = {}): Promise<T> => {
+  request = async <T extends Partial<TResponseCommon>>(
+    endpoint: TEndpoints,
+    fetchProperties: RequestInit = {}
+  ): Promise<T> => {
     if (!endpoint) {
       throw new Error('Endpoint in "ApiService.getResource" function is not valid');
     }
@@ -56,7 +59,7 @@ class ApiService {
 
     const request = `${this._baseApiUrl}${endpoint}`;
     const response = await fetch(request, requestInit);
-    const result: T & Partial<TResponseCommon> = await response.json();
+    const result = <T>await response.json();
 
     if (!result.success) {
       if (result.message === "jwt expired") {
@@ -75,7 +78,10 @@ class ApiService {
     return result;
   };
 
-  requestWithAuth = async <T>(endpoint: TEndpoints, fetchProperties: RequestInit = {}): Promise<T> => {
+  requestWithAuth = async <T extends Partial<TResponseCommon>>(
+    endpoint: TEndpoints,
+    fetchProperties: RequestInit = {}
+  ): Promise<T> => {
     if (!this._accessToken) {
       await this.updateAccessToken();
     }
