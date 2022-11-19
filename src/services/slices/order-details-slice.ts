@@ -48,9 +48,6 @@ export const createOrder = (ingredientIds: TOrderCreateIngredientsIds) => async 
     const response = await apiService.createOrder(ingredientIds);
 
     dispatch(setSuccess(response));
-    // TODO: убрать ts-ignore после типизации burger-constructor-slice
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(resetIngredientInBurgerConstructor());
   } catch (e) {
     dispatch(setError(getErrorMessage(e)));
@@ -63,4 +60,5 @@ export const {
   error: setError,
   remove: removeOrderDetails,
 } = orderDetails.actions;
+
 export default orderDetails.reducer;
