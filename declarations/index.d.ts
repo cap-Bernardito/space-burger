@@ -60,3 +60,6 @@ declare type TRequestBodyUserResetPassword = Pick<TUser, "password">;
 declare type TRequestBodyATCreate = Pick<TUser, "name" | "password">;
 
 declare type TOrderCreateIngredientsIds = TIngredient["_id"][];
+
+declare type TErrorInState = string | false;
+declare type TLoadingInState = boolean;

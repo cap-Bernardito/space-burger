@@ -8,8 +8,8 @@ import type { AppDispatch, RootState } from "../../index";
 
 type TAuthState = {
   user: Pick<TUser, "name" | "email"> | null;
-  loading: boolean;
-  error: string | false;
+  loading: TLoadingInState;
+  error: TErrorInState;
   status: EAuthStatus;
 };
 
