@@ -15,6 +15,8 @@ declare type TIngredient = {
   readonly __v: number;
 };
 
+type TIngredientWithKey = TIngredient & { key: string };
+
 declare type TIngredientsByTypes = [TIngredientType, TIngredient[]][];
 
 declare type TUser = {

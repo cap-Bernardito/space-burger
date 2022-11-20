@@ -2,12 +2,11 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import classNames from "classnames";
 import { Reorder } from "framer-motion";
 
-import { useEffect } from "react";
-import { useDrop } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
+import React, { FC, useEffect } from "react";
+import { DropTargetMonitor, useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
 
-import { useModal, useScreenTest } from "hooks";
+import { useAppDispatch, useAppSelector, useModal, useScreenTest } from "hooks";
 import { selectAuth } from "services/slices/auth-slice";
 import {
   selectBuns,
@@ -16,7 +15,7 @@ import {
   setIngredientsInBurgerConstructor,
 } from "services/slices/burger-constructor-slice";
 import { createOrder, removeOrderDetails } from "services/slices/order-details-slice";
-import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT, AUTH_STATUS, ROUTES } from "utils/constants";
+import { ADD_BUN_EMPTY_TEXT, ADD_INGREDIENTS_EMPTY_TEXT, EAuthStatus, ROUTES } from "utils/constants";
 import { notify } from "utils/utils";
 
 import BurgerConstructorElement from "components/burger-constructor-element/burger-constructor-element";
@@ -26,21 +25,21 @@ import ResponsiveButton from "components/responsive-button/responsive-button";
 
 import styles from "./burger-constructor.module.scss";
 
-const BurgerConstructor = () => {
-  const dispatch = useDispatch();
+const BurgerConstructor: FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isSmallScreen = useScreenTest();
-  const { status } = useSelector(selectAuth);
-  const buns = useSelector(selectBuns);
-  const ingredients = useSelector(selectIngredients);
-  const total = useSelector(selectTotalPrice);
+  const { status } = useAppSelector(selectAuth);
+  const buns = useAppSelector(selectBuns);
+  const ingredients = useAppSelector(selectIngredients);
+  const total = useAppSelector(selectTotalPrice);
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
-  const { number: orderNumber, loading: isLoading, error: isError } = useSelector((state) => state.orderDetails);
+  const { number: orderNumber, loading: isLoading, error: isError } = useAppSelector((state) => state.orderDetails);
   const [topBun, bottomBun] = buns;
 
   const initialDropState = {
     accept: "bun",
-    collect: (monitor) => ({
+    collect: (monitor: DropTargetMonitor) => ({
       isHover: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
@@ -68,11 +67,11 @@ const BurgerConstructor = () => {
     }
   }, [orderNumber, openModal]);
 
-  const checkout = (e) => {
-    e.preventDefault();
+  const checkout = (event: React.MouseEvent) => {
+    event.preventDefault();
 
-    if (status === AUTH_STATUS.ok) {
-      const extractedIds = [topBun, ...ingredients, bottomBun].map(({ _id }) => _id);
+    if (status === EAuthStatus.ok) {
+      const extractedIds = ([topBun, ...ingredients, bottomBun] as TIngredient[]).map(({ _id }) => _id);
 
       dispatch(createOrder(extractedIds));
 
@@ -104,11 +103,11 @@ const BurgerConstructor = () => {
       <span className={classNames(styles.drop_text, "text text_type_main-medium")}>{ADD_INGREDIENTS_EMPTY_TEXT}</span>
     );
 
-  const errorMessage = isError && (
+  const errorMessage = Boolean(isError) && (
     <div className={styles.error}>{`Возникла ошибка при получении данных заказа: ${isError}`}</div>
   );
 
-  const reorderIngredients = (items) => {
+  const reorderIngredients = (items: TIngredientWithKey[]) => {
     dispatch(setIngredientsInBurgerConstructor(items));
   };
 
