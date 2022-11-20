@@ -70,15 +70,21 @@ const BurgerConstructor: FC = () => {
   const checkout = (event: React.MouseEvent) => {
     event.preventDefault();
 
+    if (typeof topBun === "undefined" || typeof bottomBun === "undefined") {
+      notify("Пожалуйста, добавьте булочку в заказ.");
+
+      return;
+    }
+
     if (status === EAuthStatus.ok) {
-      const extractedIds = ([topBun, ...ingredients, bottomBun] as TIngredient[]).map(({ _id }) => _id);
+      const extractedIds = [topBun, ...ingredients, bottomBun].map(({ _id }) => _id);
 
       dispatch(createOrder(extractedIds));
 
       return;
     }
 
-    notify("Пожалуйста авторизуйтесь. Только авторизованные пользователи могут оставлять заказ.");
+    notify("Пожалуйста, авторизуйтесь. Только авторизованные пользователи могут оставлять заказ.");
     navigate(ROUTES.login.path);
   };
 
@@ -96,8 +102,8 @@ const BurgerConstructor: FC = () => {
 
   const ingredientsListElement =
     ingredients.length > 0 ? (
-      ingredients.map((ingredient, index) => (
-        <BurgerConstructorElement key={ingredient.key} isOrdered={true} data={ingredient} index={index} />
+      ingredients.map((ingredient) => (
+        <BurgerConstructorElement key={ingredient.key} isOrdered={true} data={ingredient} />
       ))
     ) : (
       <span className={classNames(styles.drop_text, "text text_type_main-medium")}>{ADD_INGREDIENTS_EMPTY_TEXT}</span>

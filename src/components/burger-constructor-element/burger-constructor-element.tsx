@@ -1,31 +1,40 @@
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 import { Reorder } from "framer-motion";
-import PropTypes from "prop-types";
 
-import { useDispatch } from "react-redux";
+import { FC } from "react";
 
+import { useAppDispatch } from "hooks";
 import { removeIngredientInBurgerConstructor } from "services/slices/burger-constructor-slice";
-import { INGREDIENT_PROP_TYPES } from "utils/constants";
 
 import styles from "./burger-constructor-element.module.scss";
 
-const BurgerConstructorElement = ({ type = "", data, isLocked = false, isOrdered = false }) => {
-  const dispatch = useDispatch();
+type Props = {
+  data: TIngredient | TIngredientWithKey;
+  type?: "top" | "bottom";
+  isLocked?: boolean;
+  isOrdered?: boolean;
+};
 
-  const handleClose = (removedItem) => {
+const isSortedItem = (data: TIngredient | TIngredientWithKey): data is TIngredientWithKey => "key" in data;
+
+const BurgerConstructorElement: FC<Props> = ({ type, data, isLocked = false, isOrdered = false }) => {
+  const dispatch = useAppDispatch();
+
+  const handleClose = (removedItem: TIngredientWithKey) => {
     dispatch(removeIngredientInBurgerConstructor(removedItem));
   };
 
-  const orderDecorator = (element, isOrdered) => {
-    if (isOrdered) {
+  const orderDecorator = (element: React.ReactNode, isSorted: boolean): React.ReactElement => {
+    if (isSorted) {
       return (
         <Reorder.Item
           as="div"
           initial={{ opacity: 1 }}
           whileDrag={{ opacity: 0.9 }}
           value={data}
-          id={data.key}
+          // NOTE: для ингредиентов сгенерирован уникальный key, для булок он не нужен
+          id={isSortedItem(data) ? data.key : data._id}
           className={classNames(styles.item__wrapper)}
         >
           {element}
@@ -33,7 +42,7 @@ const BurgerConstructorElement = ({ type = "", data, isLocked = false, isOrdered
       );
     }
 
-    return element;
+    return <span>{element}</span>;
   };
 
   return orderDecorator(
@@ -52,19 +61,11 @@ const BurgerConstructorElement = ({ type = "", data, isLocked = false, isOrdered
         text={data.name}
         price={data.price}
         thumbnail={data.image}
-        handleClose={() => handleClose(data)}
+        handleClose={isSortedItem(data) ? () => handleClose(data) : undefined}
       />
     </div>,
     isOrdered
   );
-};
-
-BurgerConstructorElement.propTypes = {
-  type: PropTypes.string,
-  data: PropTypes.shape(INGREDIENT_PROP_TYPES).isRequired,
-  isLocked: PropTypes.bool,
-  isOrdered: PropTypes.bool,
-  index: PropTypes.number,
 };
 
 export default BurgerConstructorElement;
