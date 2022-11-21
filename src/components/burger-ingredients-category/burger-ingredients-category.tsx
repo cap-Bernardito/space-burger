@@ -1,18 +1,20 @@
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
-import { useSelector } from "react-redux";
-
+import { useAppSelector } from "hooks";
 import { selectCounters } from "services/slices/burger-constructor-slice";
-import { INGREDIENT_PROP_TYPES } from "utils/constants";
 import { TYPES_OF_INGREDIENTS } from "utils/constants";
 
 import BurgerIngredient from "components/burger-ingredient/burger-ingredient";
 
 import styles from "./burger-ingredients-category.module.scss";
 
-const BurgerIngredientsCategory = ({ type, list }) => {
-  const counters = useSelector(selectCounters);
+type Props = {
+  type: TIngredientType;
+  list: TIngredient[];
+};
+
+const BurgerIngredientsCategory: React.FC<Props> = ({ type, list }) => {
+  const counters = useAppSelector(selectCounters);
 
   return (
     <>
@@ -28,11 +30,6 @@ const BurgerIngredientsCategory = ({ type, list }) => {
       </div>
     </>
   );
-};
-
-BurgerIngredientsCategory.propTypes = {
-  type: PropTypes.oneOf([...TYPES_OF_INGREDIENTS.keys()]).isRequired,
-  list: PropTypes.arrayOf(PropTypes.shape(INGREDIENT_PROP_TYPES)).isRequired,
 };
 
 export default BurgerIngredientsCategory;
