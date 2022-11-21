@@ -1,23 +1,26 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
 import { DragPreviewImage, useDrag } from "react-dnd";
-import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
+import { useAppDispatch } from "hooks";
 import { addBunInBurgerConstructor, addIngredientInBurgerConstructor } from "services/slices/burger-constructor-slice";
-import { INGREDIENT_PROP_TYPES } from "utils/constants";
 
 import styles from "./burger-ingredient.module.scss";
 
-const BurgerIngredient = ({ data, count }) => {
-  const dispatch = useDispatch();
+type Props = {
+  data: TIngredient;
+  count?: number;
+};
+
+const BurgerIngredient: React.FC<Props> = ({ data, count }) => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const { name, price, image, image_large, _id, type } = data;
 
-  const addIngridientToConstructor = (type, ingridientData) => {
-    if (type === "bun") {
+  const addIngridientToConstructor = (ingredientType: TIngredientType, ingridientData: TIngredient) => {
+    if (ingredientType === "bun") {
       dispatch(addBunInBurgerConstructor(ingridientData));
     } else {
       dispatch(addIngredientInBurgerConstructor(ingridientData));
@@ -39,18 +42,21 @@ const BurgerIngredient = ({ data, count }) => {
     },
   });
 
-  const handleOrder = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleOrder = (event: React.MouseEvent, item: TIngredient) => {
+    event.preventDefault();
+    event.stopPropagation();
 
     addIngridientToConstructor(item.type, data);
   };
+
+  const CounterElement =
+    typeof count === "undefined" ? null : count === 0 ? null : <Counter count={count} size="default" />;
 
   return (
     <>
       <DragPreviewImage connect={preview} src={image} />
       <div className={classNames(styles.box, { [styles.onDrag]: isDrag }, "pb-4")} ref={dragRef}>
-        {count > 0 && <Counter count={count} size="default" />}
+        {CounterElement}
         <Link to={`/ingredients/${_id}`} state={{ background: location }}>
           <div className={classNames(styles.image, "mb-1 pr-1 pl-1")}>
             <img
@@ -68,8 +74,7 @@ const BurgerIngredient = ({ data, count }) => {
           </div>
           <div className={classNames(styles.title)}>{name}</div>
           <button
-            href="#"
-            alt="Добавить в корзину"
+            title="Добавить в корзину"
             className={classNames(styles.cart_button)}
             onClick={(event) => handleOrder(event, data)}
           >
@@ -79,11 +84,6 @@ const BurgerIngredient = ({ data, count }) => {
       </div>
     </>
   );
-};
-
-BurgerIngredient.propTypes = {
-  data: PropTypes.shape(INGREDIENT_PROP_TYPES).isRequired,
-  count: PropTypes.number,
 };
 
 export default BurgerIngredient;
