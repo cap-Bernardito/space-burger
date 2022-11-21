@@ -2,8 +2,6 @@ import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burg
 import classNames from "classnames";
 import { Reorder } from "framer-motion";
 
-import { FC } from "react";
-
 import { useAppDispatch } from "hooks";
 import { removeIngredientInBurgerConstructor } from "services/slices/burger-constructor-slice";
 
@@ -18,7 +16,7 @@ type Props = {
 
 const isSortedItem = (data: TIngredient | TIngredientWithKey): data is TIngredientWithKey => "key" in data;
 
-const BurgerConstructorElement: FC<Props> = ({ type, data, isLocked = false, isOrdered = false }) => {
+const BurgerConstructorElement: React.FC<Props> = ({ type, data, isLocked = false, isOrdered = false }) => {
   const dispatch = useAppDispatch();
 
   const handleClose = (removedItem: TIngredientWithKey) => {

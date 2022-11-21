@@ -1,7 +1,6 @@
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 
-import { FC } from "react";
 import { Link } from "react-router-dom";
 
 import { useScreenTest } from "hooks";
@@ -13,7 +12,7 @@ import logo_xs from "../../images/logo_xs.svg";
 
 import styles from "./app-header.module.scss";
 
-const AppHeader: FC = () => {
+const AppHeader: React.FC = () => {
   const isSmallScreen = useScreenTest();
 
   return (

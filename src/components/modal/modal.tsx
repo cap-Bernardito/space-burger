@@ -1,7 +1,7 @@
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 
-import { FC, PropsWithChildren, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import ReactDom from "react-dom";
 
 import ModalOverlay from "components/modal-overlay/modal-overlay";
@@ -17,7 +17,7 @@ type Props = {
   onClose: () => void;
 };
 
-const Modal: FC<PropsWithChildren<Props>> = ({ title, onClose, children }) => {
+const Modal: React.FC<React.PropsWithChildren<Props>> = ({ title, onClose, children }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

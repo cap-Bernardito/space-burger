@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-import { FC, useEffect } from "react";
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "hooks";
@@ -12,7 +12,7 @@ import Spinner from "components/spinner/spinner";
 
 import styles from "./aside-menu.module.scss";
 
-const AsideMenu: FC = () => {
+const AsideMenu: React.FC = () => {
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector(selectAuth);
 

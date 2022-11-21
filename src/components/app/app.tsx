@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -27,7 +27,7 @@ import AppHeader from "components/app-header/app-header";
 import IngredientDetails from "components/ingredient-details/ingredient-details";
 import Modal from "components/modal/modal";
 
-const App: FC = () => {
+const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();

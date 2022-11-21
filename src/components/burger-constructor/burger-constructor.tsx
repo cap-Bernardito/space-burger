@@ -2,7 +2,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import classNames from "classnames";
 import { Reorder } from "framer-motion";
 
-import React, { FC, useEffect } from "react";
+import { useEffect } from "react";
 import { DropTargetMonitor, useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ import ResponsiveButton from "components/responsive-button/responsive-button";
 
 import styles from "./burger-constructor.module.scss";
 
-const BurgerConstructor: FC = () => {
+const BurgerConstructor: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isSmallScreen = useScreenTest();
