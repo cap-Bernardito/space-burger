@@ -1,18 +1,23 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useScreenTest } from "hooks";
-import { INGREDIENT_PROP_TYPES, TYPES_OF_INGREDIENTS } from "utils/constants";
+import { TYPES_OF_INGREDIENTS } from "utils/constants";
 import { splitIngredientsByTypes } from "utils/utils";
 
 import BurgerIngredientsCategory from "components/burger-ingredients-category/burger-ingredients-category";
 
 import styles from "./burger-ingredients.module.scss";
 
-const BurgerIngredients = ({ data }) => {
+type Props = {
+  data: TIngredient[];
+};
+
+type TCategoryDOMElements = Partial<Record<TIngredientType, HTMLElement>>;
+
+const BurgerIngredients: React.FC<Props> = ({ data }) => {
   const isPortraitScreen = useScreenTest("(max-width: 1137px)");
   const [activeTabName, setActiveTab] = useState(() => {
     const [activeType] = [...TYPES_OF_INGREDIENTS.keys()];
@@ -22,34 +27,41 @@ const BurgerIngredients = ({ data }) => {
 
   const dataByCategory = useMemo(() => splitIngredientsByTypes(data), [data]);
 
-  const categoryDOMElements = useMemo(() => ({}), []);
+  const categoryDOMElements = useMemo<TCategoryDOMElements>(() => ({}), []);
 
-  const scrollableRef = useRef();
+  const scrollableRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!scrollableRef.current) {
+      return;
+    }
+
     const root = scrollableRef.current;
     const rootHeight = root.getBoundingClientRect().bottom - root.getBoundingClientRect().top;
     const cssFlexGap = 40;
 
-    const observerCallback = function (entries) {
-      const [result] = entries.map((entry) => (entry.isIntersecting ? entry.target : null)).filter(Boolean);
+    const observer = new IntersectionObserver(
+      function (entries) {
+        const [result] = entries.map((entry) => (entry.isIntersecting ? entry.target : null)).filter(Boolean);
 
-      if (result) {
-        setActiveTab(result.getAttribute("id"));
+        if (result) {
+          setActiveTab(result.getAttribute("id") as TIngredientType);
+        }
+      },
+      {
+        root: root,
+        rootMargin: `0px 0px -${rootHeight - cssFlexGap}px 0px`,
+        threshold: 0,
       }
-    };
-
-    const observer = new IntersectionObserver(observerCallback, {
-      root: root,
-      rootMargin: `0px 0px -${rootHeight - cssFlexGap}px 0px`,
-      threshold: 0,
-    });
+    );
 
     for (const type of TYPES_OF_INGREDIENTS.keys()) {
       const element = document.getElementById(type);
-      categoryDOMElements[type] = element;
 
-      observer.observe(element);
+      if (element) {
+        categoryDOMElements[type] = element;
+        observer.observe(element);
+      }
     }
 
     return () => {
@@ -60,8 +72,12 @@ const BurgerIngredients = ({ data }) => {
   }, [categoryDOMElements, isPortraitScreen]);
 
   const setCurrentTab = useCallback(
-    (tabName) => {
-      categoryDOMElements[tabName] && categoryDOMElements[tabName].scrollIntoView({ behavior: "smooth" });
+    (value: string) => {
+      const tabName = value as TIngredientType;
+
+      if (typeof categoryDOMElements[tabName] !== "undefined") {
+        (categoryDOMElements[tabName] as HTMLElement).scrollIntoView({ behavior: "smooth" });
+      }
     },
     [categoryDOMElements]
   );
@@ -92,10 +108,6 @@ const BurgerIngredients = ({ data }) => {
       </div>
     </div>
   );
-};
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape(INGREDIENT_PROP_TYPES)).isRequired,
 };
 
 export default BurgerIngredients;
