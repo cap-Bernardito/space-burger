@@ -1,8 +1,18 @@
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
-const EditableInput = ({
+type TInput = Omit<React.HTMLProps<HTMLInputElement>, "size" | "type" | "ref"> & {
+  value: string;
+  size?: "default" | "small";
+  placeholder?: string;
+  isIcon?: boolean;
+  extraClass?: string;
+  icon?: "EditIcon";
+  onChange(e: React.ChangeEvent<HTMLInputElement>): void;
+};
+
+const EditableInput: React.FC<TInput> = ({
   value,
   onChange,
   size = "default",
@@ -13,7 +23,7 @@ const EditableInput = ({
 }) => {
   const [fieldDisabled, setDisabled] = useState(Boolean(icon));
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const onIconClick = () => {
     setDisabled(false);
