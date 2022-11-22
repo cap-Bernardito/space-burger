@@ -1,14 +1,13 @@
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
 import styles from "./spinner.module.scss";
 
-const Spinner = ({ loading = false }) => (
+type Props = {
+  loading?: boolean;
+};
+
+const Spinner: React.FC<Props> = ({ loading = false }) => (
   <span className={classNames(styles.spinner, { ["loading"]: loading })} data-spinner></span>
 );
-
-Spinner.propTypes = {
-  loading: PropTypes.bool,
-};
 
 export default Spinner;
