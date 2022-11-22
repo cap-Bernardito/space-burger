@@ -3,25 +3,27 @@ import classNames from "classnames";
 import { Spin as Hamburger } from "hamburger-react";
 
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import type { NavLinkProps } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
-import { useScreenTest } from "hooks";
+import { useAppSelector, useScreenTest } from "hooks";
 import { selectAuth } from "services/slices/auth-slice";
-import { AUTH_STATUS, ROUTES } from "utils/constants";
+import { EAuthStatus, ROUTES } from "utils/constants";
 
 import AsideMenu from "components/aside-menu/aside-menu";
 
 import styles from "./navbar.module.scss";
 
-const Navbar = () => {
-  const { status, user } = useSelector(selectAuth);
+const Navbar: React.FC = () => {
+  const { status, user } = useAppSelector(selectAuth);
   const [isOpen, setOpen] = useState(false);
   const isSmallScreen = useScreenTest();
-  const isVisibilityProfileMenu = isSmallScreen && status === AUTH_STATUS.ok;
+  const isVisibilityProfileMenu = isSmallScreen && status === EAuthStatus.ok;
 
   const buttonClass = styles.link;
-  const activeClass = ({ isActive }) => (isActive ? classNames(buttonClass, styles.link_active) : buttonClass);
+
+  const activeClass: NavLinkProps["className"] = ({ isActive }) =>
+    isActive ? classNames(buttonClass, styles.link_active) : buttonClass;
 
   const onClick = () => {
     setOpen((prevState) => !prevState);
