@@ -67,7 +67,7 @@ const BurgerConstructor: React.FC = () => {
     }
   }, [orderNumber, openModal]);
 
-  const checkout = (event: React.MouseEvent) => {
+  const checkout = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
     if (typeof topBun === "undefined" || typeof bottomBun === "undefined") {
