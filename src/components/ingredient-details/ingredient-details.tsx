@@ -1,17 +1,17 @@
 import classNames from "classnames";
 
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
+import { useAppSelector } from "hooks";
 import { selectIngredient } from "services/slices/burger-ingredients-slice";
 import { setDocumentTitle } from "utils/utils";
 
 import styles from "./ingredient-details.module.scss";
 
-const IngredientDetails = () => {
+const IngredientDetails: React.FC = () => {
   const { id } = useParams();
 
-  const [data, statusMessage] = useSelector(selectIngredient(id));
+  const [data, statusMessage] = useAppSelector(selectIngredient(id ? id : ""));
 
   if (!data) {
     return typeof statusMessage === "string" ? <span>{statusMessage}</span> : null;

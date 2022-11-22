@@ -49,7 +49,7 @@ export const getBurgerIngredients = () => async (dispatch: AppDispatch) => {
 export const selectIngredients = (state: RootState) => state.burgerIngredients;
 
 export const selectIngredient = (id: TIngredient["_id"]) =>
-  createSelector(selectIngredients, (ingredients) => {
+  createSelector(selectIngredients, (ingredients): [TIngredient | undefined, string | false] => {
     let result: TIngredient | undefined;
     let statusMessage: string | false = "Получение данных ингредиента...";
 
