@@ -1,9 +1,11 @@
 import { useState } from "react";
 
-const useObserveForm = (initialState = {}) => {
-  const [state, setState] = useState(initialState);
+const useObserveForm = <T>(
+  initialState: T
+): [T, (event: React.ChangeEvent<HTMLInputElement>) => void, React.Dispatch<React.SetStateAction<T>>] => {
+  const [state, setState] = useState<T>(initialState);
 
-  const handleFormFields = (event) => {
+  const handleFormFields = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;

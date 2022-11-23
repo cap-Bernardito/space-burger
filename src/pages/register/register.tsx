@@ -1,24 +1,27 @@
 import { Button, EmailInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 
-import { useObserveForm, useToggler } from "hooks";
+import { useAppDispatch, useAppSelector, useObserveForm, useToggler } from "hooks";
 import { register, selectAuth, setError } from "services/slices/auth-slice";
-import { AUTH_STATUS, PAGES_PROTYPES, ROUTES } from "utils/constants";
+import { EAuthStatus, ROUTES } from "utils/constants";
 import { isErrorVisibility, notify, setDocumentTitle } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 import PageTitle from "components/page-title/page-title";
 
-const Register = ({ pageTitle }) => {
+type Props = {
+  pageTitle: string;
+};
+
+const Register: React.FC<Props> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
-  const dispatch = useDispatch();
-  const { status, user, loading, error } = useSelector(selectAuth);
+  const dispatch = useAppDispatch();
+  const { status, user, loading, error } = useAppSelector(selectAuth);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
-  const [formState, handleFormFields] = useObserveForm({
+  const [formState, handleFormFields] = useObserveForm<TUser>({
     name: "",
     email: "",
     password: "",
@@ -27,8 +30,8 @@ const Register = ({ pageTitle }) => {
   const userName = user?.name;
 
   useEffect(() => {
-    if (status === AUTH_STATUS.ok) {
-      notify(`Поздравляем, ${userName}, вы успешно зарегистрированы. Заказывайте пожалуйста.`, "success");
+    if (status === EAuthStatus.ok) {
+      notify(`Поздравляем, ${userName}, вы успешно зарегистрированы. Заказывайте пожалуйста.`, {}, "success");
     }
   }, [status, userName]);
 
@@ -40,17 +43,17 @@ const Register = ({ pageTitle }) => {
     }
   }, [dispatch, error]);
 
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
+  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     dispatch(register(formState));
   };
 
-  if (status === AUTH_STATUS.pending) {
+  if (status === EAuthStatus.pending) {
     return <AuthPlaceholder />;
   }
 
-  if (status === AUTH_STATUS.ok) {
+  if (status === EAuthStatus.ok) {
     return <Navigate to="/" replace={true} />;
   }
 
@@ -67,12 +70,10 @@ const Register = ({ pageTitle }) => {
           required
         />
         <EmailInput
-          type={"email"}
           placeholder={"E-mail"}
           name={"email"}
           value={formState.email}
           onChange={handleFormFields}
-          errorText="Введите корректный email"
           required
         />
         <Input
@@ -98,7 +99,5 @@ const Register = ({ pageTitle }) => {
     </>
   );
 };
-
-Register.propTypes = PAGES_PROTYPES;
 
 export default Register;

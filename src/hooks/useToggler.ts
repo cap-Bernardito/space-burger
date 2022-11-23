@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const useToggler = (initialState = false) => {
+const useToggler = (initialState = false): [boolean, () => void] => {
   const [isTogglerOn, setIsTogglerOn] = useState(initialState);
 
   const toggle = () => {
