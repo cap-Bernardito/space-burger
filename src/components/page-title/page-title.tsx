@@ -5,8 +5,8 @@ import { useScreenTest } from "hooks";
 import styles from "./page-title.module.scss";
 
 type Props = {
-  titleMobile?: string;
-  titleDesktop?: string;
+  titleMobile?: React.ReactNode;
+  titleDesktop?: React.ReactNode;
 };
 
 const PageTitle: React.FC<Props> = ({ titleMobile, titleDesktop }) => {

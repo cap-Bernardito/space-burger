@@ -65,3 +65,7 @@ declare type TOrderCreateIngredientsIds = TIngredient["_id"][];
 
 declare type TErrorInState = string | false;
 declare type TLoadingInState = boolean;
+
+declare type TPageProps = {
+  pageTitle: string;
+};

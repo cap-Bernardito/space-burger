@@ -11,11 +11,7 @@ import { isErrorVisibility, notify, setDocumentTitle } from "utils/utils";
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 import PageTitle from "components/page-title/page-title";
 
-type Props = {
-  pageTitle: string;
-};
-
-const Register: React.FC<Props> = ({ pageTitle }) => {
+const Register: React.FC<TPageProps> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
   const dispatch = useAppDispatch();
