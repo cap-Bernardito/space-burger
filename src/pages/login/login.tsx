@@ -1,27 +1,25 @@
 import { Button, EmailInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useLocation } from "react-router-dom";
 
-import { useObserveForm, useToggler } from "hooks";
+import { useAppDispatch, useAppSelector, useObserveForm, useToggler } from "hooks";
 import { login, selectAuth, setError } from "services/slices/auth-slice";
-import { PAGES_PROTYPES } from "utils/constants";
-import { AUTH_STATUS, ROUTES } from "utils/constants";
+import { EAuthStatus, ROUTES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 import { isErrorVisibility, notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 import PageTitle from "components/page-title/page-title";
 
-const Login = ({ pageTitle }) => {
+const Login: React.FC<TPageProps> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
-  const { status, loading, error } = useSelector(selectAuth);
+  const { status, loading, error } = useAppSelector(selectAuth);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
-  const [formState, handleFormFields] = useObserveForm({
+  const [formState, handleFormFields] = useObserveForm<TRequestBodyATCreate>({
     email: "",
     password: "",
   });
@@ -34,17 +32,17 @@ const Login = ({ pageTitle }) => {
     }
   }, [dispatch, error]);
 
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
+  const handleSubmitForm: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
 
     dispatch(login(formState));
   };
 
-  if (status === AUTH_STATUS.pending) {
+  if (status === EAuthStatus.pending) {
     return <AuthPlaceholder />;
   }
 
-  if (status === AUTH_STATUS.ok) {
+  if (status === EAuthStatus.ok) {
     return <Navigate to={location?.state?.from || "/"} replace={true} />;
   }
 
@@ -53,12 +51,10 @@ const Login = ({ pageTitle }) => {
       <PageTitle titleMobile={pageTitle} titleDesktop={pageTitle} />
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>
         <EmailInput
-          type={"email"}
           placeholder={"E-mail"}
           name={"email"}
           value={formState.email}
           onChange={handleFormFields}
-          errorText="Введите корректный email"
           required
         />
         <Input
@@ -87,7 +83,5 @@ const Login = ({ pageTitle }) => {
     </>
   );
 };
-
-Login.propTypes = PAGES_PROTYPES;
 
 export default Login;
