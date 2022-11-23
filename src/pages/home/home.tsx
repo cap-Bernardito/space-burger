@@ -2,10 +2,9 @@ import classNames from "classnames";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useSelector } from "react-redux";
 
+import { useAppSelector } from "hooks";
 import { selectIngredients } from "services/slices/burger-ingredients-slice";
-import { PAGES_PROTYPES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 
 import BurgerConstructor from "components/burger-constructor/burger-constructor";
@@ -13,10 +12,10 @@ import BurgerIngredients from "components/burger-ingredients/burger-ingredients"
 
 import styles from "./home.module.scss";
 
-const Home = ({ pageTitle }) => {
+const Home: React.FC<TPageProps> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
-  const { data, loading: isLoading, error: isError } = useSelector(selectIngredients);
+  const { data, loading: isLoading, error: isError } = useAppSelector(selectIngredients);
 
   return (
     <main>
@@ -41,7 +40,5 @@ const Home = ({ pageTitle }) => {
     </main>
   );
 };
-
-Home.propTypes = PAGES_PROTYPES;
 
 export default Home;
