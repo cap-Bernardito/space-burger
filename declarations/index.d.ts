@@ -58,7 +58,7 @@ declare type TResponseSuccessOrder = {
 declare type TRequestBodyUserCreate = Pick<TUser, "name" | "email" | "password">;
 declare type TRequestBodyUserUpdate = Pick<TUser, "name" | "email"> & Partial<Pick<TUser, "password">>;
 declare type TRequestBodyUserUpdatePassword = Pick<TUser, "password"> & { token: string };
-declare type TRequestBodyUserResetPassword = Pick<TUser, "password">;
+declare type TRequestBodyUserResetPassword = Pick<TUser, "email">;
 declare type TRequestBodyATCreate = Pick<TUser, "name" | "password">;
 
 declare type TOrderCreateIngredientsIds = TIngredient["_id"][];

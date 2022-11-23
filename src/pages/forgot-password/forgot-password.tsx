@@ -1,33 +1,31 @@
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { Link, Navigate, useLocation } from "react-router-dom";
 
-import { useObserveForm } from "hooks";
+import { useAppSelector, useObserveForm } from "hooks";
 import apiService from "services/api-service";
 import { selectAuth } from "services/slices/auth-slice";
-import { PAGES_PROTYPES } from "utils/constants";
-import { AUTH_STATUS, ROUTES } from "utils/constants";
-import { setDocumentTitle } from "utils/utils";
+import { EAuthStatus, ROUTES } from "utils/constants";
+import { getErrorMessage, setDocumentTitle } from "utils/utils";
 import { notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 import PageTitle from "components/page-title/page-title";
 
-const ForgotPassword = ({ pageTitle }) => {
+const ForgotPassword: React.FC<TPageProps> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
   const location = useLocation();
-  const { status } = useSelector(selectAuth);
-  const [loading, setLoading] = useState();
+  const { status } = useAppSelector(selectAuth);
+  const [loading, setLoading] = useState(false);
   const [allowResetPassword, setAllowResetPassword] = useState(false);
-  const [formState, handleFormFields] = useObserveForm({
+  const [formState, handleFormFields] = useObserveForm<TRequestBodyUserResetPassword>({
     email: "",
   });
 
-  const handleSubmitForm = async (e) => {
-    e.preventDefault();
+  const handleSubmitForm: React.FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
 
     setLoading(true);
 
@@ -42,13 +40,13 @@ const ForgotPassword = ({ pageTitle }) => {
         "success"
       );
     } catch (error) {
-      notify(error.message);
+      notify(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
   };
 
-  if (status === AUTH_STATUS.pending) {
+  if (status === EAuthStatus.pending) {
     return <AuthPlaceholder />;
   }
 
@@ -56,7 +54,7 @@ const ForgotPassword = ({ pageTitle }) => {
     return <Navigate to={ROUTES.resetPassword.path} state={{ from: location }} />;
   }
 
-  if (status === AUTH_STATUS.ok) {
+  if (status === EAuthStatus.ok) {
     return <Navigate to="/" replace={true} />;
   }
 
@@ -65,12 +63,10 @@ const ForgotPassword = ({ pageTitle }) => {
       <PageTitle titleMobile={pageTitle} titleDesktop={pageTitle} />
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>
         <EmailInput
-          type={"email"}
           placeholder={"Укажите e-mail"}
           name={"email"}
           value={formState.email}
           onChange={handleFormFields}
-          errorText="Введите корректный email"
           required
         />
         <div className="mb-15">
@@ -85,7 +81,5 @@ const ForgotPassword = ({ pageTitle }) => {
     </>
   );
 };
-
-ForgotPassword.propTypes = PAGES_PROTYPES;
 
 export default ForgotPassword;
