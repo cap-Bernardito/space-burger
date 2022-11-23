@@ -17,7 +17,7 @@ const Register: React.FC<TPageProps> = ({ pageTitle }) => {
   const dispatch = useAppDispatch();
   const { status, user, loading, error } = useAppSelector(selectAuth);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
-  const [formState, handleFormFields] = useObserveForm<TUser>({
+  const [formState, handleFormFields] = useObserveForm<TRequestBodyUserCreate>({
     name: "",
     email: "",
     password: "",
@@ -39,7 +39,7 @@ const Register: React.FC<TPageProps> = ({ pageTitle }) => {
     }
   }, [dispatch, error]);
 
-  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitForm: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
     dispatch(register(formState));
