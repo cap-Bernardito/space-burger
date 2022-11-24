@@ -2,6 +2,6 @@
 
 .root {
   @include media-bp-down(tablet) {
-    font-size: 28px;
+    font-size: 28px !important;
   }
 }
