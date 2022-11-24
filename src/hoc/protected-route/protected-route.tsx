@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 
+import { useAppSelector } from "hooks";
 import { selectAuth } from "services/slices/auth-slice";
 import { EAuthStatus, ROUTES } from "utils/constants";
 
@@ -9,7 +9,7 @@ import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 
 const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const location = useLocation();
-  const { status } = useSelector(selectAuth);
+  const { status } = useAppSelector(selectAuth);
   const refAuth = useRef<EAuthStatus>();
 
   if (status === EAuthStatus.pending) {
