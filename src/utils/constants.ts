@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-
 // NOTE: Map нужен для сохранения порядка свойств при обходе коллекции
 export const TYPES_OF_INGREDIENTS: ReadonlyMap<TIngredientType, string> = new Map([
   ["bun", "Булки"],
@@ -10,25 +8,6 @@ export const TYPES_OF_INGREDIENTS: ReadonlyMap<TIngredientType, string> = new Ma
 export const ADD_BUN_EMPTY_TEXT = "Добавьте булку";
 
 export const ADD_INGREDIENTS_EMPTY_TEXT = "Добавьте ингридиенты";
-
-export const INGREDIENT_PROP_TYPES = {
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
-  calories: PropTypes.number.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_mobile: PropTypes.string.isRequired,
-  image_large: PropTypes.string.isRequired,
-  __v: PropTypes.number.isRequired,
-};
-
-export const PAGES_PROTYPES = {
-  pageTitle: PropTypes.string,
-};
 
 export const ROUTES = {
   home: { path: "/", title: "Конструктор бургера" },
@@ -48,9 +27,3 @@ export enum EAuthStatus {
   ok = "auth",
   no = "notAuth",
 }
-
-export const AUTH_STATUS = {
-  pending: "pending",
-  ok: "auth",
-  no: "notAuth",
-};

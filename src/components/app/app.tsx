@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "hooks";
 import { auth, selectAuth } from "services/slices/auth-slice";
 import { getBurgerIngredients } from "services/slices/burger-ingredients-slice";
-import { AUTH_STATUS, ROUTES } from "utils/constants";
+import { EAuthStatus, ROUTES } from "utils/constants";
 
 import { SmallCentered, WithSidebar } from "layouts";
 import {
@@ -36,7 +36,7 @@ const App: React.FC = () => {
   const background: Location | undefined = location?.state?.background;
 
   useEffect(() => {
-    if (status === AUTH_STATUS.pending) {
+    if (status === EAuthStatus.pending) {
       dispatch(auth());
     }
   }, [status, dispatch]);
