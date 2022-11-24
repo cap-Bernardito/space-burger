@@ -1,25 +1,23 @@
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
-import { useObserveForm } from "hooks";
+import { useAppDispatch, useAppSelector, useObserveForm } from "hooks";
 import { selectAuth, setError, updateUser } from "services/slices/auth-slice";
-import { PAGES_PROTYPES } from "utils/constants";
-import { AUTH_STATUS } from "utils/constants";
+import { EAuthStatus } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
 import { isErrorVisibility, notify } from "utils/utils";
 
 import EditableInput from "components/editable-input/editable-input";
 import PageTitle from "components/page-title/page-title";
 
-const Profile = ({ pageTitle }) => {
+const Profile: React.FC<TPageProps> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
-  const dispatch = useDispatch();
-  const { user, loading, error, status } = useSelector(selectAuth);
+  const dispatch = useAppDispatch();
+  const { user, loading, error, status } = useAppSelector(selectAuth);
   const [isFormEditable, setIsFormEditable] = useState(false);
-  const [formState, handleFormFields, setFormState] = useObserveForm({
+  const [formState, handleFormFields, setFormState] = useObserveForm<TRequestBodyUserUpdate>({
     name: "",
     email: "",
     password: "",
@@ -32,29 +30,32 @@ const Profile = ({ pageTitle }) => {
   }, [user, setFormState]);
 
   useEffect(() => {
-    if (isErrorVisibility(error) && status === AUTH_STATUS.ok) {
+    if (isErrorVisibility(error) && status === EAuthStatus.ok) {
       notify(error, {
         onClose: () => dispatch(setError(false)),
       });
     }
   }, [dispatch, error, status]);
 
-  const handleOnChange = (e) => {
+  const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     setIsFormEditable(true);
-    handleFormFields(e);
+    handleFormFields(event);
   };
 
-  const handleFormEditableOff = (e) => {
-    e.preventDefault();
+  const handleFormEditableOff: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
+    event.preventDefault();
 
     setIsFormEditable(false);
-    setFormState(user);
+
+    if (user) {
+      setFormState(user);
+    }
   };
 
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
+  const handleSubmitForm: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
 
-    const data = {
+    const data: TRequestBodyUserUpdate = {
       name: formState.name,
       email: formState.email,
     };
@@ -81,20 +82,18 @@ const Profile = ({ pageTitle }) => {
           required
         />
         <EmailInput
-          type={"email"}
           placeholder={"Логин"}
           name={"email"}
           value={formState.email}
           onChange={handleOnChange}
           isIcon={true}
-          errorText="Введите корректный email"
           required
         />
         <EditableInput
           type={"password"}
           placeholder={"Пароль"}
           name={"password"}
-          value={formState.password}
+          value={formState.password || ""}
           onChange={handleOnChange}
           icon={"EditIcon"}
           autoComplete="new-password"
@@ -113,7 +112,5 @@ const Profile = ({ pageTitle }) => {
     </>
   );
 };
-
-Profile.propTypes = PAGES_PROTYPES;
 
 export default Profile;

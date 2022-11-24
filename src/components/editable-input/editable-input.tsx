@@ -3,6 +3,7 @@ import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useRef, useState } from "react";
 
 type TInput = Omit<React.HTMLProps<HTMLInputElement>, "size" | "type" | "ref"> & {
+  type: "text" | "email" | "password";
   value: string;
   size?: "default" | "small";
   placeholder?: string;
@@ -13,6 +14,7 @@ type TInput = Omit<React.HTMLProps<HTMLInputElement>, "size" | "type" | "ref"> &
 };
 
 const EditableInput: React.FC<TInput> = ({
+  type = "text",
   value,
   onChange,
   size = "default",
@@ -35,7 +37,7 @@ const EditableInput: React.FC<TInput> = ({
   };
   return (
     <Input
-      type="text"
+      type={type}
       placeholder={placeholder}
       onChange={onChange}
       icon={icon}
