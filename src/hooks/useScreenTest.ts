@@ -7,8 +7,8 @@ const useScreenTest = (mediaBreakPoint = "(max-width: 559px)") => {
   useEffect(() => {
     const mediaBpDown = window.matchMedia(mediaBreakPoint);
 
-    function screenTest(e) {
-      if (e.matches) {
+    function screenTest(MQL: MediaQueryList | MediaQueryListEvent) {
+      if (MQL.matches) {
         setIsSmallScreen(true);
       } else {
         setIsSmallScreen(false);
