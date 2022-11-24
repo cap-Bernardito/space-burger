@@ -6,7 +6,7 @@ import AsideMenu from "components/aside-menu/aside-menu";
 
 import styles from "./with-sidebar.module.scss";
 
-const WithSidebar = () => {
+const WithSidebar: React.FC = () => {
   const isSmallScreen = useScreenTest();
 
   const description = (
