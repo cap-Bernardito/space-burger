@@ -1,35 +1,33 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { Link, Navigate, useLocation } from "react-router-dom";
 
-import { useObserveForm, useToggler } from "hooks";
+import { useAppSelector, useObserveForm, useToggler } from "hooks";
 import apiService from "services/api-service";
 import { selectAuth } from "services/slices/auth-slice";
-import { PAGES_PROTYPES } from "utils/constants";
-import { AUTH_STATUS, ROUTES } from "utils/constants";
+import { EAuthStatus, ROUTES } from "utils/constants";
 import { setDocumentTitle } from "utils/utils";
-import { notify } from "utils/utils";
+import { getErrorMessage, notify } from "utils/utils";
 
 import AuthPlaceholder from "components/auth-placeholder/auth-placeholder";
 import PageTitle from "components/page-title/page-title";
 
-const ResetPassword = ({ pageTitle }) => {
+const ResetPassword: React.FC<TPageProps> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
   const location = useLocation();
-  const { status } = useSelector(selectAuth);
-  const [loading, setLoading] = useState();
+  const { status } = useAppSelector(selectAuth);
+  const [loading, setLoading] = useState(false);
   const [allowLogin, setAllowLogin] = useState(false);
   const [isPasswordVisible, togglePasswordVisible] = useToggler(false);
-  const [formState, handleFormFields] = useObserveForm({
+  const [formState, handleFormFields] = useObserveForm<TRequestBodyUserUpdatePassword>({
     password: "",
     token: "",
   });
 
-  const handleSubmitForm = async (e) => {
-    e.preventDefault();
+  const handleSubmitForm: React.FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
 
     setLoading(true);
 
@@ -44,13 +42,13 @@ const ResetPassword = ({ pageTitle }) => {
         "success"
       );
     } catch (error) {
-      notify(error.message);
+      notify(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
   };
 
-  if (status === AUTH_STATUS.pending) {
+  if (status === EAuthStatus.pending) {
     return <AuthPlaceholder />;
   }
 
@@ -58,7 +56,7 @@ const ResetPassword = ({ pageTitle }) => {
     return <Navigate to={ROUTES.login.path} replace={true} />;
   }
 
-  if (status === AUTH_STATUS.ok) {
+  if (status === EAuthStatus.ok) {
     return <Navigate to="/" replace={true} />;
   }
 
@@ -101,7 +99,5 @@ const ResetPassword = ({ pageTitle }) => {
     </>
   );
 };
-
-ResetPassword.propTypes = PAGES_PROTYPES;
 
 export default ResetPassword;
