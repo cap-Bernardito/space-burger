@@ -50,7 +50,7 @@ $bottomFieldsSpacer: $spacer * 15;
     }
 
     @include media-bp-down(tablet) {
-      padding: $topFieldsSpacer / 2 $inlineFieldsSpacer / 2 $bottomFieldsSpacer / 2;
+      padding: $topFieldsSpacer * 0.5 $inlineFieldsSpacer * 0.5 $bottomFieldsSpacer * 0.5;
       background: $bg;
     }
 
