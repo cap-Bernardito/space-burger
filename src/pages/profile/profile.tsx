@@ -66,6 +66,7 @@ const Profile: React.FC<TPageProps> = ({ pageTitle }) => {
 
     dispatch(updateUser(data));
     setIsFormEditable(false);
+    notify("Данные пользователя успешно сохранены", {}, "success");
   };
 
   return (
