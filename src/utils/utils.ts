@@ -72,3 +72,14 @@ export const getErrorMessage = (error: unknown) => {
 export const setDocumentTitle = (title: string) => {
   document.title = `${title} | Space Burger`;
 };
+
+export const blurFormFields = (form: HTMLFormElement) => {
+  const validTypes = ["text", "password", "email"];
+  const formElements = [...form.elements] as HTMLInputElement[];
+
+  for (const field of formElements) {
+    if (validTypes.includes(field.type)) {
+      field.blur();
+    }
+  }
+};

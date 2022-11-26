@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector, useObserveForm } from "hooks";
 import { selectAuth, setError, updateUser } from "services/slices/auth-slice";
 import { EAuthStatus } from "utils/constants";
-import { setDocumentTitle } from "utils/utils";
+import { blurFormFields, setDocumentTitle } from "utils/utils";
 import { isErrorVisibility, notify } from "utils/utils";
 
 import EditableInput from "components/editable-input/editable-input";
@@ -67,6 +67,7 @@ const Profile: React.FC<TPageProps> = ({ pageTitle }) => {
     dispatch(updateUser(data));
     setIsFormEditable(false);
     notify("Данные пользователя успешно сохранены", {}, "success");
+    blurFormFields(event.target as HTMLFormElement);
   };
 
   return (
