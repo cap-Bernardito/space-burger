@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "hooks";
 import { auth, selectAuth } from "services/slices/auth-slice";
 import { getBurgerIngredients } from "services/slices/burger-ingredients-slice";
+import { wsOrdersFeedPrivate } from "services/slices/ws-orders-feed-private-slice";
 import { EAuthStatus, ROUTES } from "utils/constants";
 
 import { SmallCentered, WithSidebar } from "layouts";
@@ -44,6 +45,12 @@ const App: React.FC = () => {
   useEffect(() => {
     dispatch(getBurgerIngredients());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (status === EAuthStatus.ok) {
+      dispatch(wsOrdersFeedPrivate());
+    }
+  }, [status, dispatch]);
 
   const handleCloseModalIngredient = useCallback(() => {
     navigate(-1);

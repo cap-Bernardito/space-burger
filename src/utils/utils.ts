@@ -83,3 +83,9 @@ export const blurFormFields = (form: HTMLFormElement) => {
     }
   }
 };
+
+export const isSuccessResponseData = <T extends { success: boolean }, K extends { success: boolean }>(
+  data: T | K
+): data is T => {
+  return "success" in data && data.success === true;
+};
