@@ -89,7 +89,7 @@ export const wsOrdersFeedPrivate = () => async (dispatch: AppDispatch) => {
 
 export const selectWsOrdersFeedPrivate = (state: RootState) => state.wsOrdersFeedPrivate;
 
-export const selectIngredient = createSelector(
+export const selectOrders = createSelector(
   selectIngredientsDict,
   selectWsOrdersFeedPrivate,
   (ingredientsDict, wsData) => {
@@ -104,11 +104,14 @@ export const selectIngredient = createSelector(
     };
 
     for (const order of wsData.orders) {
+      const counter: TFeedItem["counter"] = {};
+
       const { selectedIngredients, selectedIngredientsPrice } = order.ingredients.reduce(
         (acc: { selectedIngredients: Set<TIngredient>; selectedIngredientsPrice: number }, id) => {
           const item = ingredientsDict.get(id);
 
           if (item) {
+            item._id in counter ? (counter[item._id] += 1) : (counter[item._id] = 1);
             acc.selectedIngredients.add(item);
             acc.selectedIngredientsPrice += Number(item.price);
           }
@@ -123,6 +126,7 @@ export const selectIngredient = createSelector(
         ...order,
         ingredients: [...selectedIngredients],
         total: selectedIngredientsPrice,
+        counter,
       });
     }
 
@@ -131,6 +135,23 @@ export const selectIngredient = createSelector(
     return resultOrders;
   }
 );
+
+export const selectOrder = (id: TFeedItem["_id"]) =>
+  createSelector(selectOrders, (orders): [TFeedItem | undefined, string | false] => {
+    let result: TFeedItem | undefined;
+    let statusMessage: string | false = "Получение данных заказа...";
+
+    if (orders === null) {
+      return [result, statusMessage];
+    }
+
+    if (orders.orders) {
+      [result] = orders.orders.filter(({ _id }) => _id === id);
+      statusMessage = !result && `Заказ с id "${id}" не найден`;
+    }
+
+    return [result, statusMessage];
+  });
 
 export const {
   open: wsPrivateOpen,

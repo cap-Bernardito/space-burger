@@ -89,8 +89,16 @@ const App: React.FC = () => {
               path={ROUTES.profileOrders.path}
               element={<ProfileOrders pageTitle={ROUTES.profileOrders.title} />}
             />
-            <Route path={ROUTES.profileOrder.path} element={<ProfileOrder pageTitle={ROUTES.profileOrder.title} />} />
           </Route>
+
+          <Route
+            path={ROUTES.profileOrder.path}
+            element={
+              <ProtectedRoute>
+                <ProfileOrder pageTitle={ROUTES.profileOrder.title} />
+              </ProtectedRoute>
+            }
+          ></Route>
 
           <Route path={ROUTES.home.path} element={<Home pageTitle={ROUTES.home.title} />} />
 

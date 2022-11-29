@@ -1,5 +1,11 @@
 @use "../../styles/variables.scss" as *;
 
+.wrapper {
+  a {
+    color: inherit !important;
+  }
+}
+
 .root {
   margin-right: $spacer * 3;
   padding: $spacer * 6;

@@ -1,0 +1,85 @@
+@use "../../styles/variables.scss" as *;
+
+.root {
+  padding-bottom: $spacer * 4;
+}
+
+.status {
+  &_done {
+    color: $success;
+  }
+}
+
+.list {
+  max-height: 316px;
+  padding-bottom: $spacer * 2;
+  display: flex;
+  flex-direction: column;
+  gap: $spacer * 4;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.item {
+  margin-right: $spacer * 3;
+  display: flex;
+  align-items: center;
+
+  &__image {
+    margin-right: $spacer * 4;
+    position: relative;
+    width: 64px;
+    height: 64px;
+    background-image: linear-gradient(90deg, #801ab2, $accent);
+    border-radius: 50%;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 60px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: #000;
+    }
+
+    img {
+      position: relative;
+      object-fit: cover;
+      z-index: 2;
+    }
+  }
+
+  &__title {
+    margin-right: auto;
+    padding-right: $spacer * 4;
+  }
+
+  &__price {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.footer {
+  $gap: $spacer * 2;
+
+  margin-bottom: -$gap;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  &__date {
+    color: $secondary;
+  }
+
+  &__price {
+    margin-bottom: $gap;
+    display: flex;
+    align-items: center;
+  }
+}

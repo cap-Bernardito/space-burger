@@ -113,6 +113,7 @@ declare type TFeedOrderState = Omit<TWSResponseSuccessOrdersFeed, "success"> & {
 declare type TFeedItem = Omit<TFeedOrder, "ingredients"> & {
   ingredients: TIngredient[];
   total: number;
+  counter: { [K: TIngredient["_id"]]: number };
 };
 
 declare type TFeed = Omit<TWSResponseSuccessOrdersFeed, "success" | "orders"> & {

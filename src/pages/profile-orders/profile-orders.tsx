@@ -1,5 +1,5 @@
 import { useAppSelector } from "hooks";
-import { selectIngredient } from "services/slices/ws-orders-feed-private-slice";
+import { selectOrders } from "services/slices/ws-orders-feed-private-slice";
 import { setDocumentTitle } from "utils/utils";
 
 import Feed from "components/feed/feed";
@@ -9,7 +9,7 @@ import styles from "./profile-orders.module.scss";
 const ProfileOrders: React.FC<TPageProps> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
-  const feedData = useAppSelector(selectIngredient);
+  const feedData = useAppSelector(selectOrders);
 
   return (
     <div className={styles.root}>
