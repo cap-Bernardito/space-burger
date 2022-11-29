@@ -1,7 +1,7 @@
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { EOrderStatus, ROUTES } from "utils/constants";
 
@@ -14,9 +14,11 @@ type Props = {
 };
 
 const FeedItem: React.FC<Props> = ({ data }) => {
+  const location = useLocation();
+
   return (
     <div className={styles.wrapper}>
-      <Link to={`${ROUTES.profileOrders.path}/${data._id}`}>
+      <Link to={`${ROUTES.profileOrders.path}/${data._id}`} state={{ background: location }}>
         <div className={styles.root}>
           <div className={classNames(styles.meta, "mb-6")}>
             <div className={classNames(styles.meta__number, "text_type_digits-default")}>#{data.number}</div>

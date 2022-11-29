@@ -14,10 +14,11 @@ const documentBody = document.querySelector("body") as HTMLBodyElement;
 
 type Props = {
   title: React.ReactNode;
+  type?: "order";
   onClose: () => void;
 };
 
-const Modal: React.FC<React.PropsWithChildren<Props>> = ({ title, onClose, children }) => {
+const Modal: React.FC<React.PropsWithChildren<Props>> = ({ title, onClose, type, children }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,6 +55,7 @@ const Modal: React.FC<React.PropsWithChildren<Props>> = ({ title, onClose, child
           <div
             className={classNames(styles.modal__content, {
               [styles.modal__content_withoutHeader]: !title,
+              [styles.modal__content_order]: type === "order",
             })}
           >
             <div className={classNames(styles.close)} onClick={onClose}>

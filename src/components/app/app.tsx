@@ -27,6 +27,7 @@ import ProtectedRoute from "hoc/protected-route/protected-route";
 import AppHeader from "components/app-header/app-header";
 import IngredientDetails from "components/ingredient-details/ingredient-details";
 import Modal from "components/modal/modal";
+import OrderDetailsFull from "components/order-details-full/order-details-full";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -114,6 +115,14 @@ const App: React.FC = () => {
               element={
                 <Modal onClose={handleCloseModalIngredient} title="Детали ингридиента">
                   <IngredientDetails />
+                </Modal>
+              }
+            />
+            <Route
+              path={ROUTES.profileOrder.path}
+              element={
+                <Modal onClose={handleCloseModalIngredient} title="&nbsp;" type="order">
+                  <OrderDetailsFull />
                 </Modal>
               }
             />

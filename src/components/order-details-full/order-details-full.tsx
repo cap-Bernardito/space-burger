@@ -41,9 +41,7 @@ const OrderDetailsFull: React.FC = () => {
 
   return (
     <div className={styles.root}>
-      <div className={classNames(styles.number, "text text_type_digits-default", "mb-10", "text-center")}>
-        #{data.number}
-      </div>
+      <div className={classNames(styles.number, "text text_type_digits-default", "mb-10")}>#{data.number}</div>
       <h1 className={classNames(styles.title, "text_type_main-medium mb-3")}>{data.name}</h1>
       <div className={classNames(styles.status, { [styles.status_done]: data.status === "done" }, "mb-15")}>
         {EOrderStatus[data.status]}

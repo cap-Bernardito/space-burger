@@ -23,7 +23,7 @@ const FeedItemSummary: React.FC<Props> = ({ data }) => {
       return (
         <div className={classNames(styles.item, styles.item_blured)} key={i._id} style={{ zIndex: 20 - index }}>
           <img src={i.image} width="64" height="64" alt={i.name} />
-          <span className={styles.count}>+{hiddenItemsCount}</span>
+          <span className={classNames(styles.count, "text_type_digits-default")}>+{hiddenItemsCount}</span>
         </div>
       );
     }

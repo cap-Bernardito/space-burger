@@ -58,6 +58,11 @@ $bottomFieldsSpacer: $spacer * 15;
       padding-top: $spacer * 30;
       padding-bottom: $spacer * 30;
     }
+
+    &_order {
+      padding-top: $spacer !important;
+      padding-bottom: $spacer * 4 !important;
+    }
   }
 }
 

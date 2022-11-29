@@ -4,6 +4,12 @@
   padding-bottom: $spacer * 4;
 }
 
+main {
+  .number {
+    text-align: center;
+  }
+}
+
 .status {
   &_done {
     color: $success;
