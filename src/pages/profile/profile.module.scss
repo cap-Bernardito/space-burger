@@ -1,0 +1,9 @@
+@use "../../styles/variables.scss" as *;
+
+.root {
+  margin-top: $profilePageMarginTop;
+
+  @include media-bp-down(tablet) {
+    margin-top: $profilePageMarginTop * 0.5;
+  }
+}

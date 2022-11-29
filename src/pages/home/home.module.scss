@@ -1,8 +1,6 @@
 @use "../../styles/variables.scss" as *;
 
-$headerHeight: 90px;
 $mainTitleHeight: 60px;
-$mainTopSpacer: $spacer * 10;
 
 .container {
   @include media-bp-up(desktop) {

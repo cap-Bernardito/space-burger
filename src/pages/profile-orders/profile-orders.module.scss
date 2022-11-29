@@ -1,0 +1,11 @@
+@use "../../styles/variables.scss" as *;
+
+$customGap: 10px;
+
+.root {
+  margin-top: $mainTopSpacer;
+}
+
+.feed {
+  height: calc(100vh - #{$headerHeight + $mainTopSpacer + $customGap});
+}

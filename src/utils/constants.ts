@@ -29,3 +29,9 @@ export enum EAuthStatus {
   ok = "auth",
   no = "notAuth",
 }
+
+export enum EOrderStatus {
+  pending = "Готовится",
+  created = "Создан",
+  done = "Выполнен",
+}

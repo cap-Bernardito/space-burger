@@ -1,8 +1,6 @@
 @use "../../styles/variables.scss" as *;
 
 .layout {
-  margin-top: 120px;
-  margin-bottom: 60px;
   display: grid;
   grid-template-columns: 2fr 3fr 2fr;
   grid-column-gap: 60px;
@@ -18,7 +16,6 @@
   }
 
   @include media-bp-down(tablet) {
-    margin-top: 60px;
     grid-template-columns: 0 1fr;
     grid-column-gap: 0;
 
@@ -30,6 +27,7 @@
 }
 
 .sidebar {
+  margin-top: $profilePageMarginTop;
   grid-column: 1 / span 1;
 
   ul {
@@ -43,9 +41,12 @@
       padding: $spacer * 4 $spacer;
     }
   }
+
+  @include media-bp-down(tablet) {
+    margin-top: 0;
+  }
 }
 
 .main {
-  grid-column: 2 / span 1;
-  text-align: center;
+  grid-column: 2 / span 2;
 }

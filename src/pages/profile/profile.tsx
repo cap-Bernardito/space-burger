@@ -11,6 +11,8 @@ import { isErrorVisibility, notify } from "utils/utils";
 import EditableInput from "components/editable-input/editable-input";
 import PageTitle from "components/page-title/page-title";
 
+import styles from "./profile.module.scss";
+
 const Profile: React.FC<TPageProps> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
@@ -71,7 +73,7 @@ const Profile: React.FC<TPageProps> = ({ pageTitle }) => {
   };
 
   return (
-    <>
+    <div className={styles.root}>
       <PageTitle titleMobile={pageTitle} />
       <form className="flex-v-g6" onSubmit={handleSubmitForm}>
         <EditableInput
@@ -111,7 +113,7 @@ const Profile: React.FC<TPageProps> = ({ pageTitle }) => {
           </div>
         )}
       </form>
-    </>
+    </div>
   );
 };
 

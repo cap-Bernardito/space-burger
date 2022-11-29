@@ -105,21 +105,28 @@ export const selectIngredient = createSelector(
 
     for (const order of wsData.orders) {
       const { selectedIngredients, selectedIngredientsPrice } = order.ingredients.reduce(
-        (acc: { selectedIngredients: TIngredient[]; selectedIngredientsPrice: number }, id) => {
+        (acc: { selectedIngredients: Set<TIngredient>; selectedIngredientsPrice: number }, id) => {
           const item = ingredientsDict.get(id);
 
           if (item) {
-            acc.selectedIngredients.push(item);
+            acc.selectedIngredients.add(item);
             acc.selectedIngredientsPrice += Number(item.price);
           }
 
           return acc;
         },
-        { selectedIngredients: [], selectedIngredientsPrice: 0 }
+        // NOTE: Set использован для удаления дубликата булки
+        { selectedIngredients: new Set<TIngredient>(), selectedIngredientsPrice: 0 }
       );
 
-      resultOrders.orders.push({ ...order, ingredients: selectedIngredients, total: selectedIngredientsPrice });
+      resultOrders.orders.push({
+        ...order,
+        ingredients: [...selectedIngredients],
+        total: selectedIngredientsPrice,
+      });
     }
+
+    resultOrders.orders.reverse();
 
     return resultOrders;
   }

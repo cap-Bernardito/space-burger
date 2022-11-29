@@ -30,6 +30,11 @@ $zModal: 2010;
   }
 }
 
+$headerHeight: 90px;
+$mainTopSpacer: $spacer * 10;
+
+$profilePageMarginTop: 120px;
+
 @mixin modal-animation($time: 0.3s) {
   animation: openModal $time;
   animation-fill-mode: both;

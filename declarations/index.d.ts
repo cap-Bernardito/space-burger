@@ -91,7 +91,8 @@ declare type TWSConnectedInState = boolean;
 declare type TFeedOrder = {
   ingredients: TIngredient["_id"][];
   _id: string;
-  status: string;
+  status: "done" | "created" | "pending";
+  name: string;
   number: number;
   createdAt: TDateISO;
   updatedAt: TDateISO;
