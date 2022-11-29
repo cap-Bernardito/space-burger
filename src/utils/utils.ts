@@ -24,6 +24,16 @@ export const splitIngredientsByTypes = (data: TIngredient[]) => {
   return Object.entries(result) as TIngredientsByTypes;
 };
 
+export const createIngredientsDict = (data: TIngredient[]) => {
+  const result: Map<TIngredient["_id"], TIngredient> = new Map();
+
+  for (const item of data) {
+    result.set(item._id, item);
+  }
+
+  return result;
+};
+
 export const notify = (
   message: ToastContent,
   options: ToastOptions = {},

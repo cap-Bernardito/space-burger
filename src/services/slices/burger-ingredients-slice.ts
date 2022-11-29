@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
-import { getErrorMessage } from "utils/utils";
+import { createIngredientsDict, getErrorMessage } from "utils/utils";
 
 import type { AppDispatch, RootState } from "../../index";
 
@@ -47,6 +47,14 @@ export const getBurgerIngredients = () => async (dispatch: AppDispatch) => {
 };
 
 export const selectIngredients = (state: RootState) => state.burgerIngredients;
+
+export const selectIngredientsDict = createSelector(selectIngredients, (items) => {
+  if (!items.data) {
+    return null;
+  }
+
+  return createIngredientsDict(items.data);
+});
 
 export const selectIngredient = (id: TIngredient["_id"]) =>
   createSelector(selectIngredients, (ingredients): [TIngredient | undefined, string | false] => {

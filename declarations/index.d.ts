@@ -108,3 +108,12 @@ declare type TFeedOrderState = Omit<TWSResponseSuccessOrdersFeed, "success"> & {
   wsConnected: TWSConnectedInState;
   error: TErrorInState;
 };
+
+declare type TFeedItem = Omit<TFeedOrder, "ingredients"> & {
+  ingredients: TIngredient[];
+  total: number;
+};
+
+declare type TFeed = Omit<TWSResponseSuccessOrdersFeed, "success" | "orders"> & {
+  orders: TFeedItem[];
+};

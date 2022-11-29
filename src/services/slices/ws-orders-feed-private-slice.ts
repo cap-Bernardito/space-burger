@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
+import { selectIngredientsDict } from "services/slices/burger-ingredients-slice";
 import { WS_INVALID_TOKEN_MESSAGE } from "utils/constants";
 import { getErrorMessage, isSuccessResponseData } from "utils/utils";
 
@@ -87,6 +88,42 @@ export const wsOrdersFeedPrivate = () => async (dispatch: AppDispatch) => {
 };
 
 export const selectWsOrdersFeedPrivate = (state: RootState) => state.wsOrdersFeedPrivate;
+
+export const selectIngredient = createSelector(
+  selectIngredientsDict,
+  selectWsOrdersFeedPrivate,
+  (ingredientsDict, wsData) => {
+    if (!ingredientsDict || !wsData.orders) {
+      return null;
+    }
+
+    const resultOrders: TFeed = {
+      orders: [],
+      total: wsData.total,
+      totalToday: wsData.totalToday,
+    };
+
+    for (const order of wsData.orders) {
+      const { selectedIngredients, selectedIngredientsPrice } = order.ingredients.reduce(
+        (acc: { selectedIngredients: TIngredient[]; selectedIngredientsPrice: number }, id) => {
+          const item = ingredientsDict.get(id);
+
+          if (item) {
+            acc.selectedIngredients.push(item);
+            acc.selectedIngredientsPrice += Number(item.price);
+          }
+
+          return acc;
+        },
+        { selectedIngredients: [], selectedIngredientsPrice: 0 }
+      );
+
+      resultOrders.orders.push({ ...order, ingredients: selectedIngredients, total: selectedIngredientsPrice });
+    }
+
+    return resultOrders;
+  }
+);
 
 export const {
   open: wsPrivateOpen,
