@@ -2,10 +2,9 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
 import { selectIngredientsDict } from "services/slices/burger-ingredients-slice";
-import { WS_INVALID_TOKEN_MESSAGE } from "utils/constants";
-import { getErrorMessage, isSuccessResponseData } from "utils/utils";
+import { wsController } from "services/ws-driver";
 
-import type { AppDispatch, RootState } from "../../index";
+import type { RootState } from "../../index";
 
 const initialState: TFeedOrderState = {
   orders: [],
@@ -37,55 +36,6 @@ const wsOrdersFeedPrivateSlice = createSlice({
     },
   },
 });
-
-export const wsOrdersFeedPrivate = () => async (dispatch: AppDispatch) => {
-  try {
-    const socket = apiService.getWSUserOrders();
-
-    socket.onopen = () => {
-      dispatch(wsPrivateOpen());
-    };
-
-    socket.onmessage = async (event: MessageEvent<string>) => {
-      const { data } = event;
-
-      if (data === "ping") {
-        socket.send("pong");
-
-        return;
-      }
-
-      const parsedData: TWSResponseSuccessOrdersFeed | TResponseCommonFalsed = JSON.parse(data);
-
-      if (isSuccessResponseData<TWSResponseSuccessOrdersFeed, TResponseCommonFalsed>(parsedData)) {
-        dispatch(wsPrivateSuccess(parsedData));
-
-        return;
-      }
-
-      if (parsedData.message.toLowerCase() === WS_INVALID_TOKEN_MESSAGE) {
-        await apiService.updateAccessToken();
-        socket.close(1000, WS_INVALID_TOKEN_MESSAGE);
-      }
-    };
-
-    socket.onclose = (event: CloseEvent) => {
-      dispatch(wsPrivateClose());
-
-      if (event.wasClean && event.reason === WS_INVALID_TOKEN_MESSAGE) {
-        dispatch(wsOrdersFeedPrivate());
-      }
-    };
-
-    socket.onerror = (event: Event & { message?: string }) => {
-      const errorMessage = typeof event.message === "string" ? event.message : "Ошибка websocket";
-
-      dispatch(wsPrivateError(errorMessage));
-    };
-  } catch (e) {
-    dispatch(wsPrivateError(getErrorMessage(e)));
-  }
-};
 
 export const selectWsOrdersFeedPrivate = (state: RootState) => state.wsOrdersFeedPrivate;
 
@@ -159,5 +109,13 @@ export const {
   success: wsPrivateSuccess,
   error: wsPrivateError,
 } = wsOrdersFeedPrivateSlice.actions;
+
+export const wsOrdersFeedPrivate = wsController({
+  getSocketFn: apiService.getWSUserOrders,
+  wsOpenFn: wsPrivateOpen,
+  wsCloseFn: wsPrivateClose,
+  wsSuccessFn: wsPrivateSuccess,
+  wsErrorFn: wsPrivateError,
+});
 
 export default wsOrdersFeedPrivateSlice.reducer;
