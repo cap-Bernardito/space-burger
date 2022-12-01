@@ -86,7 +86,7 @@ export const selectOrders = createSelector(
   }
 );
 
-export const selectOrder = (id: TFeedItem["_id"]) =>
+export const selectOrderPrivate = (id: TFeedItem["_id"]) =>
   createSelector(selectOrders, (orders): [TFeedItem | undefined, string | false] => {
     let result: TFeedItem | undefined;
     let statusMessage: string | false = "Получение данных заказа...";

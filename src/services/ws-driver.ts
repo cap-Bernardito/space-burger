@@ -5,6 +5,7 @@ import {
   wsPrivateOpen,
   wsPrivateSuccess,
 } from "services/slices/ws-orders-feed-private-slice";
+import { wsAllClose, wsAllError, wsAllOpen, wsAllSuccess } from "services/slices/ws-orders-feed-slice";
 import { WS_INVALID_TOKEN_MESSAGE } from "utils/constants";
 import { getErrorMessage, isSuccessResponseData } from "utils/utils";
 
@@ -12,10 +13,10 @@ import type { AppDispatch } from "../index";
 
 type WSDriverProps = {
   getSocketFn: typeof apiService.getWSUserOrders | typeof apiService.getWSAllOrders;
-  wsOpenFn: typeof wsPrivateOpen;
-  wsCloseFn: typeof wsPrivateClose;
-  wsSuccessFn: typeof wsPrivateSuccess;
-  wsErrorFn: typeof wsPrivateError;
+  wsOpenFn: typeof wsPrivateOpen | typeof wsAllOpen;
+  wsCloseFn: typeof wsPrivateClose | typeof wsAllClose;
+  wsSuccessFn: typeof wsPrivateSuccess | typeof wsAllSuccess;
+  wsErrorFn: typeof wsPrivateError | typeof wsAllError;
 };
 
 type wsController = ({
@@ -26,12 +27,16 @@ type wsController = ({
   wsErrorFn,
 }: WSDriverProps) => () => (dispatch: AppDispatch) => void;
 
-export const wsController: wsController =
-  ({ getSocketFn, wsOpenFn, wsCloseFn, wsSuccessFn, wsErrorFn }) =>
-  () =>
-  async (dispatch: AppDispatch) => {
+export const wsController: wsController = ({ getSocketFn, wsOpenFn, wsCloseFn, wsSuccessFn, wsErrorFn }) => {
+  let socket: WebSocket;
+
+  return () => async (dispatch: AppDispatch) => {
     try {
-      const socket = getSocketFn();
+      if (socket) {
+        return;
+      }
+
+      socket = getSocketFn();
 
       socket.onopen = () => {
         dispatch(wsOpenFn());
@@ -62,7 +67,6 @@ export const wsController: wsController =
 
       socket.onclose = (event: CloseEvent) => {
         dispatch(wsCloseFn());
-
         if (event.wasClean && event.reason === WS_INVALID_TOKEN_MESSAGE) {
           const wsRestart = wsController({ getSocketFn, wsOpenFn, wsCloseFn, wsSuccessFn, wsErrorFn });
 
@@ -79,3 +83,4 @@ export const wsController: wsController =
       dispatch(wsErrorFn(getErrorMessage(e)));
     }
   };
+};

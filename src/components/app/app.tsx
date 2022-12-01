@@ -6,10 +6,12 @@ import { useAppDispatch, useAppSelector } from "hooks";
 import { auth, selectAuth } from "services/slices/auth-slice";
 import { getBurgerIngredients } from "services/slices/burger-ingredients-slice";
 import { wsOrdersFeedPrivate } from "services/slices/ws-orders-feed-private-slice";
+import { wsOrdersFeed } from "services/slices/ws-orders-feed-slice";
 import { EAuthStatus, ROUTES } from "utils/constants";
 
 import { SmallCentered, WithSidebar } from "layouts";
 import {
+  Feed,
   ForgotPassword,
   Home,
   Ingredient,
@@ -48,6 +50,10 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    if (status !== EAuthStatus.pending) {
+      dispatch(wsOrdersFeed());
+    }
+
     if (status === EAuthStatus.ok) {
       dispatch(wsOrdersFeedPrivate());
     }
@@ -101,6 +107,10 @@ const App: React.FC = () => {
             }
           ></Route>
 
+          <Route path={ROUTES.feed.path} element={<Feed pageTitle={ROUTES.feed.title} />} />
+
+          <Route path={ROUTES.feedOrder.path} element={<ProfileOrder pageTitle={ROUTES.feedOrder.title} />} />
+
           <Route path={ROUTES.home.path} element={<Home pageTitle={ROUTES.home.title} />} />
 
           <Route element={<SmallCentered />}>
@@ -120,6 +130,14 @@ const App: React.FC = () => {
             />
             <Route
               path={ROUTES.profileOrder.path}
+              element={
+                <Modal onClose={handleCloseModalIngredient} title="&nbsp;" type="order">
+                  <OrderDetailsFull />
+                </Modal>
+              }
+            />
+            <Route
+              path={ROUTES.feedOrder.path}
               element={
                 <Modal onClose={handleCloseModalIngredient} title="&nbsp;" type="order">
                   <OrderDetailsFull />

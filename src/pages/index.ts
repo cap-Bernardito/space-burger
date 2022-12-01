@@ -1,4 +1,5 @@
 import NotFound from "./404/404";
+import Feed from "./feed/feed";
 import ForgotPassword from "./forgot-password/forgot-password";
 import Home from "./home/home";
 import Ingredient from "./ingredient/ingredient";
@@ -10,6 +11,7 @@ import Register from "./register/register";
 import ResetPassword from "./reset-password/reset-password";
 
 export {
+  Feed,
   ForgotPassword,
   Home,
   Ingredient,

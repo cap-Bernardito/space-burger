@@ -1,18 +1,23 @@
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 
-import { useParams } from "react-router-dom";
+import { useMatch, useParams } from "react-router-dom";
 
 import { useAppSelector } from "hooks";
-import { selectOrder, selectWsOrdersFeedPrivate } from "services/slices/ws-orders-feed-private-slice";
-import { EOrderStatus } from "utils/constants";
+import { selectOrderPrivate, selectWsOrdersFeedPrivate } from "services/slices/ws-orders-feed-private-slice";
+import { selectOrder, selectWsOrdersFeed } from "services/slices/ws-orders-feed-slice";
+import { EOrderStatus, ROUTES } from "utils/constants";
 
 import styles from "./order-details-full.module.scss";
 
 const OrderDetailsFull: React.FC = () => {
+  const isPrivate = useMatch(ROUTES.profileOrder);
   const { id } = useParams();
-  const [data, statusMessage] = useAppSelector(selectOrder(id ? id : ""));
-  const { orders } = useAppSelector(selectWsOrdersFeedPrivate);
+  const selectorOrdersFn = isPrivate ? selectOrderPrivate : selectOrder;
+  const selectorWsOrdersFeedFn = isPrivate ? selectWsOrdersFeedPrivate : selectWsOrdersFeed;
+
+  const [data, statusMessage] = useAppSelector(selectorOrdersFn(id ? id : ""));
+  const { orders } = useAppSelector(selectorWsOrdersFeedFn);
 
   if (orders.length === 0) {
     return <span>Соединение не устанавливается...</span>;

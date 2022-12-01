@@ -257,7 +257,7 @@ class ApiService {
       this._refreshToken = tokens.refreshToken;
 
       if (typeof tokens.refreshToken === "string") {
-        Cookies.set("token", tokens.refreshToken, { path: "/" });
+        Cookies.set("token", tokens.refreshToken, { path: "/", sameSite: "Strict" });
       }
     }
   };

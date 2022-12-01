@@ -99,3 +99,34 @@ export const isSuccessResponseData = <T extends { success: boolean }, K extends 
 ): data is T => {
   return "success" in data && data.success === true;
 };
+
+export const getLastOrderNumbers = (data: TFeed["orders"] = [], count: number) => {
+  const resultDone: TFeedOrder["number"][] = Array(count);
+  const resultPending: TFeedOrder["number"][] = Array(count);
+  let i = 0;
+  let d = 0;
+  let p = 0;
+
+  while (d < count) {
+    if (typeof data[i] === "undefined") {
+      break;
+    }
+
+    if (data[i].status === "done") {
+      resultDone[d] = data[i].number;
+      d++;
+    }
+
+    if (data[i].status === "pending" && p < count) {
+      resultPending[p] = data[i].number;
+      p++;
+    }
+
+    i++;
+  }
+
+  return {
+    done: resultDone.filter(Boolean),
+    pending: resultPending.filter(Boolean),
+  };
+};

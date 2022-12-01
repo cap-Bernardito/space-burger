@@ -22,6 +22,8 @@ export const ROUTES = {
   profileOrders: { path: "/profile/orders", title: "История заказов" },
   profileOrder: { path: "/profile/orders/:id", title: "Информация о заказе" },
   notFound: { path: "*", title: "Страница не найдена" },
+  feed: { path: "/feed", title: "Лента заказов" },
+  feedOrder: { path: "/feed/:id", title: "Описание заказа" },
 };
 
 export enum EAuthStatus {

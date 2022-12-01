@@ -1,0 +1,84 @@
+@use "../../styles/variables.scss" as *;
+
+$mainTitleHeight: 60px;
+
+.container {
+  @include media-bp-up(desktop) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: min-content min-content;
+    column-gap: 40px;
+  }
+
+  [data-spinner] {
+    font-size: 4em;
+  }
+}
+
+.title {
+  @include media-bp-up(desktop) {
+    grid-area: 1 / 1 / span 1 / -1;
+  }
+
+  @include media-bp-down(desktop) {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+}
+
+.feed,
+.orders_info {
+  width: 100%;
+  max-width: 600px;
+  margin-inline: auto;
+
+  @include media-bp-up(desktop) {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - #{$headerHeight} - #{$mainTopSpacer} - #{$mainTitleHeight} - 10px);
+    max-height: calc(100vh - #{$headerHeight} - #{$mainTopSpacer} - #{$mainTitleHeight} - 10px);
+  }
+}
+
+.feed {
+  @include media-bp-up(desktop) {
+    grid-area: 2 / 1 / span 1 / span 1;
+  }
+
+  @include media-bp-down(desktop) {
+    margin-bottom: $spacer * 15;
+  }
+}
+
+.orders_info {
+  width: 100%;
+
+  @include media-bp-up(desktop) {
+    grid-area: 2 / 2 / span 1 / span 1;
+  }
+
+  @include media-bp-down(desktop) {
+    margin-bottom: $spacer * 10;
+  }
+}
+
+.status {
+  display: flex;
+
+  &__item {
+    flex: 0 0 50%;
+  }
+}
+
+.numbers {
+  display: flex;
+  flex-wrap: wrap;
+
+  div {
+    flex: 0 0 50%;
+  }
+
+  &_done {
+    color: $success;
+  }
+}
