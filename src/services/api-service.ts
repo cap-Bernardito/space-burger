@@ -44,19 +44,32 @@ class ApiService {
   };
   _wsAllOrdersUrl = "wss://norma.nomoreparties.space/orders/all" as const;
   _wsUserOrdersUrl = "wss://norma.nomoreparties.space/orders" as const;
+  _wsPrivateOrdersInstance: WebSocket | null = null;
 
   getWSAllOrders = () => {
     return new WebSocket(this._wsAllOrdersUrl);
   };
 
-  getWSUserOrders = () => {
+  getWSPrivateOrders = () => {
     if (this._accessToken && this._accessToken.includes("Bearer ")) {
       const [, token] = this._accessToken.split("Bearer ");
 
-      return new WebSocket(`${this._wsUserOrdersUrl}?token=${token}`);
+      if (!this._wsPrivateOrdersInstance) {
+        this._wsPrivateOrdersInstance = new WebSocket(`${this._wsUserOrdersUrl}?token=${token}`);
+      }
+
+      return this._wsPrivateOrdersInstance;
     }
 
     throw new Error("Access token is not available");
+  };
+
+  deleteWSPrivateOrders = () => {
+    if (this._wsPrivateOrdersInstance) {
+      this._wsPrivateOrdersInstance.close(1000);
+    }
+
+    this._wsPrivateOrdersInstance = null;
   };
 
   request = async <T extends Partial<TResponseCommon>>(

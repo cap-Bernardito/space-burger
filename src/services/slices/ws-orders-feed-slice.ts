@@ -65,7 +65,7 @@ export const selectOrders = createSelector(selectIngredientsDict, selectWsOrders
 
         return acc;
       },
-      // NOTE: Set использован для удаления дубликата булки
+      // NOTE: Set использован для удаления дубликатов
       { selectedIngredients: new Set<TIngredient>(), selectedIngredientsPrice: 0 }
     );
 

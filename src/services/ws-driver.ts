@@ -12,7 +12,7 @@ import { getErrorMessage, isSuccessResponseData } from "utils/utils";
 import type { AppDispatch } from "../index";
 
 type WSDriverProps = {
-  getSocketFn: typeof apiService.getWSUserOrders | typeof apiService.getWSAllOrders;
+  getSocketFn: typeof apiService.getWSPrivateOrders | typeof apiService.getWSAllOrders;
   wsOpenFn: typeof wsPrivateOpen | typeof wsAllOpen;
   wsCloseFn: typeof wsPrivateClose | typeof wsAllClose;
   wsSuccessFn: typeof wsPrivateSuccess | typeof wsAllSuccess;
@@ -32,10 +32,6 @@ export const wsController: wsController = ({ getSocketFn, wsOpenFn, wsCloseFn, w
 
   return () => async (dispatch: AppDispatch) => {
     try {
-      if (socket) {
-        return;
-      }
-
       socket = getSocketFn();
 
       socket.onopen = () => {
@@ -67,6 +63,7 @@ export const wsController: wsController = ({ getSocketFn, wsOpenFn, wsCloseFn, w
 
       socket.onclose = (event: CloseEvent) => {
         dispatch(wsCloseFn());
+
         if (event.wasClean && event.reason === WS_INVALID_TOKEN_MESSAGE) {
           const wsRestart = wsController({ getSocketFn, wsOpenFn, wsCloseFn, wsSuccessFn, wsErrorFn });
 

@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
           </NavLink>
         </li>
         <li className={classNames(styles.navbar__item)}>
-          <NavLink to={ROUTES.profile.path} className={activeClass} end>
+          <NavLink to={ROUTES.profile.path} className={activeClass}>
             <ProfileIcon type="secondary" />
             <span>{user ? user.name : "Личный кабинет"}</span>
           </NavLink>

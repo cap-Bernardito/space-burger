@@ -4,7 +4,7 @@ import apiService from "services/api-service";
 import { selectIngredientsDict } from "services/slices/burger-ingredients-slice";
 import { wsController } from "services/ws-driver";
 
-import type { RootState } from "../../index";
+import type { AppDispatch, RootState } from "../../index";
 
 const initialState: TFeedOrderState = {
   orders: [],
@@ -24,6 +24,9 @@ const wsOrdersFeedPrivateSlice = createSlice({
     },
     close(state) {
       state.wsConnected = false;
+      state.orders = [];
+      state.total = 0;
+      state.totalToday = 0;
     },
     success(state, action: PayloadAction<Omit<TWSResponseSuccessOrdersFeed, "success">>) {
       state.wsConnected = true;
@@ -103,6 +106,12 @@ export const selectOrderPrivate = (id: TFeedItem["_id"]) =>
     return [result, statusMessage];
   });
 
+export const stopWSPrivate = () => async (dispatch: AppDispatch) => {
+  apiService.deleteWSPrivateOrders();
+
+  dispatch(wsPrivateClose());
+};
+
 export const {
   open: wsPrivateOpen,
   close: wsPrivateClose,
@@ -111,7 +120,7 @@ export const {
 } = wsOrdersFeedPrivateSlice.actions;
 
 export const wsOrdersFeedPrivate = wsController({
-  getSocketFn: apiService.getWSUserOrders,
+  getSocketFn: apiService.getWSPrivateOrders,
   wsOpenFn: wsPrivateOpen,
   wsCloseFn: wsPrivateClose,
   wsSuccessFn: wsPrivateSuccess,

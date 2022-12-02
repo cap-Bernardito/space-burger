@@ -5,7 +5,11 @@ import { ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "hooks";
 import { auth, selectAuth } from "services/slices/auth-slice";
 import { getBurgerIngredients } from "services/slices/burger-ingredients-slice";
-import { wsOrdersFeedPrivate } from "services/slices/ws-orders-feed-private-slice";
+import {
+  selectWsOrdersFeedPrivate,
+  stopWSPrivate,
+  wsOrdersFeedPrivate,
+} from "services/slices/ws-orders-feed-private-slice";
 import { wsOrdersFeed } from "services/slices/ws-orders-feed-slice";
 import { EAuthStatus, ROUTES } from "utils/constants";
 
@@ -36,6 +40,7 @@ const App: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { status } = useAppSelector(selectAuth);
+  const { wsConnected: wsPrivateConnected } = useAppSelector(selectWsOrdersFeedPrivate);
 
   const background: Location | undefined = location?.state?.background;
 
@@ -50,14 +55,18 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (status !== EAuthStatus.pending) {
-      dispatch(wsOrdersFeed());
-    }
+    dispatch(wsOrdersFeed());
 
-    if (status === EAuthStatus.ok) {
+    // NOTE: Залогинились
+    if (status === EAuthStatus.ok && !wsPrivateConnected) {
       dispatch(wsOrdersFeedPrivate());
     }
-  }, [status, dispatch]);
+
+    // NOTE: Разлогинились
+    if (status === EAuthStatus.no && wsPrivateConnected) {
+      dispatch(stopWSPrivate());
+    }
+  }, [status, wsPrivateConnected, dispatch]);
 
   const handleCloseModalIngredient = useCallback(() => {
     navigate(-1);
