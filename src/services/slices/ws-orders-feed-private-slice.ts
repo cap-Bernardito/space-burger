@@ -2,7 +2,7 @@ import { createAction, createSelector, createSlice, PayloadAction } from "@redux
 
 import apiService from "services/api-service";
 import { selectIngredientsDict } from "services/slices/burger-ingredients-slice";
-import type { AppDispatch, RootState } from "services/store";
+import type { RootState } from "services/store";
 
 export type TWSPrivateOrdersActions = {
   connect: typeof wsPrivateConnect;
@@ -119,12 +119,6 @@ export const selectOrderPrivate = (id: TFeedItem["_id"]) =>
 
     return [result, statusMessage];
   });
-
-export const stopWSPrivate = () => async (dispatch: AppDispatch) => {
-  apiService.deleteWSPrivateOrders();
-
-  dispatch(wsPrivateOnclose());
-};
 
 export const {
   open: wsPrivateOnopen,

@@ -1,7 +1,10 @@
 import classNames from "classnames";
 
-import { useAppSelector, useScreenTest } from "hooks";
+import { useEffect } from "react";
+
+import { useAppDispatch, useAppSelector, useScreenTest } from "hooks";
 import { selectOrders } from "services/slices/ws-orders-feed-slice";
+import { selectWsOrdersFeed, wsConnect, wsDisconnect } from "services/slices/ws-orders-feed-slice";
 import { getLastOrderNumbers, setDocumentTitle } from "utils/utils";
 
 import FeedList from "components/feed/feed";
@@ -14,6 +17,20 @@ const Feed: React.FC<TPageProps> = ({ pageTitle }) => {
 
   const isPortraitScreen = useScreenTest("(max-width: 1137px)");
   const feedData = useAppSelector(selectOrders);
+  const dispatch = useAppDispatch();
+  const { wsConnected } = useAppSelector(selectWsOrdersFeed);
+
+  useEffect(() => {
+    if (!wsConnected) {
+      dispatch(wsConnect());
+    }
+
+    return () => {
+      if (wsConnected) {
+        dispatch(wsDisconnect());
+      }
+    };
+  }, [wsConnected, dispatch]);
 
   if (!feedData) {
     return (

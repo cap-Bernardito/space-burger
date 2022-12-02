@@ -12,15 +12,18 @@ type TWSActions = TWSAllOrdersActions | TWSPrivateOrdersActions;
 export const createWsOrdersFeedMiddleware =
   (wsActions: TWSActions): Middleware<unknown, RootState> =>
   (store) => {
-    let socket: WebSocket;
+    let socket: WebSocket | null = null;
+    let isConnected = true;
+    let reconnectTimer = 0;
 
     return (next) => async (action) => {
       const { dispatch } = store;
       const { connect, disconnect, getSocketFn, wsOpenFn, wsCloseFn, wsSuccessFn, wsErrorFn } = wsActions;
 
       if (connect.match(action)) {
-        console.log("Websocket connect");
         socket = getSocketFn();
+        clearTimeout(reconnectTimer);
+        isConnected = true;
       }
 
       if (socket) {
@@ -31,7 +34,7 @@ export const createWsOrdersFeedMiddleware =
         socket.onmessage = async (event: MessageEvent<string>) => {
           const { data } = event;
 
-          if (data === "ping") {
+          if (socket && data === "ping") {
             socket.send("pong");
 
             return;
@@ -45,7 +48,7 @@ export const createWsOrdersFeedMiddleware =
             return;
           }
 
-          if (parsedData.message.toLowerCase() === WS_INVALID_TOKEN_MESSAGE) {
+          if (socket && parsedData.message.toLowerCase() === WS_INVALID_TOKEN_MESSAGE) {
             try {
               await apiService.updateAccessToken();
             } catch (e) {
@@ -57,24 +60,29 @@ export const createWsOrdersFeedMiddleware =
         };
 
         socket.onclose = (event: CloseEvent) => {
-          console.log("Websocket error");
           dispatch(wsCloseFn());
 
           if (event.wasClean && event.reason === WS_INVALID_TOKEN_MESSAGE) {
             dispatch(connect());
           }
+
+          if (isConnected) {
+            reconnectTimer = window.setInterval(() => {
+              dispatch(connect());
+            }, 3000);
+          }
         };
 
         socket.onerror = (event: Event & { message?: string }) => {
-          console.log("Websocket error");
           const errorMessage = typeof event.message === "string" ? event.message : "Ошибка websocket";
 
           dispatch(wsErrorFn(errorMessage));
         };
 
         if (disconnect.match(action)) {
-          console.log("Websocket disconnect");
-
+          clearTimeout(reconnectTimer);
+          isConnected = false;
+          reconnectTimer = 0;
           socket.close();
         }
       }

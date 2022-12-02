@@ -5,17 +5,12 @@ import { ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "hooks";
 import { auth, selectAuth } from "services/slices/auth-slice";
 import { getBurgerIngredients } from "services/slices/burger-ingredients-slice";
-import {
-  selectWsOrdersFeedPrivate,
-  stopWSPrivate,
-  wsPrivateConnect,
-} from "services/slices/ws-orders-feed-private-slice";
-import { wsConnect } from "services/slices/ws-orders-feed-slice";
 import { EAuthStatus, ROUTES } from "utils/constants";
 
 import { SmallCentered, WithSidebar } from "layouts";
 import {
   Feed,
+  FeedOrder,
   ForgotPassword,
   Home,
   Ingredient,
@@ -40,7 +35,6 @@ const App: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { status } = useAppSelector(selectAuth);
-  const { wsConnected: wsPrivateConnected } = useAppSelector(selectWsOrdersFeedPrivate);
 
   const background: Location | undefined = location?.state?.background;
 
@@ -53,20 +47,6 @@ const App: React.FC = () => {
   useEffect(() => {
     dispatch(getBurgerIngredients());
   }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(wsConnect());
-
-    // NOTE: Залогинились
-    if (status === EAuthStatus.ok && !wsPrivateConnected) {
-      dispatch(wsPrivateConnect());
-    }
-
-    // NOTE: Разлогинились
-    if (status === EAuthStatus.no && wsPrivateConnected) {
-      dispatch(stopWSPrivate());
-    }
-  }, [status, wsPrivateConnected, dispatch]);
 
   const handleCloseModalIngredient = useCallback(() => {
     navigate(-1);
@@ -118,7 +98,7 @@ const App: React.FC = () => {
 
           <Route path={ROUTES.feed.path} element={<Feed pageTitle={ROUTES.feed.title} />} />
 
-          <Route path={ROUTES.feedOrder.path} element={<ProfileOrder pageTitle={ROUTES.feedOrder.title} />} />
+          <Route path={ROUTES.feedOrder.path} element={<FeedOrder pageTitle={ROUTES.feedOrder.title} />} />
 
           <Route path={ROUTES.home.path} element={<Home pageTitle={ROUTES.home.title} />} />
 

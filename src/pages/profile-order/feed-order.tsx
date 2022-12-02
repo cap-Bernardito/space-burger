@@ -1,34 +1,30 @@
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "hooks";
-import {
-  selectWsOrdersFeedPrivate,
-  wsPrivateConnect,
-  wsPrivateDisconnect,
-} from "services/slices/ws-orders-feed-private-slice";
+import { selectWsOrdersFeed, wsConnect, wsDisconnect } from "services/slices/ws-orders-feed-slice";
 import { setDocumentTitle } from "utils/utils";
 
 import OrderDetailsFull from "components/order-details-full/order-details-full";
 
 import styles from "./profile-order.module.scss";
 
-const ProfileOrder: React.FC<TPageProps> = ({ pageTitle }) => {
+const FeedOrder: React.FC<TPageProps> = ({ pageTitle }) => {
   setDocumentTitle(pageTitle);
 
   const dispatch = useAppDispatch();
-  const { wsConnected: wsPrivateConnected } = useAppSelector(selectWsOrdersFeedPrivate);
+  const { wsConnected } = useAppSelector(selectWsOrdersFeed);
 
   useEffect(() => {
-    if (!wsPrivateConnected) {
-      dispatch(wsPrivateConnect());
+    if (!wsConnected) {
+      dispatch(wsConnect());
     }
 
     return () => {
-      if (wsPrivateConnected) {
-        dispatch(wsPrivateDisconnect());
+      if (wsConnected) {
+        dispatch(wsDisconnect());
       }
     };
-  }, [wsPrivateConnected, dispatch]);
+  }, [wsConnected, dispatch]);
 
   return (
     <div className="container">
@@ -39,4 +35,4 @@ const ProfileOrder: React.FC<TPageProps> = ({ pageTitle }) => {
   );
 };
 
-export default ProfileOrder;
+export default FeedOrder;
