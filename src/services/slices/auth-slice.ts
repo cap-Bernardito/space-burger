@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
+import type { AppDispatch, RootState } from "services/store";
 import { EAuthStatus } from "utils/constants";
 import { getErrorMessage } from "utils/utils";
-
-import type { AppDispatch, RootState } from "../../index";
 
 type TAuthState = {
   user: Pick<TUser, "name" | "email"> | null;

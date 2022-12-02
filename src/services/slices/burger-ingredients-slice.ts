@@ -1,9 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
+import type { AppDispatch, RootState } from "services/store";
 import { createIngredientsDict, getErrorMessage } from "utils/utils";
-
-import type { AppDispatch, RootState } from "../../index";
 
 type TBurgerIngredientsState = {
   data: TIngredient[] | null;

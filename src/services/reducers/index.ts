@@ -7,8 +7,6 @@ import orderDetailsReducer from "services/slices/order-details-slice";
 import wsOrdersFeedPrivateReducer from "services/slices/ws-orders-feed-private-slice";
 import wsOrdersFeedReducer from "services/slices/ws-orders-feed-slice";
 
-export type { AppDispatch, RootState } from "../../index";
-
 export const rootReducer = combineReducers({
   burgerIngredients: burgerIngredientsReducer,
   burgerConstructor: burgerConstructorReducer,

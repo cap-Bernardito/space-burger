@@ -1,10 +1,18 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAction, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
 import { selectIngredientsDict } from "services/slices/burger-ingredients-slice";
-import { wsController } from "services/ws-driver";
+import type { RootState } from "services/store";
 
-import type { RootState } from "../../index";
+export type TWSAllOrdersActions = {
+  connect: typeof wsConnect;
+  disconnect: typeof wsDisconnect;
+  getSocketFn: typeof apiService.getWSAllOrders;
+  wsOpenFn: typeof wsAllOnopen;
+  wsCloseFn: typeof wsAllOnclose;
+  wsSuccessFn: typeof wsAllOnmessage;
+  wsErrorFn: typeof wsAllOneror;
+};
 
 const initialState: TFeedOrderState = {
   orders: [],
@@ -14,8 +22,10 @@ const initialState: TFeedOrderState = {
   error: false,
 };
 
+const actionsBaseName = "WS_ORDERS_FEED";
+
 const wsOrdersFeedSlice = createSlice({
-  name: "WS_ORDERS_FEED",
+  name: actionsBaseName,
   initialState,
   reducers: {
     open(state) {
@@ -26,7 +36,6 @@ const wsOrdersFeedSlice = createSlice({
       state.wsConnected = false;
     },
     success(state, action: PayloadAction<Omit<TWSResponseSuccessOrdersFeed, "success">>) {
-      state.wsConnected = true;
       state.orders = action.payload.orders;
       state.total = action.payload.total;
       state.totalToday = action.payload.totalToday;
@@ -36,6 +45,10 @@ const wsOrdersFeedSlice = createSlice({
     },
   },
 });
+
+export const wsConnect = createAction(`${actionsBaseName}/connect`);
+
+export const wsDisconnect = createAction(`${actionsBaseName}/disconnect`);
 
 export const selectWsOrdersFeed = (state: RootState) => state.wsOrdersFeed;
 
@@ -100,18 +113,10 @@ export const selectOrder = (id: TFeedItem["_id"]) =>
   });
 
 export const {
-  open: wsAllOpen,
-  close: wsAllClose,
-  success: wsAllSuccess,
-  error: wsAllError,
+  open: wsAllOnopen,
+  close: wsAllOnclose,
+  success: wsAllOnmessage,
+  error: wsAllOneror,
 } = wsOrdersFeedSlice.actions;
-
-export const wsOrdersFeed = wsController({
-  getSocketFn: apiService.getWSAllOrders,
-  wsOpenFn: wsAllOpen,
-  wsCloseFn: wsAllClose,
-  wsSuccessFn: wsAllSuccess,
-  wsErrorFn: wsAllError,
-});
 
 export default wsOrdersFeedSlice.reducer;

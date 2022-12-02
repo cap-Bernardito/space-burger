@@ -1,10 +1,18 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAction, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
 import { selectIngredientsDict } from "services/slices/burger-ingredients-slice";
-import { wsController } from "services/ws-driver";
+import type { AppDispatch, RootState } from "services/store";
 
-import type { AppDispatch, RootState } from "../../index";
+export type TWSPrivateOrdersActions = {
+  connect: typeof wsPrivateConnect;
+  disconnect: typeof wsPrivateDisconnect;
+  getSocketFn: typeof apiService.getWSAllOrders;
+  wsOpenFn: typeof wsPrivateOnopen;
+  wsCloseFn: typeof wsPrivateOnclose;
+  wsSuccessFn: typeof wsPrivateOnmessage;
+  wsErrorFn: typeof wsPrivateOnerror;
+};
 
 const initialState: TFeedOrderState = {
   orders: [],
@@ -14,8 +22,10 @@ const initialState: TFeedOrderState = {
   error: false,
 };
 
+const actionsBaseName = "WS_ORDERS_FEED_PRIVATE";
+
 const wsOrdersFeedPrivateSlice = createSlice({
-  name: "WS_ORDERS_FEED_PRIVATE",
+  name: actionsBaseName,
   initialState,
   reducers: {
     open(state) {
@@ -39,6 +49,10 @@ const wsOrdersFeedPrivateSlice = createSlice({
     },
   },
 });
+
+export const wsPrivateConnect = createAction(`${actionsBaseName}/connect`);
+
+export const wsPrivateDisconnect = createAction(`${actionsBaseName}/disconnect`);
 
 export const selectWsOrdersFeedPrivate = (state: RootState) => state.wsOrdersFeedPrivate;
 
@@ -109,22 +123,14 @@ export const selectOrderPrivate = (id: TFeedItem["_id"]) =>
 export const stopWSPrivate = () => async (dispatch: AppDispatch) => {
   apiService.deleteWSPrivateOrders();
 
-  dispatch(wsPrivateClose());
+  dispatch(wsPrivateOnclose());
 };
 
 export const {
-  open: wsPrivateOpen,
-  close: wsPrivateClose,
-  success: wsPrivateSuccess,
-  error: wsPrivateError,
+  open: wsPrivateOnopen,
+  close: wsPrivateOnclose,
+  success: wsPrivateOnmessage,
+  error: wsPrivateOnerror,
 } = wsOrdersFeedPrivateSlice.actions;
-
-export const wsOrdersFeedPrivate = wsController({
-  getSocketFn: apiService.getWSPrivateOrders,
-  wsOpenFn: wsPrivateOpen,
-  wsCloseFn: wsPrivateClose,
-  wsSuccessFn: wsPrivateSuccess,
-  wsErrorFn: wsPrivateError,
-});
 
 export default wsOrdersFeedPrivateSlice.reducer;

@@ -8,9 +8,9 @@ import { getBurgerIngredients } from "services/slices/burger-ingredients-slice";
 import {
   selectWsOrdersFeedPrivate,
   stopWSPrivate,
-  wsOrdersFeedPrivate,
+  wsPrivateConnect,
 } from "services/slices/ws-orders-feed-private-slice";
-import { wsOrdersFeed } from "services/slices/ws-orders-feed-slice";
+import { wsConnect } from "services/slices/ws-orders-feed-slice";
 import { EAuthStatus, ROUTES } from "utils/constants";
 
 import { SmallCentered, WithSidebar } from "layouts";
@@ -55,11 +55,11 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(wsOrdersFeed());
+    dispatch(wsConnect());
 
     // NOTE: Залогинились
     if (status === EAuthStatus.ok && !wsPrivateConnected) {
-      dispatch(wsOrdersFeedPrivate());
+      dispatch(wsPrivateConnect());
     }
 
     // NOTE: Разлогинились
