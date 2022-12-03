@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
-import { createWsOrdersFeedMiddleware } from "services/middlewares/ws-orders-feed-middleware";
+import { createWebsocketMiddleware } from "services/middlewares/websocket-middleware";
 import { rootReducer } from "services/reducers";
 import {
   wsPrivateConnect,
@@ -20,7 +20,7 @@ import {
   wsDisconnect,
 } from "services/slices/ws-orders-feed-slice";
 
-const wsOrdersFeedMiddleware = createWsOrdersFeedMiddleware({
+const wsOrdersFeedMiddleware = createWebsocketMiddleware({
   connect: wsConnect,
   disconnect: wsDisconnect,
   getSocketFn: apiService.getWSAllOrders,
@@ -30,7 +30,7 @@ const wsOrdersFeedMiddleware = createWsOrdersFeedMiddleware({
   wsErrorFn: wsAllOneror,
 });
 
-const wsOrdersPrivateFeedMiddleware = createWsOrdersFeedMiddleware({
+const wsOrdersPrivateFeedMiddleware = createWebsocketMiddleware({
   connect: wsPrivateConnect,
   disconnect: wsPrivateDisconnect,
   getSocketFn: apiService.getWSPrivateOrders,

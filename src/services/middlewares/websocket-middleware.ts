@@ -9,7 +9,7 @@ import { getErrorMessage, isSuccessResponseData } from "utils/utils";
 
 type TWSActions = TWSAllOrdersActions | TWSPrivateOrdersActions;
 
-export const createWsOrdersFeedMiddleware =
+export const createWebsocketMiddleware =
   (wsActions: TWSActions): Middleware<unknown, RootState> =>
   (store) => {
     let socket: WebSocket | null = null;
