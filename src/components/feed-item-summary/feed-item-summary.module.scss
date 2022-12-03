@@ -1,0 +1,54 @@
+@use "../../styles/variables.scss" as *;
+
+.root {
+  display: flex;
+}
+
+.item {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  background-image: linear-gradient(90deg, #801ab2, $accent);
+  border-radius: 50%;
+
+  &:not(:first-child) {
+    margin-left: -16px;
+  }
+
+  &::before {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #000;
+  }
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 2;
+    width: 57px;
+    height: 57px;
+  }
+
+  &_blured {
+    img {
+      opacity: 0.4;
+    }
+
+    .count {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}

@@ -9,6 +9,8 @@ import { EAuthStatus, ROUTES } from "utils/constants";
 
 import { SmallCentered, WithSidebar } from "layouts";
 import {
+  Feed,
+  FeedOrder,
   ForgotPassword,
   Home,
   Ingredient,
@@ -26,6 +28,7 @@ import ProtectedRoute from "hoc/protected-route/protected-route";
 import AppHeader from "components/app-header/app-header";
 import IngredientDetails from "components/ingredient-details/ingredient-details";
 import Modal from "components/modal/modal";
+import OrderDetailsFull from "components/order-details-full/order-details-full";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -82,8 +85,20 @@ const App: React.FC = () => {
               path={ROUTES.profileOrders.path}
               element={<ProfileOrders pageTitle={ROUTES.profileOrders.title} />}
             />
-            <Route path={ROUTES.profileOrder.path} element={<ProfileOrder pageTitle={ROUTES.profileOrder.title} />} />
           </Route>
+
+          <Route
+            path={ROUTES.profileOrder.path}
+            element={
+              <ProtectedRoute>
+                <ProfileOrder pageTitle={ROUTES.profileOrder.title} />
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route path={ROUTES.feed.path} element={<Feed pageTitle={ROUTES.feed.title} />} />
+
+          <Route path={ROUTES.feedOrder.path} element={<FeedOrder pageTitle={ROUTES.feedOrder.title} />} />
 
           <Route path={ROUTES.home.path} element={<Home pageTitle={ROUTES.home.title} />} />
 
@@ -99,6 +114,22 @@ const App: React.FC = () => {
               element={
                 <Modal onClose={handleCloseModalIngredient} title="Детали ингридиента">
                   <IngredientDetails />
+                </Modal>
+              }
+            />
+            <Route
+              path={ROUTES.profileOrder.path}
+              element={
+                <Modal onClose={handleCloseModalIngredient} title="&nbsp;" type="order">
+                  <OrderDetailsFull />
+                </Modal>
+              }
+            />
+            <Route
+              path={ROUTES.feedOrder.path}
+              element={
+                <Modal onClose={handleCloseModalIngredient} title="&nbsp;" type="order">
+                  <OrderDetailsFull />
                 </Modal>
               }
             />

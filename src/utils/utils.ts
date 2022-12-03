@@ -24,6 +24,16 @@ export const splitIngredientsByTypes = (data: TIngredient[]) => {
   return Object.entries(result) as TIngredientsByTypes;
 };
 
+export const createIngredientsDict = (data: TIngredient[]) => {
+  const result: Map<TIngredient["_id"], TIngredient> = new Map();
+
+  for (const item of data) {
+    result.set(item._id, item);
+  }
+
+  return result;
+};
+
 export const notify = (
   message: ToastContent,
   options: ToastOptions = {},
@@ -82,4 +92,41 @@ export const blurFormFields = (form: HTMLFormElement) => {
       field.blur();
     }
   }
+};
+
+export const isSuccessResponseData = <T extends { success: boolean }, K extends { success: boolean }>(
+  data: T | K
+): data is T => {
+  return "success" in data && data.success === true;
+};
+
+export const getLastOrderNumbers = (data: TFeed["orders"] = [], count: number) => {
+  const resultDone: TFeedOrder["number"][] = Array(count);
+  const resultPending: TFeedOrder["number"][] = Array(count);
+  let i = 0;
+  let d = 0;
+  let p = 0;
+
+  while (d < count) {
+    if (typeof data[i] === "undefined") {
+      break;
+    }
+
+    if (data[i].status === "done") {
+      resultDone[d] = data[i].number;
+      d++;
+    }
+
+    if (data[i].status === "pending" && p < count) {
+      resultPending[p] = data[i].number;
+      p++;
+    }
+
+    i++;
+  }
+
+  return {
+    done: resultDone.filter(Boolean),
+    pending: resultPending.filter(Boolean),
+  };
 };

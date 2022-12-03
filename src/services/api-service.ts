@@ -42,6 +42,22 @@ class ApiService {
     redirect: "follow",
     referrerPolicy: "no-referrer",
   };
+  _wsAllOrdersUrl = "wss://norma.nomoreparties.space/orders/all" as const;
+  _wsUserOrdersUrl = "wss://norma.nomoreparties.space/orders" as const;
+
+  getWSAllOrders = () => {
+    return new WebSocket(this._wsAllOrdersUrl);
+  };
+
+  getWSPrivateOrders = () => {
+    if (this._accessToken && this._accessToken.includes("Bearer ")) {
+      const [, token] = this._accessToken.split("Bearer ");
+
+      return new WebSocket(`${this._wsUserOrdersUrl}?token=${token}`);
+    }
+
+    throw new Error("Access token is not available");
+  };
 
   request = async <T extends Partial<TResponseCommon>>(
     endpoint: TEndpoints,
@@ -241,7 +257,7 @@ class ApiService {
       this._refreshToken = tokens.refreshToken;
 
       if (typeof tokens.refreshToken === "string") {
-        Cookies.set("token", tokens.refreshToken, { path: "/" });
+        Cookies.set("token", tokens.refreshToken, { path: "/", sameSite: "Strict" });
       }
     }
   };

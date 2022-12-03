@@ -1,0 +1,11 @@
+@use "../../styles/variables.scss" as *;
+
+.root {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: $spacer * 6;
+}

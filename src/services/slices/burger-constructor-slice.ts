@@ -1,6 +1,6 @@
 import { createSelector, createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
 
-import type { RootState } from "../../index";
+import type { RootState } from "services/store";
 
 type TBurgerConstructorState = {
   buns: [TIngredient, TIngredient] | [];

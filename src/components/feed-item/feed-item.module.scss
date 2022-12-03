@@ -1,0 +1,60 @@
+@use "../../styles/variables.scss" as *;
+
+.wrapper {
+  a {
+    color: inherit !important;
+  }
+}
+
+.root {
+  margin-right: $spacer * 3;
+  padding: $spacer * 6;
+  border-radius: $spacer * 6;
+  background: $modalBg;
+  text-align-last: left;
+
+  @include media-bp-down(tablet) {
+    padding: $spacer * 3;
+  }
+
+  @include media-bp-down(desktop) {
+    :global(.text_type_main-medium) {
+      font-size: 22px;
+    }
+  }
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+
+  &__date {
+    color: $secondary;
+  }
+}
+
+.status {
+  &_done {
+    color: $success;
+  }
+}
+
+.smeta {
+  $gap: $spacer * 2;
+
+  margin-bottom: -$gap;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  &__summary {
+    margin-bottom: $gap;
+  }
+
+  &__price {
+    margin-bottom: $gap;
+    display: flex;
+    align-items: center;
+  }
+}

@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import apiService from "services/api-service";
+import type { AppDispatch } from "services/store";
 import { getErrorMessage } from "utils/utils";
-
-import type { AppDispatch } from "../../index";
 
 import { resetIngredientInBurgerConstructor } from "./burger-constructor-slice";
 

@@ -35,6 +35,8 @@ declare type TResponseCommon = {
   message: string;
 };
 
+declare type TResponseCommonFalsed = Omit<TResponseCommon, "success"> & { success: false };
+
 declare type TTokens = {
   accessToken: string | null;
   refreshToken: string | null;
@@ -68,4 +70,52 @@ declare type TLoadingInState = boolean;
 
 declare type TPageProps = {
   pageTitle: string;
+};
+
+// Websockets
+type TYear = `${number}${number}${number}${number}`;
+type TMonth = `${number}${number}`;
+type TDay = `${number}${number}`;
+type THours = `${number}${number}`;
+type TMinutes = `${number}${number}`;
+type TSeconds = `${number}${number}`;
+type TMilliseconds = `${number}${number}${number}`;
+
+type TDateISODate = `${TYear}-${TMonth}-${TDay}`;
+type TDateISOTime = `${THours}:${TMinutes}:${TSeconds}.${TMilliseconds}`;
+
+declare type TDateISO = `${TDateISODate}T${TDateISOTime}Z`;
+
+declare type TWSConnectedInState = boolean;
+
+declare type TFeedOrder = {
+  ingredients: TIngredient["_id"][];
+  _id: string;
+  status: "done" | "created" | "pending";
+  name: string;
+  number: number;
+  createdAt: TDateISO;
+  updatedAt: TDateISO;
+};
+
+declare type TWSResponseSuccessOrdersFeed = {
+  success: true;
+  orders: TFeedOrder[];
+  total: number;
+  totalToday: number;
+};
+
+declare type TFeedOrderState = Omit<TWSResponseSuccessOrdersFeed, "success"> & {
+  wsConnected: TWSConnectedInState;
+  error: TErrorInState;
+};
+
+declare type TFeedItem = Omit<TFeedOrder, "ingredients"> & {
+  ingredients: TIngredient[];
+  total: number;
+  counter: { [K: TIngredient["_id"]]: number };
+};
+
+declare type TFeed = Omit<TWSResponseSuccessOrdersFeed, "success" | "orders"> & {
+  orders: TFeedItem[];
 };
