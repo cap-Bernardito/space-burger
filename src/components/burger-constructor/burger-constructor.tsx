@@ -2,7 +2,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import classNames from "classnames";
 import { Reorder } from "framer-motion";
 
-import { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { DropTargetMonitor, useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
 
@@ -36,6 +36,7 @@ const BurgerConstructor: React.FC = () => {
   const [{ modalIsOpen, closeModal, openModal }, setActionsFns] = useModal();
   const { number: orderNumber, loading: isLoading, error: isError } = useAppSelector((state) => state.orderDetails);
   const [topBun, bottomBun] = buns;
+  const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
 
   const initialDropState = {
     accept: "bun",
@@ -87,6 +88,24 @@ const BurgerConstructor: React.FC = () => {
     notify("Пожалуйста, авторизуйтесь. Только авторизованные пользователи могут оставлять заказ.");
     navigate(ROUTES.login.path);
   };
+
+  useEffect(() => {
+    const scrollableContainer = scrollableContainerRef.current;
+
+    if (!scrollableContainer) {
+      return;
+    }
+
+    const drop = scrollableContainer.querySelector("div:first-child") as HTMLDivElement;
+
+    if (!drop) {
+      return;
+    }
+
+    drop.style.height = "0";
+
+    drop.style.height = `${scrollableContainer.scrollHeight}px`;
+  }, [ingredients]);
 
   const topBunElement = topBun ? (
     <BurgerConstructorElement isLocked={true} type="top" data={topBun} />
@@ -140,6 +159,7 @@ const BurgerConstructor: React.FC = () => {
           onReorder={reorderIngredients}
           values={ingredients}
           className={classNames(styles.list, { [styles.empty]: ingredients.length === 0 }, "custom-scroll")}
+          ref={scrollableContainerRef}
         >
           <div
             className={classNames(styles.list__inner, styles.drop, {
