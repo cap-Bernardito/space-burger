@@ -70,7 +70,7 @@ $profilePageMarginTop: 120px;
 }
 
 @mixin no-touch() {
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     @content;
   }
 }
