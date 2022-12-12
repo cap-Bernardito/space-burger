@@ -12,7 +12,7 @@ type TOrderState = {
   error: TErrorInState;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   number: null,
   loading: false,
   error: false,
