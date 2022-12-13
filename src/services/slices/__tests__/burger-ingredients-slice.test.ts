@@ -10,11 +10,13 @@ describe("BURGER_INGREDIENTS reducer", () => {
   };
 
   it("should return the initial state", () => {
-    expect(reducer(undefined, { type: "_" })).toEqual(initialState);
+    expect(reducer(undefined, { type: undefined })).toEqual(initialState);
   });
 
   it("should handle request", () => {
-    expect(reducer(undefined, slice.getBurgerIngredientsRequest)).toEqual({
+    expect(
+      reducer({ ...initialState, loading: false, error: "init error" }, slice.getBurgerIngredientsRequest)
+    ).toEqual({
       ...initialState,
       loading: true,
       error: false,
@@ -22,7 +24,7 @@ describe("BURGER_INGREDIENTS reducer", () => {
   });
 
   it("should handle success", () => {
-    expect(reducer(undefined, slice.getBurgerIngredientsSuccess(data))).toEqual({
+    expect(reducer({ ...initialState, loading: true }, slice.getBurgerIngredientsSuccess(data))).toEqual({
       ...initialState,
       loading: false,
       data,
@@ -30,7 +32,9 @@ describe("BURGER_INGREDIENTS reducer", () => {
   });
 
   it("should handle error", () => {
-    expect(reducer(undefined, slice.getBurgerIngredientsError("Test error"))).toEqual({
+    expect(
+      reducer({ ...initialState, loading: true, error: false }, slice.getBurgerIngredientsError("Test error"))
+    ).toEqual({
       ...initialState,
       loading: false,
       error: "Test error",
