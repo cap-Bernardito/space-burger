@@ -12,7 +12,7 @@ type TAuthState = {
   status: EAuthStatus;
 };
 
-const initialState: TAuthState = {
+export const initialState: TAuthState = {
   user: null,
   loading: false,
   error: false,

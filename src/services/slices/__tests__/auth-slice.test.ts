@@ -1,6 +1,8 @@
-import reducer, * as slice from "../order-details-slice";
+import { EAuthStatus } from "utils/constants";
 
-describe("ORDER_DETAILS reducer", () => {
+import reducer, * as slice from "../auth-slice";
+
+describe("AUTH reducer", () => {
   it("should return the initial state", () => {
     expect(reducer(undefined, { type: "_" })).toEqual(slice.initialState);
   });
@@ -14,29 +16,31 @@ describe("ORDER_DETAILS reducer", () => {
   });
 
   it("should handle success", () => {
-    expect(reducer(undefined, slice.setSuccess(42))).toEqual({
+    expect(
+      reducer(undefined, slice.setSuccess({ success: true, user: { name: "Mary", email: "Mary@gmail.com" } }))
+    ).toEqual({
       ...slice.initialState,
       loading: false,
-      number: 42,
+      user: { name: "Mary", email: "Mary@gmail.com" },
     });
   });
 
-  it("should handle remove", () => {
+  it("should handle status", () => {
     const initialState: typeof slice.initialState = {
       ...slice.initialState,
-      number: 42,
+      status: EAuthStatus.pending,
     };
 
-    expect(reducer(initialState, slice.removeOrderDetails())).toEqual({
+    expect(reducer(initialState, slice.setStatus(EAuthStatus.ok))).toEqual({
       ...slice.initialState,
-      number: null,
+      status: EAuthStatus.ok,
     });
   });
 
   it("should handle error", () => {
     expect(reducer(undefined, slice.setError("Test error"))).toEqual({
       ...slice.initialState,
-      number: null,
+      user: null,
       loading: false,
       error: "Test error",
     });
