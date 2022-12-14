@@ -1,3 +1,7 @@
 /public
 /node_modules
 /build
+/cypress/e2e
+/cypress/support
+/cypress/downloads
+/cypress/fixtures
