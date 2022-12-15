@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x]
 
     steps:
       - uses: actions/checkout@v3
@@ -32,3 +32,12 @@ jobs:
 
       - name: Test
         run: npm run test
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          install: false
+          start: npm start
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 60

@@ -14,6 +14,7 @@
 /coverage
 /cypress/e2e/*
 /cypress/videos
+/cypress/screenshots
 
 # production
 /build
