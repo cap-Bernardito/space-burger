@@ -199,3 +199,35 @@ describe("Информация об ингредиенте должна корр
       });
   });
 });
+
+describe("Информация о заказе должна корректно отображаться", () => {
+  beforeEach(() => {
+    cy.visit(route(ROUTES.feed));
+  });
+
+  it("При клике на ингредиент должно отобразиться модальное окно с его описанием", () => {
+    cy.get('[data-test-id="feed-item"]').first().as("targetOrder");
+
+    cy.get("@targetOrder").click();
+    cy.contains("Состав");
+
+    cy.get("@targetOrder")
+      .find("a")
+      .invoke("attr", "href")
+      .then((path) => {
+        cy.url().should("eq", `${route()}${path}`);
+      });
+  });
+
+  it("Должна быть доступна страница с информацией об ингредиенте", () => {
+    cy.get('[data-test-id="feed-item"]').first().as("targetOrder");
+
+    cy.get("@targetOrder")
+      .find("a")
+      .invoke("attr", "href")
+      .then((path) => {
+        cy.visit(`${route()}${path}`);
+        cy.contains("Состав");
+      });
+  });
+});
