@@ -161,3 +161,41 @@ describe("Конструктор бургеров должен корректн�
     cy.contains("Ваш заказ начали готовить", { timeout: 25000 });
   });
 });
+
+describe("Информация об ингредиенте должна корректно отображаться", () => {
+  beforeEach(() => {
+    cy.visit(route(ROUTES.home));
+  });
+
+  it("При клике на ингредиент должно отобразиться модальное окно с его описанием", () => {
+    cy.get('[data-test-id="ingredient"]').first().as("targetIngredient");
+
+    cy.get("@targetIngredient").click();
+    cy.contains("Детали ингредиента");
+
+    cy.get("@targetIngredient")
+      .find("a")
+      .invoke("attr", "href")
+      .then((path) => {
+        cy.url().should("eq", `${route()}${path}`);
+      });
+  });
+
+  it("Модальное окно должно закрыться после клика на крестик", () => {
+    cy.get('[data-test-id="ingredient"]').contains("Краторная булка N-200i").click();
+    cy.contains("Детали ингредиента");
+    cy.get('[data-test-id="modal-close-button"]').click();
+    cy.contains("Детали ингредиента").should("not.exist");
+  });
+
+  it("Должна быть доступна страница с информацией об ингредиенте", () => {
+    cy.get('[data-test-id="ingredient"]').first().as("targetIngredient");
+    cy.get("@targetIngredient")
+      .find("a")
+      .invoke("attr", "href")
+      .then((path) => {
+        cy.visit(`${route()}${path}`);
+        cy.contains("Детали ингредиента");
+      });
+  });
+});
