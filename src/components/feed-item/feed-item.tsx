@@ -18,7 +18,7 @@ const FeedItem: React.FC<Props> = ({ data, isStatusVisibility = true }) => {
   const location = useLocation();
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-test-id="feed-item">
       <Link to={`${location.pathname}/${data._id}`} state={{ background: location }}>
         <div className={styles.root}>
           <div className={classNames(styles.meta, "mb-6")}>

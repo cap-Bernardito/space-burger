@@ -58,7 +58,7 @@ const Modal: React.FC<React.PropsWithChildren<Props>> = ({ title, onClose, type,
               [styles.modal__content_order]: type === "order",
             })}
           >
-            <div className={classNames(styles.close)} onClick={onClose}>
+            <div className={classNames(styles.close)} onClick={onClose} data-test-id="modal-close-button">
               <CloseIcon type="primary" />
             </div>
             {title && <div className={classNames(styles.header, "text text_type_main-large")}>{title}</div>}

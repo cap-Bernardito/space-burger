@@ -55,7 +55,11 @@ const BurgerIngredient: React.FC<Props> = ({ data, count }) => {
   return (
     <>
       <DragPreviewImage connect={preview} src={image} />
-      <div className={classNames(styles.box, { [styles.onDrag]: isDrag }, "pb-4")} ref={dragRef}>
+      <div
+        className={classNames(styles.box, { [styles.onDrag]: isDrag }, "pb-4")}
+        ref={dragRef}
+        data-test-id="ingredient"
+      >
         {CounterElement}
         <Link to={`/ingredients/${_id}`} state={{ background: location }}>
           <div className={classNames(styles.image, "mb-1 pr-1 pl-1")}>

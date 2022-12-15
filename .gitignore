@@ -13,6 +13,7 @@
 # testing
 /coverage
 /cypress/e2e/*
+/cypress/videos
 
 # production
 /build

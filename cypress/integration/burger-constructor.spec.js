@@ -108,3 +108,56 @@ describe("Роутинг в приложении для авторизованн
     cy.contains("Вход");
   });
 });
+
+describe("Конструктор бургеров должен корректно работать", () => {
+  beforeEach(() => {
+    cy.visit(route(ROUTES.home));
+
+    cy.get('[data-test-id="ingredient"]').contains("Краторная булка N-200i").as("draggedBun");
+    cy.get('[data-test-id="drop-bun"]').as("dropBunZone");
+    cy.get('[data-test-id="ingredient"]').contains("Соус Spicy-X").as("draggedMain");
+    cy.get('[data-test-id="drop-ingredient"]').as("dropMainZone");
+  });
+
+  it("В конструктор должна добавляться булка", () => {
+    cy.get("@draggedBun").trigger("mouseenter").trigger("dragstart").trigger("drag");
+    cy.get("@dropBunZone").trigger("dragenter").trigger("drop");
+    cy.get("@dropBunZone").contains("Краторная булка N-200i");
+  });
+
+  it("В конструктор должен добавляться ингредиент", () => {
+    cy.get("@draggedMain").trigger("mouseenter").trigger("dragstart").trigger("drag");
+    cy.get("@dropMainZone").trigger("dragenter").trigger("drop");
+    cy.get("@dropMainZone").contains("Соус Spicy-X");
+  });
+
+  it("При оформлении заказа неавторизованного пользователя дожно перенаправить на страницу входа", () => {
+    cy.get("@draggedBun").trigger("mouseenter").trigger("dragstart").trigger("drag");
+    cy.get("@dropBunZone").trigger("dragenter").trigger("drop");
+    cy.get("@dropBunZone").contains("Краторная булка N-200i");
+    cy.get("@draggedMain").trigger("mouseenter").trigger("dragstart").trigger("drag");
+    cy.get("@dropMainZone").trigger("dragenter").trigger("drop");
+    cy.get("@dropMainZone").contains("Соус Spicy-X");
+    cy.get("button").contains("Оформить заказ").click();
+    cy.contains("Вход");
+  });
+
+  it("При оформлении заказа должно открыться модальное окно с информацией о заказе", () => {
+    cy.visit(route(ROUTES.login));
+    cy.get('input[name="email"]').type("cap-Bernardito@yandex.ru");
+    cy.get('input[name="password"]').type("password");
+    cy.get("button").contains("Войти").click();
+    cy.contains("Соберите бургер");
+
+    cy.get("@draggedBun").trigger("mouseenter").trigger("dragstart").trigger("drag");
+    cy.get("@dropBunZone").trigger("dragenter").trigger("drop");
+    cy.get("@dropBunZone").contains("Краторная булка N-200i");
+    cy.get("@draggedMain").trigger("mouseenter").trigger("dragstart").trigger("drag");
+    cy.get("@dropMainZone").trigger("dragenter").trigger("drop");
+    cy.get("@dropMainZone").contains("Соус Spicy-X");
+    cy.get("button").contains("Оформить заказ").click();
+    cy.get("button").contains("Загрузка");
+
+    cy.contains("Ваш заказ начали готовить", { timeout: 25000 });
+  });
+});

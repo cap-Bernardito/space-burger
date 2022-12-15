@@ -40,6 +40,7 @@
     "test:watch": "cross-env PUBLIC_URL=/ react-scripts test",
     "test": "cross-env PUBLIC_URL=/ react-scripts test --watchAll=false",
     "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "predeploy": "react-scripts build && cp build/index.html build/404.html",
