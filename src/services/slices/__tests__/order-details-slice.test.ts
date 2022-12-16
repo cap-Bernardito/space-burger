@@ -1,3 +1,9 @@
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+
+import apiService from "services/api-service";
+
+import { resetIngredientInBurgerConstructor } from "../burger-constructor-slice";
 import reducer, * as slice from "../order-details-slice";
 
 describe("ORDER_DETAILS reducer", () => {
@@ -51,5 +57,70 @@ describe("ORDER_DETAILS reducer", () => {
         error: "Test error",
       }
     );
+  });
+});
+
+describe("ORDER_DETAILS thunks", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+    apiService._accessToken = null;
+  });
+
+  it("should successfully complete createOrder", async () => {
+    // Arrange
+    jest.spyOn(global, "fetch").mockResolvedValue({
+      json: jest.fn().mockResolvedValue({
+        success: true,
+        order: {
+          number: 42,
+        },
+      }),
+      ok: true,
+    } as any);
+
+    apiService._accessToken = "stub_token";
+
+    const middllewares = [thunk];
+    const mockStore = configureMockStore(middllewares);
+    const expectedActions = [slice.setRequest(), slice.setSuccess(42), resetIngredientInBurgerConstructor()];
+    const store = mockStore({
+      data: null,
+      loading: false,
+      error: false,
+    });
+
+    // Act
+    await store.dispatch(slice.createOrder(["id_1", "id_2"]) as any);
+    const evaluatedActions = store.getActions();
+
+    // Assert
+    expect(evaluatedActions).toEqual(expectedActions);
+  });
+
+  it("should unsuccessfully complete createOrder when fetch rejected", async () => {
+    // Arrange
+    jest.spyOn(global, "fetch").mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ success: false, message: "Fetch error" }),
+      ok: false,
+      status: 500,
+    } as any);
+
+    apiService._accessToken = "stub_token";
+
+    const middllewares = [thunk];
+    const mockStore = configureMockStore(middllewares);
+    const expectedActions = [slice.setRequest(), slice.setError("Fetch error")];
+    const store = mockStore({
+      data: null,
+      loading: false,
+      error: false,
+    });
+
+    // Act
+    await store.dispatch(slice.createOrder(["id_1", "id_2"]) as any);
+    const evaluatedActions = store.getActions();
+
+    // Assert
+    expect(evaluatedActions).toEqual(expectedActions);
   });
 });
