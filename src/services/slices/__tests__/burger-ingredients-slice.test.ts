@@ -1,3 +1,6 @@
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+
 import { data } from "utils/data";
 
 import reducer, * as slice from "../burger-ingredients-slice";
@@ -39,5 +42,60 @@ describe("BURGER_INGREDIENTS reducer", () => {
       loading: false,
       error: "Test error",
     });
+  });
+});
+
+describe("BURGER_INGREDIENTS thunks", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("should successfully complete getBurgerIngredients", async () => {
+    // Arrange
+    jest.spyOn(global, "fetch").mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ success: true, data }),
+      ok: true,
+    } as any);
+
+    const middllewares = [thunk];
+    const mockStore = configureMockStore(middllewares);
+    const expectedActions = [slice.getBurgerIngredientsRequest(), slice.getBurgerIngredientsSuccess(data)];
+    const store = mockStore({
+      data: null,
+      loading: false,
+      error: false,
+    });
+
+    // Act
+    await store.dispatch(slice.getBurgerIngredients() as any);
+    const evaluatedActions = store.getActions();
+
+    // Assert
+    expect(evaluatedActions).toEqual(expectedActions);
+  });
+
+  it("should unsuccessfully complete getBurgerIngredients when fetch rejected", async () => {
+    // Arrange
+    jest.spyOn(global, "fetch").mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ success: false, message: "Fetch error" }),
+      ok: false,
+      status: 500,
+    } as any);
+
+    const middllewares = [thunk];
+    const mockStore = configureMockStore(middllewares);
+    const expectedActions = [slice.getBurgerIngredientsRequest(), slice.getBurgerIngredientsError("Fetch error")];
+    const store = mockStore({
+      data: null,
+      loading: false,
+      error: false,
+    });
+
+    // Act
+    await store.dispatch(slice.getBurgerIngredients() as any);
+    const evaluatedActions = store.getActions();
+
+    // Assert
+    expect(evaluatedActions).toEqual(expectedActions);
   });
 });
