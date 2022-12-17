@@ -2,6 +2,7 @@
   "name": "react-burger",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://cap-bernardito.github.io/space-burger/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -30,15 +31,20 @@
     "web-vitals": "^3.0.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start:fd": "cross-env REACT_APP_DATA_SOURCE=fake-data react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env PUBLIC_URL=/ react-scripts start",
+    "start:fd": "cross-env PUBLIC_URL=/ REACT_APP_DATA_SOURCE=fake-data react-scripts start",
+    "build": "cross-env PUBLIC_URL=/ react-scripts build",
     "lint:prettier": "prettier --list-different .",
     "lint:js": "eslint --cache --ext \".js,.jsx,.ts,.tsx\" .",
     "lint": "npm-run-all -l -p \"lint:**\"",
-    "test": "react-scripts test",
+    "test:watch": "cross-env PUBLIC_URL=/ react-scripts test",
+    "test": "cross-env PUBLIC_URL=/ react-scripts test --watchAll=false",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
     "eject": "react-scripts eject",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "predeploy": "react-scripts build && cp build/index.html build/404.html",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -59,19 +65,24 @@
     ]
   },
   "devDependencies": {
+    "@types/redux-mock-store": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
     "classnames": "^2.3.2",
     "cross-env": "^7.0.3",
+    "cypress": "^12.1.0",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^8.0.0",
+    "gh-pages": "^4.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "prop-types": "^15.8.1",
+    "redux-mock-store": "^1.5.4",
     "sass": "^1.56.0"
   }
 }

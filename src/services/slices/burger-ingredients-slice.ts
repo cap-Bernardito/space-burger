@@ -10,7 +10,7 @@ type TBurgerIngredientsState = {
   error: TErrorInState;
 };
 
-const initialState: TBurgerIngredientsState = {
+export const initialState: TBurgerIngredientsState = {
   data: null,
   loading: false,
   error: false,

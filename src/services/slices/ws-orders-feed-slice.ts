@@ -14,7 +14,7 @@ export type TWSAllOrdersActions = {
   wsErrorFn: typeof wsAllOneror;
 };
 
-const initialState: TFeedOrderState = {
+export const initialState: TFeedOrderState = {
   orders: [],
   total: 0,
   totalToday: 0,

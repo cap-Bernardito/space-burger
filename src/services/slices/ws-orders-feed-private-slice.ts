@@ -14,7 +14,7 @@ export type TWSPrivateOrdersActions = {
   wsErrorFn: typeof wsPrivateOnerror;
 };
 
-const initialState: TFeedOrderState = {
+export const initialState: TFeedOrderState = {
   orders: [],
   total: 0,
   totalToday: 0,
@@ -39,7 +39,6 @@ const wsOrdersFeedPrivateSlice = createSlice({
       state.totalToday = 0;
     },
     success(state, action: PayloadAction<Omit<TWSResponseSuccessOrdersFeed, "success">>) {
-      state.wsConnected = true;
       state.orders = action.payload.orders;
       state.total = action.payload.total;
       state.totalToday = action.payload.totalToday;

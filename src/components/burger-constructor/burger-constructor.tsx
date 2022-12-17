@@ -148,6 +148,7 @@ const BurgerConstructor: React.FC = () => {
             "custom-scroll"
           )}
           ref={dropTopBunTarget}
+          data-test-id="drop-bun"
         >
           {topBunElement}
         </div>
@@ -160,6 +161,7 @@ const BurgerConstructor: React.FC = () => {
           values={ingredients}
           className={classNames(styles.list, { [styles.empty]: ingredients.length === 0 }, "custom-scroll")}
           ref={scrollableContainerRef}
+          data-test-id="drop-ingredient"
         >
           <div
             className={classNames(styles.list__inner, styles.drop, {

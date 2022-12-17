@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# Веб-приложение "Космическая бургерная"
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![Build Status](https://github.com/cap-Bernardito/space-burger/workflows/Space-burger/badge.svg)](https://github.com/cap-Bernardito/space-burger/actions/workflows/lint.yml?query=branch%3Amain)
 
-## Available Scripts
+Учебный проект, разработанный в рамках курса "React-разработчик".
+Позволяет пользователю собирать космический бургер с помощью конструктора.
+Работает на ПК и мобильных устройствах.
 
-In the project directory, you can run:
+[Ссылка на приложение](https://cap-bernardito.github.io/space-burger)
 
-### `npm start`
+[![Превью приложения](src/images/burger_app.jpg)](https://cap-bernardito.github.io/space-burger)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Использованные технологии:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- React
+- Redux
+- React Router
+- WebSockets
+- JSON Web Tokens
+- Jest
+- Cypress
+- GitHub Actions
 
-### `npm test`
+## Доступные команды
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+// Установка зависимостей
+$ npm install
 
-### `npm run build`
+// Запуск проекта в режиме разработки
+$ npm run start
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+// Запуск проекта в режиме разработки с фейковыми данными
+$ npm run start:fd
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+// Сборка проекта в папку `build`
+$ npm run build
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+// Запуск jest тестов
+$ npm run test
 
-### `npm run eject`
+// Запуск cypress тестов с просмотром в браузере
+$ npm run start
+// Затем в другом терминале
+$ npm run cypress:open
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+// Запуск cypress тестов в headless режиме
+$ npm run start
+// Затем в другом терминале
+$ npm run cypress:run
+```
