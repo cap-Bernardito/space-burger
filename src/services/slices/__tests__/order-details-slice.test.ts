@@ -7,11 +7,7 @@ import { resetIngredientInBurgerConstructor } from "../burger-constructor-slice"
 import reducer, * as slice from "../order-details-slice";
 
 describe("ORDER_DETAILS reducer", () => {
-  const initialState: typeof slice.initialState = {
-    number: null,
-    loading: false,
-    error: false,
-  };
+  const initialState = slice.initialState;
 
   it("should return the initial state", () => {
     expect(reducer(undefined, { type: undefined })).toEqual(initialState);

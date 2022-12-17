@@ -7,12 +7,7 @@ import { EAuthStatus } from "utils/constants";
 import reducer, * as slice from "../auth-slice";
 
 describe("AUTH reducer", () => {
-  const initialState: typeof slice.initialState = {
-    user: null,
-    loading: false,
-    error: false,
-    status: EAuthStatus.pending,
-  };
+  const initialState = slice.initialState;
   const userStub = { name: "Mary", email: "Mary@gmail.com" };
 
   it("should return the initial state", () => {

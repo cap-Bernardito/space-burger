@@ -1,13 +1,7 @@
 import reducer, * as slice from "../ws-orders-feed-private-slice";
 
 describe("WS_ORDERS_FEED_PRIVATE reducer", () => {
-  const initialState: typeof slice.initialState = {
-    orders: [],
-    total: 0,
-    totalToday: 0,
-    wsConnected: false,
-    error: false,
-  };
+  const initialState = slice.initialState;
   const feedOrderStub: TFeedOrder = {
     ingredients: ["id_1", "id_2"],
     _id: "_id",

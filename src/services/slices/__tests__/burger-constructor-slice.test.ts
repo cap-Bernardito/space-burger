@@ -3,10 +3,7 @@ import { data } from "utils/data";
 import reducer, * as slice from "../burger-constructor-slice";
 
 describe("BURGER_CONSTRUCTOR reducer", () => {
-  const initialState: typeof slice.initialState = {
-    buns: [],
-    ingredients: [],
-  };
+  const initialState = slice.initialState;
 
   it("should return the initial state", () => {
     expect(reducer(undefined, { type: undefined })).toEqual(initialState);

@@ -1,13 +1,7 @@
 import reducer, * as slice from "../ws-orders-feed-slice";
 
 describe("WS_ORDERS_FEED reducer", () => {
-  const initialState: typeof slice.initialState = {
-    orders: [],
-    total: 0,
-    totalToday: 0,
-    wsConnected: false,
-    error: false,
-  };
+  const initialState = slice.initialState;
 
   it("should return the initial state", () => {
     expect(reducer(undefined, { type: undefined })).toEqual(initialState);
