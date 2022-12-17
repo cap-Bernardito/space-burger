@@ -1,10 +1,9 @@
-import { ROUTES } from "../../src/utils/constants";
+import { ROUTES } from "utils/constants";
 
-const route = (endpoint) => {
-  const baseUrl = "http://localhost:3000";
-
-  return typeof endpoint === "undefined" ? baseUrl : `${baseUrl}${endpoint.path}`;
-};
+const route = (endpoint) => (typeof endpoint === "undefined" ? "" : endpoint.path);
+const inputEmailSelector = 'input[name="email"]';
+const inputPasswordSelector = 'input[name="password"]';
+const ingredientSelector = '[data-test-id="ingredient"]';
 
 describe("Приложение должно быть доступно на 3000 порту", () => {
   it("Приложение должно открыться по адресу localhost:3000", () => {
@@ -83,8 +82,8 @@ describe("Роутинг в приложении для неавторизова
 describe("Роутинг в приложении для авторизованного пользователя должен корректно работать", () => {
   it("После авторизации открывается главная страница", () => {
     cy.visit(route(ROUTES.login));
-    cy.get('input[name="email"]').type("cap-Bernardito@yandex.ru");
-    cy.get('input[name="password"]').type("password");
+    cy.get(inputEmailSelector).type("cap-Bernardito@yandex.ru");
+    cy.get(inputPasswordSelector).type("password");
     cy.get("button").contains("Войти").click();
     cy.contains("Алексей");
     cy.contains("Соберите бургер");
@@ -92,8 +91,8 @@ describe("Роутинг в приложении для авторизованн
 
   it("После авторизации открывается страница, с которой пользователя средиректило на страницу входа", () => {
     cy.visit(route(ROUTES.profileOrders));
-    cy.get('input[name="email"]').type("cap-Bernardito@yandex.ru");
-    cy.get('input[name="password"]').type("password");
+    cy.get(inputEmailSelector).type("cap-Bernardito@yandex.ru");
+    cy.get(inputPasswordSelector).type("password");
     cy.get("button").contains("Войти").click();
     cy.contains("Алексей");
     cy.contains("История заказов");
@@ -101,8 +100,8 @@ describe("Роутинг в приложении для авторизованн
 
   it('После клика на кнопку "Выход" открывается страница входа', () => {
     cy.visit(route(ROUTES.profileOrders));
-    cy.get('input[name="email"]').type("cap-Bernardito@yandex.ru");
-    cy.get('input[name="password"]').type("password");
+    cy.get(inputEmailSelector).type("cap-Bernardito@yandex.ru");
+    cy.get(inputPasswordSelector).type("password");
     cy.get("button").contains("Войти").click();
     cy.get("a").contains("Выход").click();
     cy.contains("Вход");
@@ -113,9 +112,9 @@ describe("Конструктор бургеров должен корректн�
   beforeEach(() => {
     cy.visit(route(ROUTES.home));
 
-    cy.get('[data-test-id="ingredient"]').contains("Краторная булка N-200i").as("draggedBun");
+    cy.get(ingredientSelector).contains("Краторная булка N-200i").as("draggedBun");
     cy.get('[data-test-id="drop-bun"]').as("dropBunZone");
-    cy.get('[data-test-id="ingredient"]').contains("Соус Spicy-X").as("draggedMain");
+    cy.get(ingredientSelector).contains("Соус Spicy-X").as("draggedMain");
     cy.get('[data-test-id="drop-ingredient"]').as("dropMainZone");
   });
 
@@ -144,8 +143,8 @@ describe("Конструктор бургеров должен корректн�
 
   it("При оформлении заказа должно открыться модальное окно с информацией о заказе", () => {
     cy.visit(route(ROUTES.login));
-    cy.get('input[name="email"]').type("cap-Bernardito@yandex.ru");
-    cy.get('input[name="password"]').type("password");
+    cy.get(inputEmailSelector).type("cap-Bernardito@yandex.ru");
+    cy.get(inputPasswordSelector).type("password");
     cy.get("button").contains("Войти").click();
     cy.contains("Соберите бургер");
 
@@ -168,7 +167,7 @@ describe("Информация об ингредиенте должна корр
   });
 
   it("При клике на ингредиент должно отобразиться модальное окно с его описанием", () => {
-    cy.get('[data-test-id="ingredient"]').first().as("targetIngredient");
+    cy.get(ingredientSelector).first().as("targetIngredient");
 
     cy.get("@targetIngredient").click();
     cy.contains("Детали ингредиента");
@@ -177,24 +176,24 @@ describe("Информация об ингредиенте должна корр
       .find("a")
       .invoke("attr", "href")
       .then((path) => {
-        cy.url().should("eq", `${route()}${path}`);
+        cy.url().should("include", path);
       });
   });
 
   it("Модальное окно должно закрыться после клика на крестик", () => {
-    cy.get('[data-test-id="ingredient"]').contains("Краторная булка N-200i").click();
+    cy.get(ingredientSelector).contains("Краторная булка N-200i").click();
     cy.contains("Детали ингредиента");
     cy.get('[data-test-id="modal-close-button"]').click();
     cy.contains("Детали ингредиента").should("not.exist");
   });
 
   it("Должна быть доступна страница с информацией об ингредиенте", () => {
-    cy.get('[data-test-id="ingredient"]').first().as("targetIngredient");
+    cy.get(ingredientSelector).first().as("targetIngredient");
     cy.get("@targetIngredient")
       .find("a")
       .invoke("attr", "href")
       .then((path) => {
-        cy.visit(`${route()}${path}`);
+        cy.visit(path);
         cy.contains("Детали ингредиента");
       });
   });
@@ -205,8 +204,10 @@ describe("Информация о заказе должна корректно �
     cy.visit(route(ROUTES.feed));
   });
 
+  const feedItemSelector = '[data-test-id="feed-item"]';
+
   it("При клике на заказ должно отобразиться модальное окно с его описанием", () => {
-    cy.get('[data-test-id="feed-item"]').first().as("targetOrder");
+    cy.get(feedItemSelector).first().as("targetOrder");
 
     cy.get("@targetOrder").click();
     cy.contains("Состав");
@@ -215,18 +216,18 @@ describe("Информация о заказе должна корректно �
       .find("a")
       .invoke("attr", "href")
       .then((path) => {
-        cy.url().should("eq", `${route()}${path}`);
+        cy.url().should("include", path);
       });
   });
 
   it("Должна быть доступна страница с информацией о заказе", () => {
-    cy.get('[data-test-id="feed-item"]').first().as("targetOrder");
+    cy.get(feedItemSelector).first().as("targetOrder");
 
     cy.get("@targetOrder")
       .find("a")
       .invoke("attr", "href")
       .then((path) => {
-        cy.visit(`${route()}${path}`);
+        cy.visit(path);
         cy.contains("Состав");
       });
   });
