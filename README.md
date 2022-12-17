@@ -1,5 +1,7 @@
 # Веб-приложение "Космическая бургерная"
 
+[![Build Status](https://github.com/cap-Bernardito/space-burger/workflows/Space-burger/badge.svg)](https://github.com/cap-Bernardito/space-burger/actions/workflows/lint.yml?query=branch%3Amain)
+
 Учебный проект, разработанный в рамках курса "React-разработчик".
 Позволяет пользователю собирать космический бургер с помощью конструктора.
 Работает на ПК и мобильных устройствах.
