@@ -1,4 +1,6 @@
-import { ROUTES } from "utils/constants";
+/// <reference types="cypress" />
+
+import { ROUTES } from "../../src/utils/constants";
 
 const route = (endpoint) => (typeof endpoint === "undefined" ? "" : endpoint.path);
 const inputEmailSelector = 'input[name="email"]';
@@ -193,6 +195,10 @@ describe("Информация об ингредиенте должна корр
       .find("a")
       .invoke("attr", "href")
       .then((path) => {
+        if (typeof path === "undefined") {
+          return;
+        }
+
         cy.visit(path);
         cy.contains("Детали ингредиента");
       });
@@ -227,6 +233,10 @@ describe("Информация о заказе должна корректно �
       .find("a")
       .invoke("attr", "href")
       .then((path) => {
+        if (typeof path === "undefined") {
+          return;
+        }
+
         cy.visit(path);
         cy.contains("Состав");
       });
